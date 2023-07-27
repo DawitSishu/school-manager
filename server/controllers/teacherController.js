@@ -33,3 +33,17 @@ export const getStudents = asyncHandler(async (req, res) => {
     res.status(500).json({ error: "Error getting students" });
   }
 });
+
+
+//@desc returns all students in class
+//@route Post /api/students/:id
+//@access private
+export const updateStudentValue = asyncHandler(async(req,res) => {
+    const data = JSON.stringify(req.body); // must be encrypted
+    // Assuming you have a function to save the updated student record back to the database
+    const result = await pool.query('UPDATE students SET report_card = ? WHERE user_id = ?', [data, id]);
+
+    // Respond with the updated student record as the response
+    res.json(student);
+    console.log(data)
+})
