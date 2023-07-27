@@ -23,12 +23,12 @@ export const loginUser = asyncHandler(async (req, res) => {
     err.statusCode = 401;
     throw err;
   }
-  //   const isPasswordMatch = await bcrypt.compare(password, user.password);
-  //   if (!isPasswordMatch) {
-  //     const err = new Error("Incorrect Email or Password");
-  //     err.statusCode = 401;
-  //     throw err;
-  //   }
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+  if (!isPasswordMatch) {
+    const err = new Error("Incorrect Email or Password");
+    err.statusCode = 401;
+    throw err;
+  }
   const { password: omitPassword, ...userData } = user;
 
   const token = jwt.sign(userData, process.env.SECRET_KEY, { expiresIn: "1d" });
@@ -77,10 +77,8 @@ export const createUser = asyncHandler(async (req, res) => {
     const values = [email, hashedPassword, username, role];
     const [result] = await pool.query(query, values);
 
-    res
-      .status(201)
-      .json({
-        msg: "user has been created succesfully",
-      });
+    res.status(201).json({
+      msg: "user has been created succesfully",
+    });
   }
 });
