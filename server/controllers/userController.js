@@ -69,7 +69,6 @@ export const createUser = asyncHandler(async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    console.log(hashedPassword.length);
 
     // Create a new user object
     const query =
