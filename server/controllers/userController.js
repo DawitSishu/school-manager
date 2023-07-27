@@ -42,22 +42,22 @@ export const loginUser = asyncHandler(async (req, res) => {
 //@route POST /api/users/signup
 //@access private
 export const createUser = asyncHandler(async (req, res) => {
-  const { email, password, username, role } = req.body;
+  const { email, password, role } = req.body;
 
-  if (!email || !password || !username || !role) {
+  if (!email || !password ) {
     const error = new Error("All fields are required");
     error.statusCode = 400;
     throw error;
   }
 
-  if (role != "student" && role != "teacher") {
+  if (role != "student" && role != "teacher" ) {
     console.log(role == "teacher");
     const error = new Error("User must be a student or a teacher");
     error.statusCode = 400;
     throw error;
   }
-
-  const [rows] = await pool.query("SELECT * FROM user WHERE email = ?", [
+  var type = role == "student" ? 'students' : role == "teacher" ? 'teacher' : null
+  const [rows] = await pool.query(`SELECT * FROM ${type} WHERE email = ?`, [
     email,
   ]);
   console.log(rows.length);
@@ -72,8 +72,8 @@ export const createUser = asyncHandler(async (req, res) => {
 
     // Create a new user object
     const query =
-      "INSERT INTO user (email, password, username, role) VALUES (?, ?, ?, ?)";
-    const values = [email, hashedPassword, username, role];
+      `INSERT INTO ${type} (email, password) VALUES (?, ?)`;
+    const values = [email, hashedPassword];
     const [result] = await pool.query(query, values);
 
     res.status(201).json({
