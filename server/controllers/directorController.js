@@ -13,10 +13,12 @@ export const createClass = asyncHandler(async (req, res) => {
 });
 
 
-//@desc creates a student
+
+//dave ezi na
+//@desc assigns teacher to a class with subject
 //@route POST /api/student
 //@access private
-export const createStudent = asyncHandler(async (req, res) => {
+export const teacherToClass = asyncHandler(async (req, res) => {
     const { class_name } = req.body;
     const result = await pool.query(`INSERT INTO class (class_name) VALUES (?)`, [
       class_name,

@@ -24,7 +24,7 @@ export const getStudents = asyncHandler(async (req, res) => {
     const placeholders = studentIDs.map(() => "?").join(",");
     // Query the database to get the names of students with the specified IDs
     const result = await pool.query(
-      `SELECT user_id, username FROM user WHERE user_id IN (${placeholders})`,
+      `SELECT student_id, full_name FROM students WHERE sudent_id IN (${placeholders})`,
       [...studentIDs]
     );
     res.json(result[0]);

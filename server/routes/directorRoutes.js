@@ -1,14 +1,13 @@
 import express from "express";
 import userAuthChecker from "../middlewares/userAuthCheaker.js";
-import { createClass, createStudent } from "../controllers/directorController.js";
+import { createClass, teacherToClass } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
 
 //create a class
 directorRouter.post('/classes',createClass);
-//create a student
-directorRouter.post('/classes',createStudent);
 //assign teacher to class
+directorRouter.post('/classes',teacherToClass);
 
 // asiign students to class
 
