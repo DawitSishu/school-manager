@@ -1,6 +1,19 @@
 import asyncHandler from "express-async-handler";
 import { pool } from "../database/index.js";
 
+//@desc returns all the classes of the teacher
+//@route GET /api/teacher/class
+//@access private
+export const getMyClasses = asyncHandler(async (req, res) => {
+  //the id is his' so is got from the req.user don't forget
+  const { id } = req.body;
+  const result = await pool.query(
+    `SELECT teaching_class from teacher WHERE teacher_id = ?`,
+    [id]
+  );
+  res.json(result[0][0]);
+});
+
 //@desc returns all students in class
 //@route GET /api/classes/:id
 //@access private
@@ -34,16 +47,18 @@ export const getStudents = asyncHandler(async (req, res) => {
   }
 });
 
-
 //@desc returns all students in class
 //@route Post /api/students/:id
 //@access private
-export const updateStudentValue = asyncHandler(async(req,res) => {
-    const data = JSON.stringify(req.body); // must be encrypted
-    // Assuming you have a function to save the updated student record back to the database
-    const result = await pool.query('UPDATE students SET report_card = ? WHERE user_id = ?', [data, id]);
+export const updateStudentValue = asyncHandler(async (req, res) => {
+  const data = JSON.stringify(req.body); // must be encrypted
+  // Assuming you have a function to save the updated student record back to the database
+  const result = await pool.query(
+    "UPDATE students SET report_card = ? WHERE user_id = ?",
+    [data, id]
+  );
 
-    // Respond with the updated student record as the response
-    res.json(student);
-    console.log(data)
-})
+  // Respond with the updated student record as the response
+  res.json(student);
+  console.log(data);
+});

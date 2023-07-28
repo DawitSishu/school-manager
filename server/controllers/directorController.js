@@ -40,23 +40,36 @@ export const teacherToClass = asyncHandler(async (req, res) => {
   if (teachers == null) {
     // the subject must be got from the teacher_id
     let teacherData = JSON.stringify({ math: teacher_id });
-    const class_result = await pool.query(
+    const class_final = await pool.query(
       `UPDATE class SET teachers = ? WHERE class_name = ?`,
       [teacherData, class_name]
     );
-    res.json(class_result);
   } else {
     // the subject must be got from the teacher_id
     let teacherData = JSON.stringify({
       ...JSON.parse(teachers),
       bio: teacher_id,
     });
-    const class_result = await pool.query(
+    const class_final = await pool.query(
       `UPDATE class SET teachers = ? WHERE class_name = ?`,
       [teacherData, class_name]
     );
-    res.json(class_result);
   }
+  const classes = teacher_result[0][0].teaching_class;
+  if (classes == null) {
+    let classData = JSON.stringify([class_name]);
+    const updateTeacher = await pool.query(
+      `UPDATE teacher SET teaching_class = ? WHERE teacher_id = ?`,
+      [classData, teacher_id]
+    );
+  } else {
+    let classData = JSON.stringify([...JSON.parse(classes), "bh"]);
+    const updateTeacher = await pool.query(
+      `UPDATE teacher SET teaching_class = ? WHERE  teacher_id = ?`,
+      [classData, teacher_id]
+    );
+  }
+  res.json({ msg: "class and teacher have been updated successfully!" });
 });
 
 //@desc assigns student to a class with subject
@@ -72,6 +85,7 @@ export const studentToClass = asyncHandler(async (req, res) => {
     `SELECT * FROM students WHERE student_id = ?`,
     [student_id]
   );
+
   if (
     class_result[0].length <= 0 ||
     student_result[0].length <= 0 ||
@@ -82,43 +96,52 @@ export const studentToClass = asyncHandler(async (req, res) => {
     err.statusCode = 401;
     throw err;
   }
+  const class_id = class_result[0][0].class_id;
   const students = class_result[0][0].students;
-  console.log(students);
   if (students == null) {
     // the name must be got from the student_id
     let studentData = JSON.stringify({ full_name: student_id });
-    const class_result = await pool.query(
+    const final_class = await pool.query(
       `UPDATE class SET students = ? WHERE class_name = ?`,
       [studentData, class_name]
     );
-    res.json(class_result);
+    const final = await pool.query(
+      `UPDATE students SET class_id = ? WHERE student_id = ?`,
+      [class_id, student_id]
+    );
   } else {
     // the name must be got from the student_id
     let studentData = JSON.stringify({
       ...JSON.parse(students),
       dx8: student_id,
     });
-    // console.log(studentData);
-    const class_result = await pool.query(
+    const final_class = await pool.query(
       `UPDATE class SET students = ? WHERE class_name = ?`,
       [studentData, class_name]
     );
-    res.json(class_result);
+    const final = await pool.query(
+      `UPDATE students SET class_id = ? WHERE student_id = ?`,
+      [class_id, student_id]
+    );
   }
+  res.json({ msg: "class and student have been updated successfully!" });
 });
 
 //@desc returns all teachers
 //@route GET /api/teacher
 //@access private
 export const getTeachers = asyncHandler(async (req, res) => {
-    const result = await pool.query('SELECT * FROM teacher');
-    res.json(result[0]);
+  const result = await pool.query("SELECT * FROM teacher");
+  res.json(result[0]);
 });
 
 //@desc returns one teacher details
 //@route GET /api/teacher/:id
 //@access private
 export const getOneTeacher = asyncHandler(async (req, res) => {
-  const result = await pool.query('SELECT * FROM teacher WHERE teacher_id = ?',[req.params.id]);
+  const result = await pool.query(
+    "SELECT * FROM teacher WHERE teacher_id = ?",
+    [req.params.id]
+  );
   res.json(result[0][0]);
 });
