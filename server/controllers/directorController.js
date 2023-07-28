@@ -49,8 +49,8 @@ export const teacherToClass = asyncHandler(async (req, res) => {
     // the subject must be got from the teacher_id
     let teacherData = JSON.stringify({
       ...JSON.parse(teachers),
-       bio: teacher_id ,
-  });
+      bio: teacher_id,
+    });
     const class_result = await pool.query(
       `UPDATE class SET teachers = ? WHERE class_name = ?`,
       [teacherData, class_name]
@@ -92,13 +92,12 @@ export const studentToClass = asyncHandler(async (req, res) => {
       [studentData, class_name]
     );
     res.json(class_result);
-  } 
-  else {
+  } else {
     // the name must be got from the student_id
     let studentData = JSON.stringify({
       ...JSON.parse(students),
-       dx8: student_id ,
-  });
+      dx8: student_id,
+    });
     // console.log(studentData);
     const class_result = await pool.query(
       `UPDATE class SET students = ? WHERE class_name = ?`,
@@ -106,4 +105,12 @@ export const studentToClass = asyncHandler(async (req, res) => {
     );
     res.json(class_result);
   }
+});
+
+//@desc returns all teachers
+//@route GET /api/teacher
+//@access private
+export const getTeachers = asyncHandler(async (req, res) => {
+    const result = await pool.query('SELECT * FROM teacher');
+    res.json(result[0]);
 });

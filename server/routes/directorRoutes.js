@@ -4,6 +4,7 @@ import {
   createClass,
   teacherToClass,
   studentToClass,
+  getTeachers,
 } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
@@ -17,6 +18,7 @@ directorRouter.post("/classes/teacher", teacherToClass);
 directorRouter.post("/classes/student", studentToClass);
 
 // return all teachers
+directorRouter.get("/teacher", getTeachers);
 
 // return detail of specific teacher
 
