@@ -7,7 +7,7 @@ const directorRouter = express.Router();
 //create a class
 directorRouter.post('/classes',createClass);
 //assign teacher to class
-directorRouter.post('/classes',teacherToClass);
+directorRouter.post('/classes/teacher',teacherToClass);
 
 // asiign students to class
 
