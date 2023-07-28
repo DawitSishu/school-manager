@@ -46,17 +46,33 @@ export const getStudents = asyncHandler(async (req, res) => {
   // res.json(result[0]);
 });
 
-//@desc returns all students in class
-//@route Post /api/students/:id
+//@desc  updates the subjects of a class
+//@route PUT /api/students/:id
 //@access private
 export const updateStudentValue = asyncHandler(async (req, res) => {
-  const data = JSON.stringify(req.body); // must be encrypted
-  // Assuming you have a function to save the updated student record back to the database
-  const result = await pool.query(
-    "UPDATE students SET report_card = ? WHERE user_id = ?",
-    [data, id]
-  );
+  // async function updateStudentsTable(data) {
+  //   for (const item of data) {
+  //     const { subj, stud_id } = item;
+  //     try {
+  //       await pool.query('UPDATE students SET subj = ? WHERE student_id = ?', [subj, stud_id]);
+  //       console.log(`Updated student with ID ${stud_id}`);
+  //     } catch (error) {
+  //       console.error(`Error updating student with ID ${stud_id}: ${error.message}`);
+  //     }
+  //   }
+  // }
 
+  // on the front end restrict it to input only one subject;
+  const data = JSON.stringify(req.body); // must be encrypted
+
+  //cheack with req.user and the class here....
+  const { id } = req.params; // should be got from the req.user
+  // Query the database to get the students JSON array from the class table
+  const [rows] = await pool.query(
+    `UPDATE students SET report_card = ? WHERE  student_id = ?`,
+    [id]
+  );
+  res.json(JSON.parse(rows[0].students));
   // Respond with the updated student record as the response
   res.json(student);
   console.log(data);
