@@ -18,33 +18,32 @@ export const getMyClasses = asyncHandler(async (req, res) => {
 //@route GET /api/classes/:id
 //@access private
 export const getStudents = asyncHandler(async (req, res) => {
-  try {
-    const { id } = req.params; // should be got from the req.user
-    // Query the database to get the students JSON array from the class table
-    const [rows] = await pool.query(
-      "SELECT students FROM class WHERE class_id = ?",
-      [id]
-    );
-    if (rows.length === 0) {
-      return res.status(404).json({ error: "Class not found" });
-    }
-    const studentsJSON = rows[0].students;
-    const studentIDs = JSON.parse(studentsJSON);
+  //cheack with req.user and the class here....
 
-    if (!Array.isArray(studentIDs)) {
-      return res.status(400).json({ error: "Invalid students data" });
-    }
-    const placeholders = studentIDs.map(() => "?").join(",");
-    // Query the database to get the names of students with the specified IDs
-    const result = await pool.query(
-      `SELECT student_id, full_name FROM students WHERE sudent_id IN (${placeholders})`,
-      [...studentIDs]
-    );
-    res.json(result[0]);
-  } catch (error) {
-    console.error("Error getting students:", error);
-    res.status(500).json({ error: "Error getting students" });
-  }
+  const { id } = req.params; // should be got from the req.user
+  // Query the database to get the students JSON array from the class table
+  const [rows] = await pool.query(
+    "SELECT students FROM class WHERE class_id = ?",
+    [id]
+  );
+  res.json(JSON.parse(rows[0].students));
+  // maybe if i needd it;
+  // if (rows.length === 0) {
+  //   return res.status(404).json({ error: "Class not found" });
+  // }
+  // const studentsJSON = rows[0].students;
+  // const studentIDs = JSON.parse(studentsJSON);
+
+  // if (!Array.isArray(studentIDs)) {
+  //   return res.status(400).json({ error: "Invalid students data" });
+  // }
+  // const placeholders = studentIDs.map(() => "?").join(",");
+  // // Query the database to get the names of students with the specified IDs
+  // const result = await pool.query(
+  //   `SELECT student_id, full_name FROM students WHERE sudent_id IN (${placeholders})`,
+  //   [...studentIDs]
+  // );
+  // res.json(result[0]);
 });
 
 //@desc returns all students in class
