@@ -114,3 +114,11 @@ export const getTeachers = asyncHandler(async (req, res) => {
     const result = await pool.query('SELECT * FROM teacher');
     res.json(result[0]);
 });
+
+//@desc returns one teacher details
+//@route GET /api/teacher/:id
+//@access private
+export const getOneTeacher = asyncHandler(async (req, res) => {
+  const result = await pool.query('SELECT * FROM teacher WHERE teacher_id = ?',[req.params.id]);
+  res.json(result[0][0]);
+});

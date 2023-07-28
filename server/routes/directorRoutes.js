@@ -5,6 +5,7 @@ import {
   teacherToClass,
   studentToClass,
   getTeachers,
+  getOneTeacher,
 } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
@@ -21,6 +22,7 @@ directorRouter.post("/classes/student", studentToClass);
 directorRouter.get("/teacher", getTeachers);
 
 // return detail of specific teacher
+directorRouter.get("/teacher/:id", getOneTeacher);
 
 // admin panel ?
 
