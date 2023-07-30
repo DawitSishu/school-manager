@@ -4,6 +4,7 @@ import {
   getStudents,
   updateStudentValue,
   getMyClasses,
+  getStudent,
 } from "../controllers/teacherController.js";
 
 const teacherRouter = express.Router();
@@ -14,10 +15,10 @@ teacherRouter.get("/teacher/class", getMyClasses);
 // students (the students he studeies in class (2a- students))
 teacherRouter.get("/classes/:id", getStudents);
 // update the value of the students (test ena final masgebat)
-teacherRouter.post("/students/:id", updateStudentValue);
+teacherRouter.put("/students/:id", updateStudentValue); // ? if all no id
 
 //get the specific student;
-
+teacherRouter.get("/students/:id", getStudent);
 // get report card (homeroom teacher khone ? kelelew not avilable)
 
 export default teacherRouter;
