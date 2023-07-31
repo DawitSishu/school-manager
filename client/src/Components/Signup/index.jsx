@@ -1,9 +1,13 @@
 import React from 'react'
+import Spinner from '../Spinner/Spinner';
+import SignUpForm from './SignupForm';
 
 const index = () => {
   return (
-    <div>index</div>
+    <>
+    <SignUpForm />
+    </>
   )
 }
 
-export default index
+export default index;
