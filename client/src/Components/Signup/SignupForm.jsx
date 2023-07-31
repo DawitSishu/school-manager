@@ -6,7 +6,7 @@ import {
   MenuItem,
   InputLabel,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useForm,Controller } from "react-hook-form";
 import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
@@ -14,7 +14,15 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { AccountCircle } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import EventIcon from '@mui/icons-material/Event';
+// import { DatePicker, LocalizationProvider } from '@mui/lab';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import AdapterDateFns from '@mui/lab/AdapterDateFns';
+// import { Link } from "react-router-dom";
+// import 'react-datepicker/dist/react-datepicker.css';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 function SignUpForm(props) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -22,6 +30,7 @@ function SignUpForm(props) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
@@ -90,24 +99,41 @@ function SignUpForm(props) {
       ) : (
         selectedValue === "student" && (
           <>
-            <OutlinedInput
-              fullWidth
-              sx={{
-                border: "0.5px solid white",
-              }}
-              placeholder="Date of Birth"
-              id="dob"
-              {...register("dob", { required: "Date of Birth can't be empty" })}
-              startAdornment={
-                <InputAdornment position="start">
-                  <AccountCircle />
-                </InputAdornment>
-              }
-            />
-            <br />
-            {errors.dob && (
-              <Typography variant="h7">{errors.dob.message}</Typography>
-            )}
+            <Controller
+                    name="checkInDate"
+                    control={control}
+                    rules={{ required: "Check-In Date can't be empty" }}
+                    render={({ field }) => (
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                          label="Check-In Date"
+                          value={field.value || null}
+                          onChange={(date) => field.onChange(date)}
+                          textField={(params) => (
+                            <OutlinedInput
+                              {...params}
+                              fullWidth
+                              id="checkInDate"
+                              type="text"
+                              InputProps={{
+                                ...params.InputProps,
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <EventIcon />
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                          )}
+                          sx={{ width: '100%' }}
+                          error={!!errors.checkInDate}
+                        />
+                        {errors.checkInDate && (
+                          <FormHelperText error>{errors.checkInDate.message}</FormHelperText>
+                        )}
+                      </LocalizationProvider>
+                    )}
+                  />
             <br />
           </>
         )
