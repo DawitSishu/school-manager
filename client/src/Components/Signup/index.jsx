@@ -1,4 +1,4 @@
-import { Button, Typography, Box, Select, MenuItem } from "@mui/material";
+import { Button, Typography, Box, Select, MenuItem,Snackbar,Alert } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
@@ -11,13 +11,13 @@ import EventIcon from "@mui/icons-material/Event";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import axios from "axios"
+import axios from "axios";
 
 import { TextField, Autocomplete } from "@mui/material";
 
 import Spinner from "../Spinner/Spinner"; //to be used
 
-const BASE_URI = "http://localhost:5000/api/users/signup"
+const BASE_URI = "http://localhost:5000/api/users/signup";
 
 const subj = [
   "Mathematics",
@@ -33,6 +33,9 @@ const subj = [
 function index() {
   const [showPassword, setShowPassword] = useState(false);
   const [selectedValue, setSelectedValue] = useState("student");
+  const [wait, setWait] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [err, setErr] = useState("");
 
   const {
     register,
@@ -45,12 +48,19 @@ function index() {
       data.email
     );
     if (validEmail) {
-      let finalData = {...data, role:selectedValue}
+      setWait(true);
+      let fialdate =
+        data.birth_date != null
+          ? data.birth_date.toISOString().split("T")[0]
+          : null;
+      let finalData = { ...data, role: selectedValue, birth_date: fialdate };
       try {
         let result = await axios.post(BASE_URI, finalData);
-        console.log(result);
+        setSuccess(true);
+        setWait(false);
       } catch (error) {
-        console.log(error);
+        setErr(error.response.data.message);
+        setWait(false);
       }
     } else {
       alert(`${data.email} is not a valid email`);
@@ -59,8 +69,24 @@ function index() {
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
-
-  return (
+  
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    success(false);
+  };
+  return wait ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spinner />
+    </div>
+  ) : (
     <Box
       sx={{
         padding: 10,
@@ -71,6 +97,17 @@ function index() {
       <Typography variant="h5" align="center">
         Create a New Account
       </Typography>
+      <br />
+      {err && (
+        <Typography color="red" variant="h7">
+          {err}
+        </Typography>
+      )}
+      <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {`${selectedValue} created successfully!!!`}
+        </Alert>
+      </Snackbar>
       <br />
       <Select
         labelId="role"
