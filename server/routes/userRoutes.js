@@ -8,7 +8,7 @@ const userRouter = express.Router();
 userRouter.post("/login", loginUser);
 
 //create
-userRouter.post("/signup", userAuthChecker,createUser);
+userRouter.post("/signup",createUser);
 //update-prof?
 
 export default userRouter;

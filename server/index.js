@@ -5,10 +5,12 @@ import userRouter from "./routes/userRoutes.js";
 import teacherRouter from "./routes/teacherRoutes.js";
 import directorRouter from "./routes/directorRoutes.js";
 import studentRouter from "./routes/studentRoutes.js";
+import cors from "cors"
 
 
 const app = express();
 dotenv.config();
+app.use(cors())
 
 app.use(express.json());
 
