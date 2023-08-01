@@ -2,6 +2,7 @@ import './App.css'
 import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import SignUp from './Components/Signup';
+import LogIn from './Components/Login';
 
 const darkTheme = createTheme({
   palette: {
@@ -28,6 +29,7 @@ function App() {
     <BrowserRouter>
     <Routes>
         <Route path='/signup' element={<SignUp />} />
+        <Route path='/login' element={<LogIn />} />
     </Routes>
     </BrowserRouter>
     </ThemeProvider>

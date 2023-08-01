@@ -222,9 +222,9 @@ function index() {
         }
       />
       <br />
-      {errors.email && (
+      {errors.full_name && (
         <Typography variant="h7" color="red">
-          {errors.email.message}
+          {errors.full_name.message}
         </Typography>
       )}
       <br />
