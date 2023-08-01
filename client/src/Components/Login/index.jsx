@@ -30,7 +30,7 @@ const index = () => {
         localStorage.clear();
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
-        // navigate("/profile");
+        navigate("/profile");
       }
       console.log(response);
     } catch (error) {
