@@ -50,13 +50,14 @@ export const createUser = asyncHandler(async (req, res) => {
     throw error;
   }
 
-  if (role != "student" && role != "teacher" ) {
+  if (role != "student" && role != "teacher") {
     console.log(role == "teacher");
     const error = new Error("User must be a student or a teacher");
     error.statusCode = 400;
     throw error;
   }
-  var type = role == "student" ? 'students' : role == "teacher" ? 'teacher' : null
+  var type =
+    role == "student" ? "students" : role == "teacher" ? "teacher" : null;
   const [rows] = await pool.query(`SELECT * FROM ${type} WHERE email = ?`, [
     email,
   ]);
@@ -68,16 +69,15 @@ export const createUser = asyncHandler(async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-
     // Create a new user object
     if (role == "teacher") {
-      const subjectStr = JSON.stringify(subjects)
-      const sql = `INSERT INTO ${type} (email, password,full_name,subjects) VALUES (?, ?, ?, ?)`
-      const values = [email, hashedPassword,full_name,subjectStr];
+      const subjectStr = JSON.stringify(subjects);
+      const sql = `INSERT INTO ${type} (email, password,full_name,subject) VALUES (?, ?, ?, ?)`;
+      const values = [email, hashedPassword, full_name, subjectStr];
       const [result] = await pool.query(sql, values);
-    }else {
-      const sql = `INSERT INTO ${type} (email, password,full_name,date_of_birth) VALUES (?, ?, ?, ?)`
-      const values = [email, hashedPassword,full_name,birth_date];
+    } else {
+      const sql = `INSERT INTO ${type} (email, password,full_name,date_of_birth) VALUES (?, ?, ?, ?)`;
+      const values = [email, hashedPassword, full_name, birth_date];
       const [result] = await pool.query(sql, values);
     }
     res.status(201).json({
