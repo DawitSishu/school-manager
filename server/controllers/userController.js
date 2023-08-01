@@ -14,10 +14,32 @@ export const loginUser = asyncHandler(async (req, res) => {
     err.statusCode = 400;
     throw err;
   }
-  const [rows] = await pool.query("SELECT * FROM user WHERE email = ?", [
-    email,
-  ]);
-  const user = rows[0];
+  const emailExistsQuery = `
+  SELECT EXISTS(SELECT 1 FROM students WHERE email = ?) AS studentExists,
+         EXISTS(SELECT 1 FROM teacher WHERE email = ?) AS teacherExists
+`;
+
+  const [result] = await pool.query(emailExistsQuery, [email, email]);
+
+  const { studentExists, teacherExists } = result[0];
+  let user;
+  if (studentExists) {
+    var [studentRow] = await pool.query(
+      "SELECT * FROM students WHERE email = ?",
+      [email]
+    );
+    user = studentRow[0];
+  } else if (teacherExists) {
+    var [teacherRow] = await pool.query(
+      "SELECT * FROM teacher WHERE email = ?",
+      [email]
+    );
+    user = teacherRow[0];
+  } else {
+    const err = new Error("Incorrect Email or Password");
+    err.statusCode = 401;
+    throw err;
+  }
   if (!user || user.length === 0) {
     const err = new Error("Incorrect Email or Password");
     err.statusCode = 401;
@@ -58,10 +80,15 @@ export const createUser = asyncHandler(async (req, res) => {
   }
   var type =
     role == "student" ? "students" : role == "teacher" ? "teacher" : null;
+  var type2 =
+    role == "student" ? "teacher" : role == "teacher" ? "students" : null;
   const [rows] = await pool.query(`SELECT * FROM ${type} WHERE email = ?`, [
     email,
   ]);
-  if (rows && rows.length > 0) {
+  const [cols] = await pool.query(`SELECT * FROM ${type2} WHERE email = ?`, [
+    email,
+  ]);
+  if (rows && rows.length > 0 && cols && cols.length > 0) {
     const error = new Error("User already exists");
     error.statusCode = 400;
     throw error;
