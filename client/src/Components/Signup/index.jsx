@@ -6,21 +6,22 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { AccountCircle } from "@mui/icons-material";
+import { AccountCircle, LineAxisOutlined } from "@mui/icons-material";
 import EventIcon from "@mui/icons-material/Event";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import axios from "axios"
 
 import { TextField, Autocomplete } from "@mui/material";
 
-import Spinner from '../Spinner/Spinner'; //to be used
+import Spinner from "../Spinner/Spinner"; //to be used
 
+const BASE_URI = "http://localhost:5000/api/users/signup"
 
 const subj = [
   "Mathematics",
   "Biology",
-  "Amharic",
   "Physics",
   "Chemistry",
   "English",
@@ -39,13 +40,18 @@ function index() {
     control,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
       data.email
     );
     if (validEmail) {
-      const data2 = { ...data, role: selectedValue };
-      console.log(data2);
+      let finalData = {...data, role:selectedValue}
+      try {
+        let result = await axios.post(BASE_URI, finalData);
+        console.log(result);
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       alert(`${data.email} is not a valid email`);
     }
