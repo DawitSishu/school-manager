@@ -8,10 +8,12 @@ import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { AccountCircle } from "@mui/icons-material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const BASE_URI = "http://localhost:5000/api/users/login";
 
 const index = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [err, setErr] = useState("");
 
@@ -22,12 +24,18 @@ const index = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-   try {
-    const token = await (await axios.post(BASE_URI,{...data})).data;
-    console.log(token);
-   } catch (error) {
-    setErr(error.response.data.message);
-   }
+    try {
+      const response = await axios.post(BASE_URI, { ...data });
+      if (response) {
+        localStorage.clear();
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.role);
+        // navigate("/profile");
+      }
+      console.log(response);
+    } catch (error) {
+      setErr(error.response.data.message);
+    }
   };
 
   return (
