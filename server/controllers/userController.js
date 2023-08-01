@@ -74,7 +74,13 @@ export const loginUser = asyncHandler(async (req, res) => {
 export const createUser = asyncHandler(async (req, res) => {
   const { email, password, role, subjects, full_name, birth_date } = req.body;
 
-  if (!email || !password || !role) {
+  if (req.user.role != role) {
+      const error = new Error("Not authorized to access this resource");
+      error.statusCode = 400;
+      throw error;
+    }
+
+  if (!email || !password || !role || !full_name) {
     const error = new Error("All fields are required");
     error.statusCode = 400;
     throw error;
@@ -120,3 +126,18 @@ export const createUser = asyncHandler(async (req, res) => {
     });
   }
 });
+
+
+
+//@desc creates a user
+//@route get /api/users
+//@access private
+// export const checkUser = asyncHandler(async (req, res) => {
+//   const {role} = req.body;
+// if (!role || req.user.role === role) {
+//   const error = new Error("Not authorized to access this resource");
+//   error.statusCode = 400;
+//   throw error;
+// }
+// res.json(role);
+// });
