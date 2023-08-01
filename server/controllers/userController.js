@@ -16,12 +16,13 @@ export const loginUser = asyncHandler(async (req, res) => {
   }
   const emailExistsQuery = `
   SELECT EXISTS(SELECT 1 FROM students WHERE email = ?) AS studentExists,
-         EXISTS(SELECT 1 FROM teacher WHERE email = ?) AS teacherExists
+         EXISTS(SELECT 1 FROM teacher WHERE email = ?) AS teacherExists,
+         EXISTS(SELECT 1 FROM director WHERE email = ?) AS directorExists
 `;
 
-  const [result] = await pool.query(emailExistsQuery, [email, email]);
+  const [result] = await pool.query(emailExistsQuery, [email, email, email]);
 
-  const { studentExists, teacherExists } = result[0];
+  const { studentExists, teacherExists,directorExists } = result[0];
   let user;
   if (studentExists) {
     var [studentRow] = await pool.query(
@@ -35,7 +36,13 @@ export const loginUser = asyncHandler(async (req, res) => {
       [email]
     );
     user = teacherRow[0];
-  } else {
+  }else if (directorExists){
+    var [directorRow] = await pool.query(
+      "SELECT * FROM director WHERE email = ?",
+      [email]
+    );
+    user = directorRow[0];
+  }else {
     const err = new Error("Incorrect Email or Password");
     err.statusCode = 401;
     throw err;
