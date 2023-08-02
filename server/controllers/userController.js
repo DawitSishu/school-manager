@@ -22,7 +22,7 @@ export const loginUser = asyncHandler(async (req, res) => {
 
   const [result] = await pool.query(emailExistsQuery, [email, email, email]);
 
-  const { studentExists, teacherExists,directorExists } = result[0];
+  const { studentExists, teacherExists, directorExists } = result[0];
   let user;
   if (studentExists) {
     var [studentRow] = await pool.query(
@@ -36,13 +36,13 @@ export const loginUser = asyncHandler(async (req, res) => {
       [email]
     );
     user = teacherRow[0];
-  }else if (directorExists){
+  } else if (directorExists) {
     var [directorRow] = await pool.query(
       "SELECT * FROM director WHERE email = ?",
       [email]
     );
     user = directorRow[0];
-  }else {
+  } else {
     const err = new Error("Incorrect Email or Password");
     err.statusCode = 401;
     throw err;
@@ -72,15 +72,16 @@ export const loginUser = asyncHandler(async (req, res) => {
 //@route POST /api/users/signup
 //@access private
 export const createUser = asyncHandler(async (req, res) => {
-  const { email, password, role, subjects, full_name, birth_date } = req.body;
+  const { email, password, role, subjects, full_name, birth_date, gender } =
+    req.body;
 
   if (req.user.role != role) {
-      const error = new Error("Not authorized to access this resource");
-      error.statusCode = 400;
-      throw error;
-    }
+    const error = new Error("Not authorized to access this resource");
+    error.statusCode = 400;
+    throw error;
+  }
 
-  if (!email || !password || !role || !full_name) {
+  if (!email || !password || !role || !full_name || !gender) {
     const error = new Error("All fields are required");
     error.statusCode = 400;
     throw error;
@@ -113,12 +114,12 @@ export const createUser = asyncHandler(async (req, res) => {
     // Create a new user object
     if (role == "teacher") {
       const subjectStr = JSON.stringify(subjects);
-      const sql = `INSERT INTO ${type} (email, password,full_name,subject) VALUES (?, ?, ?, ?)`;
-      const values = [email, hashedPassword, full_name, subjectStr];
+      const sql = `INSERT INTO ${type} (email, password,full_name,subject,gender) VALUES (?, ?, ?, ?, ?)`;
+      const values = [email, hashedPassword, full_name, subjectStr, gender];
       const [result] = await pool.query(sql, values);
     } else {
-      const sql = `INSERT INTO ${type} (email, password,full_name,date_of_birth) VALUES (?, ?, ?, ?)`;
-      const values = [email, hashedPassword, full_name, birth_date];
+      const sql = `INSERT INTO ${type} (email, password,full_name,date_of_birth,gender) VALUES (?, ?, ?, ?, ?)`;
+      const values = [email, hashedPassword, full_name, birth_date, gender];
       const [result] = await pool.query(sql, values);
     }
     res.status(201).json({
@@ -127,17 +128,15 @@ export const createUser = asyncHandler(async (req, res) => {
   }
 });
 
-
-
 //@desc creates a user
 //@route get /api/users
 //@access private
-// export const checkUser = asyncHandler(async (req, res) => {
-//   const {role} = req.body;
-// if (!role || req.user.role === role) {
-//   const error = new Error("Not authorized to access this resource");
-//   error.statusCode = 400;
-//   throw error;
-// }
-// res.json(role);
-// });
+export const checkUser = asyncHandler(async (req, res) => {
+  const { role } = req.body;
+  if (!role || req.user.role === role) {
+    const error = new Error("Not authorized to access this resource");
+    error.statusCode = 400;
+    throw error;
+  }
+  res.json(role);
+});
