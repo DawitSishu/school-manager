@@ -1,4 +1,12 @@
-import { Button, Typography, Box, Select, MenuItem,Snackbar,Alert } from "@mui/material";
+import {
+  Button,
+  Typography,
+  Box,
+  Select,
+  MenuItem,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
@@ -44,6 +52,7 @@ function index() {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
+    console.log(data);
     const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
       data.email
     );
@@ -69,9 +78,9 @@ function index() {
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
-  
+
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     success(false);
@@ -227,6 +236,26 @@ function index() {
           {errors.full_name.message}
         </Typography>
       )}
+      <br />
+      <Controller
+        name="gender"
+        control={control}
+        defaultValue="Male"
+        render={({ field }) => (
+          <Select
+            {...field}
+            labelId="gender"
+            id="gender"
+            value={field.value || ""}
+            onChange={field.onChange}
+            fullWidth
+          >
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+          </Select>
+        )}
+      />
+      <br />
       <br />
       <OutlinedInput
         sx={{
