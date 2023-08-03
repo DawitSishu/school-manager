@@ -15,7 +15,7 @@ userRouter.post("/login", loginUser);
 userRouter.post("/signup", userAuthChecker, createUser);
 
 //cheack token
-userRouter.get("/", userAuthChecker, checkUser);
+userRouter.post("/", userAuthChecker, checkUser);
 //update-prof?
 
 export default userRouter;

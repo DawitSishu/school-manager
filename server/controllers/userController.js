@@ -128,12 +128,13 @@ export const createUser = asyncHandler(async (req, res) => {
   }
 });
 
-//@desc creates a user
-//@route get /api/users
+//@desc cheakes a user
+//@route post /api/users
 //@access private
 export const checkUser = asyncHandler(async (req, res) => {
   const { role } = req.body;
-  if (!role || req.user.role === role) {
+  console.log(role);
+  if (!role || !req.user.role === role) {
     const error = new Error("Not authorized to access this resource");
     error.statusCode = 400;
     throw error;
