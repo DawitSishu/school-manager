@@ -14,15 +14,15 @@ const teacherRouter = express.Router();
 teacherRouter.get("/teacher/me",userAuthChecker, getMydetails);
 
 // my calsses (the classes he teaches)
-teacherRouter.get("/teacher/class", getMyClasses);
+teacherRouter.get("/teacher/class",userAuthChecker, getMyClasses);
 
 // students (the students he studeies in class (2a- students))
-teacherRouter.get("/classes/:id", getStudents);
+teacherRouter.get("/classes/:id", userAuthChecker,getStudents);
 // update the value of the students (test ena final masgebat)
-teacherRouter.put("/students/:id", updateStudentValue); // ? if all no id
+teacherRouter.put("/students/:id", userAuthChecker,updateStudentValue); // ? if all no id
 
 //get the specific student;
-teacherRouter.get("/students/:id", getStudent);
+teacherRouter.get("/students/:id",userAuthChecker, getStudent);
 // get report card (homeroom teacher khone ? kelelew not avilable)
 
 export default teacherRouter;
