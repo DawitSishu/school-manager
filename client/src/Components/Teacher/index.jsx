@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
+const BASE_URI_LESS = "http://localhost:5000/api/teacher/me";
 
 const drawerWidth = 240;
 
@@ -28,8 +29,16 @@ function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Update");
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  let token = localStorage.getItem("token");
+  let role = localStorage.getItem("role");
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -37,37 +46,42 @@ function ResponsiveDrawer(props) {
     setSelectedItem(text);
     setMobileOpen(false);
   };
+  const check = async () => {
+    if (!role || !token) {
+      navigate("/");
+    }
+
+    try {
+      const result = await axios.post(BASE_URI_MAIN, { role }, config);
+      if (result.data != "teacher") {
+        navigate("/");
+      }
+      return;
+    } catch (error) {
+      // alert("Eroor : Try agaain")
+      navigate("/");
+    }
+  };
+  const getUser = async () => {
+    try {
+      const result = await axios.get(BASE_URI_LESS, config);
+      setUser(result.data);
+    } catch (error) {
+      // alert("Eroor : Try agaain");
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const check = async () => {
-      let token = localStorage.getItem("token");
-      let role = localStorage.getItem("role");
-      if (!role || !token) {
-        navigate("/");
-      }
-      let config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      try {
-        const result = await axios.post(BASE_URI_MAIN, { role }, config);
-        if (result.data != "teacher") {
-          navigate("/");
-        }
-        return;
-      } catch (error) {
-        // alert("Eroor : Try agaain")
-        navigate("/");
-      }
-    };
     check();
+    getUser();
   }, []);
 
+  console.log(user)
   const drawer = (
     <div>
       <Toolbar>
-        <Typography>some Teacher</Typography>
+        {user ? <Typography>{user.full_name}</Typography> : null}
       </Toolbar>
       <Divider />
       <List>
