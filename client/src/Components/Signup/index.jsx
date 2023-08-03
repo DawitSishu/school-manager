@@ -46,18 +46,20 @@ function index() {
   const [err, setErr] = useState("");
   const navigate = useNavigate();
 
+  let token = localStorage.getItem("token");
+  let role = localStorage.getItem("role");
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   useEffect(() => {
     const check = async () => {
-      let token = localStorage.getItem("token");
-      let role = localStorage.getItem("role");
       if (!role || !token) {
         navigate("/");
       }
-      let config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+
       try {
         const result = await axios.post(BASE_URI_MAIN, { role }, config);
         if (result.data != "admin") {
@@ -91,8 +93,9 @@ function index() {
           : null;
       let finalData = { ...data, role: selectedValue, birth_date: fialdate };
       try {
-        let result = await axios.post(BASE_URI, finalData);
+        let result = await axios.post(BASE_URI, { ...finalData }, config);
         setSuccess(true);
+        setErr("");
         setWait(false);
       } catch (error) {
         setErr(error.response.data.message);
@@ -110,7 +113,7 @@ function index() {
     if (reason === "clickaway") {
       return;
     }
-    success(false);
+    setSuccess(false);
   };
   return wait ? (
     <div

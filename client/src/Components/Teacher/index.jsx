@@ -34,34 +34,35 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
   const handleItemClick = (text) => {
-    setSelectedItem(text); // Update the selected item
+    setSelectedItem(text);
+    setMobileOpen(false);
   };
 
-  //   useEffect(()=>{
-  //     const check = async () => {
-  //       let token = localStorage.getItem("token");
-  //       let role = localStorage.getItem("role");
-  //       if (!role || !token){
-  //         navigate("/");
-  //       }
-  //       let config = {
-  //         headers: {
-  //           'Authorization': `Bearer ${token}`
-  //         }
-  //       }
-  //       try {
-  //         const result = await axios.post(BASE_URI_MAIN,{role,},config);
-  //         if (result.data != 'teacher'){
-  //           navigate('/')
-  //         }
-  //         return;
-  //       } catch (error) {
-  //         // alert("Eroor : Try agaain")
-  //         navigate("/");
-  //       }
-  //     }
-  //     check();
-  // },[])
+  useEffect(() => {
+    const check = async () => {
+      let token = localStorage.getItem("token");
+      let role = localStorage.getItem("role");
+      if (!role || !token) {
+        navigate("/");
+      }
+      let config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        const result = await axios.post(BASE_URI_MAIN, { role }, config);
+        if (result.data != "teacher") {
+          navigate("/");
+        }
+        return;
+      } catch (error) {
+        // alert("Eroor : Try agaain")
+        navigate("/");
+      }
+    };
+    check();
+  }, []);
 
   const drawer = (
     <div>
