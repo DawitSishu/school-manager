@@ -8,7 +8,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -23,9 +23,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { TextField, Autocomplete } from "@mui/material";
 import Spinner from "../Spinner/Spinner"; //to be used
-
-
-
 
 const BASE_URI = "http://localhost:5000/api/users/signup";
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
@@ -49,32 +46,32 @@ function index() {
   const [err, setErr] = useState("");
   const navigate = useNavigate();
 
-  useEffect(()=>{
+  useEffect(() => {
     const check = async () => {
       let token = localStorage.getItem("token");
       let role = localStorage.getItem("role");
-      if (!role || !token){
+      if (!role || !token) {
         navigate("/");
       }
       let config = {
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      }
+          Authorization: `Bearer ${token}`,
+        },
+      };
       try {
-        const result = await axios.post(BASE_URI_MAIN,{role,},config);
-        if (result.data != 'admin'){
-          navigate('/')
+        const result = await axios.post(BASE_URI_MAIN, { role }, config);
+        if (result.data != "admin") {
+          navigate("/");
         }
         return;
       } catch (error) {
-        alert("Eroor : Try agaain")
+        alert("Eroor : Try agaain");
         navigate("/");
       }
-    setWait(false);
-    }
+      setWait(false);
+    };
     check();
-},[])
+  }, []);
   const {
     register,
     handleSubmit,
