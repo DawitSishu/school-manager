@@ -75,7 +75,7 @@ export const createUser = asyncHandler(async (req, res) => {
   const { email, password, role, subjects, full_name, birth_date, gender } =
     req.body;
 
-  if (req.user.role != role) {
+  if (req.user.role != "admin") {
     const error = new Error("Not authorized to access this resource");
     error.statusCode = 400;
     throw error;
