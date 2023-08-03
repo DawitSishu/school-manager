@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import SignUp from './Components/Signup';
 import LogIn from './Components/Login';
 import Student from './Components/Student';
+import Spinner from './Components/Spinner/Spinner';
 
 const darkTheme = createTheme({
   palette: {
@@ -29,6 +30,7 @@ function App() {
     <CssBaseline />
     <BrowserRouter>
     <Routes>
+        <Route path='/' element={<Spinner />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/login' element={<LogIn />} />
         <Route path='/profile' element={<Student />} />
