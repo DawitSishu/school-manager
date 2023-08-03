@@ -76,8 +76,6 @@ function ResponsiveDrawer(props) {
     check();
     getUser();
   }, []);
-
-  console.log(user)
   const drawer = (
     <div>
       <Toolbar>
@@ -85,7 +83,7 @@ function ResponsiveDrawer(props) {
       </Toolbar>
       <Divider />
       <List>
-        {["Update", "My Classes", "Get students", "Input Mark"].map(
+        {["Update", "My Classes", "Input Mark"].map(
           (text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton onClick={() => handleItemClick(text)}>

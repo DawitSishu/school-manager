@@ -57,7 +57,7 @@ export const teacherToClass = asyncHandler(async (req, res) => {
   }
   const classes = teacher_result[0][0].teaching_class;
   if (classes == null) {
-    let classData = JSON.stringify([class_name]);
+    let classData = JSON.stringify([class_name]); //class_id
     const updateTeacher = await pool.query(
       `UPDATE teacher SET teaching_class = ? WHERE teacher_id = ?`,
       [classData, teacher_id]
