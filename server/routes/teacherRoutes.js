@@ -5,9 +5,13 @@ import {
   updateStudentValue,
   getMyClasses,
   getStudent,
+  getMydetails,
 } from "../controllers/teacherController.js";
 
 const teacherRouter = express.Router();
+
+//return the teacher's detail
+teacherRouter.get("/teacher/me", getMydetails);
 
 // my calsses (the classes he teaches)
 teacherRouter.get("/teacher/class", getMyClasses);

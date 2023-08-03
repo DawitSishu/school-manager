@@ -1,6 +1,20 @@
 import asyncHandler from "express-async-handler";
 import { pool } from "../database/index.js";
 
+//@desc returns detail of the teacer
+//@route GET /api/teacher/me
+//@access private
+export const getMydetails = asyncHandler(async (req,res) => {
+  const result = await pool.query(
+    "SELECT * FROM teacher WHERE teacher_id = ?",
+    [req.user.teacher_id]
+  );
+  res.json(result[0][0]);
+});
+
+
+
+
 //@desc returns all the classes of the teacher
 //@route GET /api/teacher/class
 //@access private
