@@ -13,6 +13,7 @@ import {
   CssBaseline,
   Divider,
   Typography,
+  Button,
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
@@ -50,6 +51,7 @@ function ResponsiveDrawer(props) {
   const check = async () => {
     if (!role || !token) {
       navigate("/");
+      return;
     }
 
     try {
@@ -72,6 +74,12 @@ function ResponsiveDrawer(props) {
       console.log(error);
     }
   };
+
+  const handleLogOut = () => {
+    localStorage.clear();
+    navigate("/");
+  }
+
 
   useEffect(() => {
     check();
@@ -113,7 +121,7 @@ function ResponsiveDrawer(props) {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -126,6 +134,9 @@ function ResponsiveDrawer(props) {
           <Typography variant="h6" noWrap component="div">
             Teacher Panel
           </Typography>
+        <Button variant="outlined" sx={{color :"black"}} onClick={handleLogOut}>
+          Log out
+        </Button>
         </Toolbar>
       </AppBar>
       <Box

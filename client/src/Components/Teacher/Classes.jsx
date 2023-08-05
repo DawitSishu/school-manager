@@ -1,7 +1,8 @@
 import { Grid, Typography } from '@mui/material';
-import React from 'react'
+import React, {useState} from 'react'
 
 const Classes = ({teacher}) => {
+  const [selectedClass, setSelectedClass] = useState(null)
   console.log(teacher);
   return (
     <Grid>

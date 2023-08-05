@@ -6,6 +6,7 @@ import LogIn from './Components/Login';
 import Student from './Components/Student';
 import Teacher from './Components/Teacher';
 import Spinner from './Components/Spinner/Spinner';
+import Director from './Components/Director';
 
 const darkTheme = createTheme({
   palette: {
@@ -36,6 +37,7 @@ function App() {
         <Route path='/login' element={<LogIn />} />
         <Route path='/profile' element={<Student />} />
         <Route path='/teacher' element={<Teacher />} />
+        <Route path='/director' element={<Director />} />
     </Routes>
     </BrowserRouter>
     </ThemeProvider>

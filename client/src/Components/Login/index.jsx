@@ -30,8 +30,11 @@ const index = () => {
         localStorage.clear();
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
-        response.data.role = "teacher"
+        console.log(response.data.role);
+        response.data.role == "teacher"
           ? navigate("/teacher")
+          : response.data.role == "admin"
+          ? navigate("/director")
           : navigate("/profile");
       }
       console.log(response);
