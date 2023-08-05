@@ -1,6 +1,17 @@
 import asyncHandler from "express-async-handler";
 import { pool } from "../database/index.js";
 
+//@desc returns details of director
+//@route POST /api/director/me
+//@access private
+export const getMe = asyncHandler(async (req,res) => {
+  const result = await pool.query(
+    "SELECT * FROM teacher WHERE director_id = ?",
+    [req.user.director_id]
+  );
+  res.json(result[0][0]);
+});
+
 //@desc creates a class
 //@route POST /api/classes
 //@access private

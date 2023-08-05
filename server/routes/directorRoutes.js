@@ -6,9 +6,13 @@ import {
   studentToClass,
   getTeachers,
   getOneTeacher,
+  getMe,
 } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
+
+//get my details
+directorRouter.post("/director/me", getMe);
 
 //create a class
 directorRouter.post("/classes", createClass);
