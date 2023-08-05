@@ -1,8 +1,14 @@
+import { Grid, Typography } from '@mui/material';
 import React from 'react'
 
-const Classes = () => {
+const Classes = ({teacher}) => {
+  console.log(teacher);
   return (
-    <div>Classes</div>
+    <Grid>
+      <Grid container>
+        <Typography variant='h5'>The classes you Teach.</Typography>
+      </Grid>
+    </Grid>
   )
 }
 

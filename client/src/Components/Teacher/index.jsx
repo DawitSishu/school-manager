@@ -19,6 +19,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Classes from "./Classes";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/teacher/me";
@@ -83,20 +84,18 @@ function ResponsiveDrawer(props) {
       </Toolbar>
       <Divider />
       <List>
-        {["Update", "My Classes", "Input Mark"].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton onClick={() => handleItemClick(text)}>
-                {" "}
-                {/* Add onClick handler */}
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          )
-        )}
+        {["Update", "My Classes", "Input Mark"].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton onClick={() => handleItemClick(text)}>
+              {" "}
+              {/* Add onClick handler */}
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
     </div>
   );
@@ -175,7 +174,11 @@ function ResponsiveDrawer(props) {
         }}
       >
         <Toolbar />
-        <Typography paragraph>{selectedItem}</Typography>
+        {selectedItem == "My Classes" ? (
+          <Classes teacher = {user} />
+        ) : (
+          <Typography paragraph>{selectedItem}</Typography>
+        )}
       </Box>
     </Box>
   );
