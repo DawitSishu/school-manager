@@ -11,6 +11,7 @@ import { Paper, TextField } from "@mui/material";
 import { Button } from "@mui/base";
 import AssignTeacher from "./AssignTeacher";
 
+
 const BASE_URI = "http://localhost:5000/api/teacher";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -35,6 +36,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const Teachers = () => {
   const [teachers, setTeachers] = useState(null);
   const [open, setOpen] = useState(false);
+  const [id, setId] = useState(null);
   let token = localStorage.getItem("token");
   let config = {
     headers: {
@@ -42,11 +44,13 @@ const Teachers = () => {
     },
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id) => {
+    setId(id);
     setOpen(true);
   };
   const handleClickClose = () => {
     setOpen(false);
+    setId(null);
   };
 
   const getTeachers = async () => {
@@ -76,7 +80,7 @@ const Teachers = () => {
 
   return teachers ? (
     <div>
-      <AssignTeacher open={open} onClose={handleClickClose} />
+      {open ? <AssignTeacher onClose={handleClickClose} id={id} /> : null}
       <TextField
         id="search"
         label="Search"
@@ -122,7 +126,7 @@ const Teachers = () => {
                       borderColor: "green",
                       borderRadius: "4px",
                     }}
-                    onClick={handleClickOpen}
+                    onClick={() => handleClickOpen(row.teacher_id)}
                   >
                     Assign
                   </Button>
