@@ -89,7 +89,7 @@ const Teachers = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {teachers.map((row) => (
+            {filteredTeachers.map((row) => (
               <StyledTableRow key={row.teacher_id}>
                 <StyledTableCell component="th" scope="row">
                   {row.teacher_id}
@@ -98,7 +98,9 @@ const Teachers = () => {
                 <StyledTableCell align="right">{row.email}</StyledTableCell>
                 <StyledTableCell align="right">{row.password}</StyledTableCell>
                 <StyledTableCell align="center">
-                  {row.teaching_class  ? JSON.parse(row.teaching_class).join(", ") : "Not Assigned"}
+                  {row.teaching_class
+                    ? JSON.parse(row.teaching_class).join(", ")
+                    : "Not Assigned"}
                 </StyledTableCell>
                 <StyledTableCell>
                   <Button
