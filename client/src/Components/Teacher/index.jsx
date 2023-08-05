@@ -57,6 +57,7 @@ function ResponsiveDrawer(props) {
     try {
       const result = await axios.post(BASE_URI_MAIN, { role }, config);
       if (result.data != "teacher") {
+        localStorage.clear();
         navigate("/");
       }
       return;
