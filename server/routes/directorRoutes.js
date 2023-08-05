@@ -12,7 +12,7 @@ import {
 const directorRouter = express.Router();
 
 //get my details
-directorRouter.post("/director/me", getMe);
+directorRouter.get("/director/me", userAuthChecker, getMe);
 
 //create a class
 directorRouter.post("/classes", createClass);

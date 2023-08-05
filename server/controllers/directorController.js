@@ -6,7 +6,7 @@ import { pool } from "../database/index.js";
 //@access private
 export const getMe = asyncHandler(async (req,res) => {
   const result = await pool.query(
-    "SELECT * FROM teacher WHERE director_id = ?",
+    "SELECT * FROM director WHERE director_id = ?",
     [req.user.director_id]
   );
   res.json(result[0][0]);
