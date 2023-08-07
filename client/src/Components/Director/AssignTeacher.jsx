@@ -48,9 +48,17 @@ export default function ResponsiveDialog({ onClose, id }) {
     register,
     handleSubmit,
     control,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm();
+  const selectedClasses = watch("classes");
   const handleClose = () => {
+    if (!selectedClasses)
+    {
+      alert("No class Selected Aborting!!");
+    }
+    console.log("Selected classes:", selectedClasses);
     onClose();
   };
 
@@ -67,23 +75,22 @@ export default function ResponsiveDialog({ onClose, id }) {
       <DialogContent>
         <DialogContentText>
           <Controller
-            name="subjects"
+            name="classes"
             control={control}
-            rules={{ required: "Please select at least one subject" }} 
+            rules={{ required: "Please select a subject" }}
             render={({ field }) => (
               <Autocomplete
                 {...field}
-                multiple
-                value={field.value || []} 
+                value={field.value || null}
                 options={Classes}
                 getOptionLabel={(option) => option}
-                onChange={(event, value) => field.onChange(value)} 
+                onChange={(event, value) => field.onChange(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     variant="outlined"
-                    label="Select Subjects"
-                    placeholder="Select Subjects"
+                    label="Select class"
+                    placeholder="Select class"
                   />
                 )}
                 renderOption={(props, option, { selected }) => (
@@ -99,9 +106,9 @@ export default function ResponsiveDialog({ onClose, id }) {
               />
             )}
           />
-          {errors.class && (
+          {errors.classes && (
             <Typography variant="h7" color="red">
-              {errors.class.message}
+              {errors.classes.message}
             </Typography>
           )}
         </DialogContentText>
