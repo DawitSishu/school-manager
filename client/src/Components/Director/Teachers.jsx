@@ -11,9 +11,9 @@ import { Paper, TextField } from "@mui/material";
 import { Button } from "@mui/base";
 import AssignTeacher from "./AssignTeacher";
 
-
 const BASE_URI = "http://localhost:5000/api/teacher";
 const ASSIGN_TEACHER_URI = "http://localhost:5000/api/classes/teacher";
+const RESET_URI = "http://localhost:5000/api/teacher/reset";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,6 +45,15 @@ const Teachers = () => {
     },
   };
 
+  const resetPassword = async (id) => {
+    try {
+      const result = await axios.post(RESET_URI, { id }, config);
+      alert(result.data.msg);
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  };
+
   const handleClickOpen = (teacher) => {
     setId(teacher);
     setOpen(true);
@@ -52,7 +61,7 @@ const Teachers = () => {
   const handleClickClose = async (data) => {
     console.log(data);
     try {
-      const result = await axios.post(ASSIGN_TEACHER_URI,{...data}, config);
+      const result = await axios.post(ASSIGN_TEACHER_URI, { ...data }, config);
       alert(result.data.msg);
     } catch (error) {
       alert(error.response.data.message);
@@ -148,8 +157,9 @@ const Teachers = () => {
                       borderColor: "yellow",
                       borderRadius: "4px",
                     }}
+                    onClick={() => resetPassword(row.teacher_id)}
                   >
-                    update
+                    reset
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
