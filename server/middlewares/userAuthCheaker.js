@@ -10,7 +10,6 @@ export default function userAuthChecker  (req, res, next)  {
       req.user = decodedData;
       next();
     } catch (error) {
-      console.log(error);
       const err = new Error('Not authorized to access this resource');
         err.statusCode = 401;
       throw err;

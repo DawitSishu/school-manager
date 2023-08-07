@@ -7,6 +7,7 @@ import {
   getTeachers,
   getOneTeacher,
   getMe,
+  resetTeacher,
 } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
@@ -28,7 +29,8 @@ directorRouter.get("/teacher", userAuthChecker, getTeachers);
 // return detail of specific teacher
 directorRouter.get("/teacher/:id", userAuthChecker, getOneTeacher);
 
-// admin panel ?
+//reset teacher password
+directorRouter.post("/teacher/reset", userAuthChecker, resetTeacher);
 
 // teacher performance
 

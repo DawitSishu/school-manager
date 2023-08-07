@@ -133,7 +133,6 @@ export const createUser = asyncHandler(async (req, res) => {
 //@access private
 export const checkUser = asyncHandler(async (req, res) => {
   const { role } = req.body;
-  console.log(role);
   if (!role || !req.user.role === role) {
     const error = new Error("Not authorized to access this resource");
     error.statusCode = 400;

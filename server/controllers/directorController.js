@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { pool } from "../database/index.js";
+import bcrypt from "bcrypt";
 
 //@desc returns details of director
 //@route POST /api/director/me
@@ -159,4 +160,36 @@ export const getOneTeacher = asyncHandler(async (req, res) => {
     [req.params.id]
   );
   res.json(result[0][0]);
+});
+
+//@desc resets teacher password to 1234
+//@route POST /api/teacher/reset
+//@access private
+export const resetTeacher = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+  if (req.user.role != "admin") {
+    const err = new Error("Not authorized to access this resource");
+    err.statusCode = 401;
+    throw err;
+  }
+  const result = await pool.query(
+    "SELECT * FROM teacher WHERE teacher_id = ?",
+    [id]
+  );
+  if (result.length === 0) {
+    const err = new Error("Teacher not found");
+    err.statusCode = 404;
+    throw err;
+  }
+  const teacher = result[0];
+  const hashedPassword = await bcrypt.hash("1234", 10);
+
+  await pool.query("UPDATE teacher SET password = ? WHERE teacher_id = ?", [
+    hashedPassword,
+    teacher.teacher_id,
+  ]);
+
+  res
+    .status(200)
+    .json({ success: true, msg: "Teacher password reset successfully" });
 });

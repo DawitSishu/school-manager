@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import { pool } from "../database/index.js";
+import bcrypt from "bcrypt";
 
 //@desc returns detail of the teacer
 //@route GET /api/teacher/me
@@ -98,6 +99,20 @@ export const updateStudentValue = asyncHandler(async (req, res) => {
 //@route GET /api/student/:id
 //@access private
 export const getStudent = asyncHandler(async (req, res) => {
+  //the id is his' so is got from the req.user don't forget
+  const { id } = req.params;
+  const result = await pool.query(
+    `SELECT * from students WHERE student_id = ?`,
+    [id]
+  );
+  res.json(result[0][0]);
+});
+
+
+//@desc updates the password for teacher
+//@route PUT /api/teacher/update
+//@access private
+export const updatePass = asyncHandler(async (req, res) => {
   //the id is his' so is got from the req.user don't forget
   const { id } = req.params;
   const result = await pool.query(
