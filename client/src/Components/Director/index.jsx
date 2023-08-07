@@ -21,6 +21,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Teachers from "./Teachers";
+import Students from "./Students";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/director/me";
@@ -28,7 +29,7 @@ const BASE_URI_LESS = "http://localhost:5000/api/director/me";
 const drawerWidth = 240;
 
 const index = (props) => {
-    const { window } = props;
+  const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Update");
   const [user, setUser] = useState(null);
@@ -79,8 +80,7 @@ const index = (props) => {
   const handleLogOut = () => {
     localStorage.clear();
     navigate("/");
-  }
-
+  };
 
   useEffect(() => {
     check();
@@ -93,7 +93,7 @@ const index = (props) => {
       </Toolbar>
       <Divider />
       <List>
-        {["Update","Teachers", "Students"].map((text, index) => (
+        {["Update", "Teachers", "Students"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleItemClick(text)}>
               {" "}
@@ -122,7 +122,7 @@ const index = (props) => {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -135,9 +135,13 @@ const index = (props) => {
           <Typography variant="h6" noWrap component="div">
             Admin Panel
           </Typography>
-        <Button variant="outlined" sx={{color :"black"}} onClick={handleLogOut}>
-          Log out
-        </Button>
+          <Button
+            variant="outlined"
+            sx={{ color: "black" }}
+            onClick={handleLogOut}
+          >
+            Log out
+          </Button>
         </Toolbar>
       </AppBar>
       <Box
@@ -186,12 +190,16 @@ const index = (props) => {
         }}
       >
         <Toolbar />
-        {
-          selectedItem == "Teachers" ? <Teachers /> : <Typography paragraph>{selectedItem}</Typography>
-        }
+        {selectedItem == "Teachers" ? (
+          <Teachers />
+        ) : selectedItem == "Students" ? (
+          <Students />
+        ) : (
+          <Typography paragraph>{selectedItem}</Typography>
+        )}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default index
+export default index;
