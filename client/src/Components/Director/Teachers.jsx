@@ -13,6 +13,7 @@ import AssignTeacher from "./AssignTeacher";
 
 
 const BASE_URI = "http://localhost:5000/api/teacher";
+const ASSIGN_TEACHER_URI = "http://localhost:5000/api/classes/teacher";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,11 +45,18 @@ const Teachers = () => {
     },
   };
 
-  const handleClickOpen = (id) => {
-    setId(id);
+  const handleClickOpen = (teacher) => {
+    setId(teacher);
     setOpen(true);
   };
-  const handleClickClose = () => {
+  const handleClickClose = async (data) => {
+    console.log(data);
+    try {
+      const result = await axios.post(ASSIGN_TEACHER_URI,{...data}, config);
+      alert(result.data.msg);
+    } catch (error) {
+      alert(error.response.data.message);
+    }
     setOpen(false);
     setId(null);
   };
@@ -80,7 +88,7 @@ const Teachers = () => {
 
   return teachers ? (
     <div>
-      {open ? <AssignTeacher onClose={handleClickClose} id={id} /> : null}
+      {open ? <AssignTeacher onClose={handleClickClose} data={id} /> : null}
       <TextField
         id="search"
         label="Search"
@@ -126,7 +134,7 @@ const Teachers = () => {
                       borderColor: "green",
                       borderRadius: "4px",
                     }}
-                    onClick={() => handleClickOpen(row.teacher_id)}
+                    onClick={() => handleClickOpen(row)}
                   >
                     Assign
                   </Button>

@@ -5,7 +5,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import { Button, Typography, Box, MenuItem } from "@mui/material";
+import { Button, Box, MenuItem } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { TextField, Autocomplete } from "@mui/material";
 
@@ -40,26 +40,27 @@ const Classes = [
   "12-SS",
 ];
 
-export default function ResponsiveDialog({ onClose, id }) {
+export default function ResponsiveDialog({ onClose, data }) {
   const theme = useTheme();
-  console.log(Classes);
+  const Subject = JSON.parse(data.subject);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const {
-    register,
-    handleSubmit,
     control,
     watch,
-    setValue,
     formState: { errors },
   } = useForm();
   const selectedClasses = watch("classes");
+  const selectedSubject = watch("subject");
   const handleClose = () => {
-    if (!selectedClasses)
-    {
+    if (!selectedClasses) {
       alert("No class Selected Aborting!!");
+      return;
     }
-    console.log("Selected classes:", selectedClasses);
-    onClose();
+    onClose({
+      teacher_id: data.teacher_id,
+      class_name: selectedClasses,
+      subject: selectedSubject,
+    });
   };
 
   return (
@@ -70,51 +71,78 @@ export default function ResponsiveDialog({ onClose, id }) {
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle id="responsive-dialog-title">
-        {`choose A class to assign Teacher with id:${id} `}
+        {`Choose a class and subject for:  ${data.full_name}`}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          <Controller
-            name="classes"
-            control={control}
-            rules={{ required: "Please select a subject" }}
-            render={({ field }) => (
-              <Autocomplete
-                {...field}
-                value={field.value || null}
-                options={Classes}
-                getOptionLabel={(option) => option}
-                onChange={(event, value) => field.onChange(value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    variant="outlined"
-                    label="Select class"
-                    placeholder="Select class"
-                  />
-                )}
-                renderOption={(props, option, { selected }) => (
-                  <MenuItem {...props} key={option} value={option}>
-                    {option}
-                    {selected ? (
-                      <Box component="span" color="info.main">
-                        &#10003;
-                      </Box>
-                    ) : null}
-                  </MenuItem>
-                )}
-              />
-            )}
-          />
-          {errors.classes && (
-            <Typography variant="h7" color="red">
-              {errors.classes.message}
-            </Typography>
+        <Controller
+          name="classes"
+          control={control}
+          rules={{ required: "Please select a subject" }}
+          render={({ field }) => (
+            <Autocomplete
+              {...field}
+              value={field.value || null}
+              options={Classes}
+              getOptionLabel={(option) => option}
+              onChange={(event, value) => field.onChange(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Select class"
+                  placeholder="Select class"
+                />
+              )}
+              renderOption={(props, option, { selected }) => (
+                <MenuItem {...props} key={option} value={option}>
+                  {option}
+                  {selected ? (
+                    <Box component="span" color="info.main">
+                      &#10003;
+                    </Box>
+                  ) : null}
+                </MenuItem>
+              )}
+            />
           )}
-        </DialogContentText>
+        />
+        <br />
+        <br />
+        <Controller
+          name="subject"
+          control={control}
+          rules={{ required: "Please select a subject" }}
+          render={({ field }) => (
+            <Autocomplete
+              {...field}
+              value={field.value || null}
+              options={Subject}
+              getOptionLabel={(option) => option}
+              onChange={(event, value) => field.onChange(value)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Select subjects"
+                  placeholder="Select subjects"
+                />
+              )}
+              renderOption={(props, option, { selected }) => (
+                <MenuItem {...props} key={option} value={option}>
+                  {option}
+                  {selected ? (
+                    <Box component="span" color="info.main">
+                      &#10003;
+                    </Box>
+                  ) : null}
+                </MenuItem>
+              )}
+            />
+          )}
+        />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose} variant="contained">
+        <Button onClick={handleClose} variant="contained" autoFocus>
           Assign
         </Button>
       </DialogActions>
