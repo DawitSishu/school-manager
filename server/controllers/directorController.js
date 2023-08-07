@@ -4,7 +4,7 @@ import { pool } from "../database/index.js";
 //@desc returns details of director
 //@route POST /api/director/me
 //@access private
-export const getMe = asyncHandler(async (req,res) => {
+export const getMe = asyncHandler(async (req, res) => {
   const result = await pool.query(
     "SELECT * FROM director WHERE director_id = ?",
     [req.user.director_id]
@@ -27,7 +27,7 @@ export const createClass = asyncHandler(async (req, res) => {
 //@route POST /api/classes/teacher
 //@access private
 export const teacherToClass = asyncHandler(async (req, res) => {
-  const { teacher_id, class_name } = req.body;
+  const { teacher_id, class_name, subject } = req.body;
   const class_result = await pool.query(
     `SELECT * FROM class WHERE class_name = (?)`,
     [class_name]
@@ -50,7 +50,7 @@ export const teacherToClass = asyncHandler(async (req, res) => {
   const teachers = class_result[0][0].teachers;
   if (teachers == null) {
     // the subject must be got from the teacher_id
-    let teacherData = JSON.stringify({ math: teacher_id });
+    let teacherData = JSON.stringify({ [subject]: teacher_id });
     const class_final = await pool.query(
       `UPDATE class SET teachers = ? WHERE class_name = ?`,
       [teacherData, class_name]
@@ -59,7 +59,7 @@ export const teacherToClass = asyncHandler(async (req, res) => {
     // the subject must be got from the teacher_id
     let teacherData = JSON.stringify({
       ...JSON.parse(teachers),
-      bio: teacher_id,
+      [subject]: teacher_id,
     });
     const class_final = await pool.query(
       `UPDATE class SET teachers = ? WHERE class_name = ?`,
@@ -74,7 +74,11 @@ export const teacherToClass = asyncHandler(async (req, res) => {
       [classData, teacher_id]
     );
   } else {
-    let classData = JSON.stringify([...JSON.parse(classes), "bh"]);
+    let parsedClasses = JSON.parse(classes);
+    if (!parsedClasses.includes(class_name)) {
+      parsedClasses.push(class_name);
+    }
+    const classData = JSON.stringify(parsedClasses);
     const updateTeacher = await pool.query(
       `UPDATE teacher SET teaching_class = ? WHERE  teacher_id = ?`,
       [classData, teacher_id]

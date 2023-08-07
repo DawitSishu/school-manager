@@ -15,18 +15,18 @@ const directorRouter = express.Router();
 directorRouter.get("/director/me", userAuthChecker, getMe);
 
 //create a class
-directorRouter.post("/classes", createClass);
+directorRouter.post("/classes", userAuthChecker, createClass);
 //assign teacher to class
-directorRouter.post("/classes/teacher", teacherToClass);
+directorRouter.post("/classes/teacher", userAuthChecker, teacherToClass);
 
 // asiign students to class
-directorRouter.post("/classes/student", studentToClass);
+directorRouter.post("/classes/student", userAuthChecker, studentToClass);
 
 // return all teachers
-directorRouter.get("/teacher", getTeachers);
+directorRouter.get("/teacher", userAuthChecker, getTeachers);
 
 // return detail of specific teacher
-directorRouter.get("/teacher/:id", getOneTeacher);
+directorRouter.get("/teacher/:id", userAuthChecker, getOneTeacher);
 
 // admin panel ?
 
