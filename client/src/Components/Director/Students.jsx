@@ -9,10 +9,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Paper, TextField } from "@mui/material";
 import { Button } from "@mui/base";
-import AssignTeacher from "./AssignTeacher";
+import StudentDetails from "./StudentDetails";
 
 const BASE_URI = "http://localhost:5000/api/students";
-const ASSIGN_TEACHER_URI = "http://localhost:5000/api/classes/teacher";
+const STUDENT_DETAIL = "http://localhost:5000/api/students/";
 const RESET_URI = "http://localhost:5000/api/student/reset";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -53,21 +53,16 @@ const Students = () => {
       alert(error.response.data.message);
     }
   };
-
-  const handleClickOpen = (student) => {
-    setId(student);
-    setOpen(true);
-  };
-  const handleClickClose = async (data) => {
-    console.log(data);
+  const getStudentDetail = async (id) => {
     try {
-      const result = await axios.post(ASSIGN_TEACHER_URI, { ...data }, config);
-      alert(result.data.msg);
+      const result = await axios.get(`${STUDENT_DETAIL}${id}`, config);
+      setId(result.data);
+      setOpen(true);
+      // alert(result.data.msg);
     } catch (error) {
+      // console.log(error);
       alert(error.response.data.message);
     }
-    setOpen(false);
-    setId(null);
   };
 
   const getStudents = async () => {
@@ -97,7 +92,7 @@ const Students = () => {
 
   return students ? (
     <div>
-      {open ? <AssignTeacher onClose={handleClickClose} data={id} /> : null}
+      {open ? <StudentDetails onClose={()=> setOpen(false)} student={id} /> : null}
       <TextField
         id="search"
         label="Search"
@@ -114,7 +109,6 @@ const Students = () => {
               <StyledTableCell align="center">Full Name</StyledTableCell>
               <StyledTableCell align="center">Email</StyledTableCell>
               <StyledTableCell align="center">Password</StyledTableCell>
-              <StyledTableCell align="center">Birth Date</StyledTableCell>
               <StyledTableCell align="center"></StyledTableCell>
               <StyledTableCell align="center"></StyledTableCell>
             </TableRow>
@@ -128,9 +122,6 @@ const Students = () => {
                 <StyledTableCell align="right">{row.full_name}</StyledTableCell>
                 <StyledTableCell align="right">{row.email}</StyledTableCell>
                 <StyledTableCell align="right">{row.password}</StyledTableCell>
-                <StyledTableCell align="center">
-                  {row.date_of_birth}
-                </StyledTableCell>
                 <StyledTableCell>
                   <Button
                     className="assignButton"
@@ -142,7 +133,7 @@ const Students = () => {
                       borderRadius: "4px",
                       cursor:"pointer"
                     }}
-                    // onClick={() => handleClickOpen(row)}
+                    onClick={() => getStudentDetail(row.student_id)}
                   >
                     details
                   </Button>
