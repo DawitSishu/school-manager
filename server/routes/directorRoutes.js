@@ -8,6 +8,8 @@ import {
   getOneTeacher,
   getMe,
   resetTeacher,
+  getSudents,
+  resetStudent,
 } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
@@ -26,11 +28,17 @@ directorRouter.post("/classes/student", userAuthChecker, studentToClass);
 // return all teachers
 directorRouter.get("/teacher", userAuthChecker, getTeachers);
 
+//return all students
+directorRouter.get("/students", userAuthChecker, getSudents);
+
 // return detail of specific teacher
 directorRouter.get("/teacher/:id", userAuthChecker, getOneTeacher);
 
 //reset teacher password
 directorRouter.post("/teacher/reset", userAuthChecker, resetTeacher);
+
+//reset student password
+directorRouter.post("/student/reset", userAuthChecker, resetStudent);
 
 // teacher performance
 

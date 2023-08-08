@@ -88,7 +88,7 @@ export const teacherToClass = asyncHandler(async (req, res) => {
   res.json({ msg: "class and teacher have been updated successfully!" });
 });
 
-//@desc assigns student to a class with subject
+//@desc assigns student to a class 
 //@route POST /api/classes/student
 //@access private
 export const studentToClass = asyncHandler(async (req, res) => {
@@ -151,6 +151,14 @@ export const getTeachers = asyncHandler(async (req, res) => {
   res.json(result[0]);
 });
 
+//@desc returns all students
+//@route GET /api/students
+//@access private
+export const getSudents = asyncHandler(async (req, res) => {
+  const result = await pool.query("SELECT * FROM students");
+  res.json(result[0]);
+});
+
 //@desc returns one teacher details
 //@route GET /api/teacher/:id
 //@access private
@@ -192,4 +200,36 @@ export const resetTeacher = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json({ success: true, msg: "Teacher password reset successfully" });
+});
+
+//@desc resets student password to 1234
+//@route POST /api/student/reset
+//@access private
+export const resetStudent = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+  if (req.user.role != "admin") {
+    const err = new Error("Not authorized to access this resource");
+    err.statusCode = 401;
+    throw err;
+  }
+  const result = await pool.query(
+    "SELECT * FROM students WHERE student_id = ?",
+    [id]
+  );
+  if (result.length === 0) {
+    const err = new Error("Student not found");
+    err.statusCode = 404;
+    throw err;
+  }
+  const student = result[0];
+  const hashedPassword = await bcrypt.hash("1234", 10);
+
+  await pool.query("UPDATE student SET password = ? WHERE student_id = ?", [
+    hashedPassword,
+    student.student_id,
+  ]);
+
+  res
+    .status(200)
+    .json({ success: true, msg: "Student password reset successfully" });
 });
