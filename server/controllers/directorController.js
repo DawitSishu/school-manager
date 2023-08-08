@@ -224,7 +224,7 @@ export const resetStudent = asyncHandler(async (req, res) => {
   const student = result[0];
   const hashedPassword = await bcrypt.hash("1234", 10);
 
-  await pool.query("UPDATE student SET password = ? WHERE student_id = ?", [
+  await pool.query("UPDATE students SET password = ? WHERE student_id = ?", [
     hashedPassword,
     student.student_id,
   ]);
