@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Teachers from "./Teachers";
 import Students from "./Students";
+import Classes from "./Classes";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/director/me";
@@ -31,7 +32,7 @@ const drawerWidth = 240;
 const index = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState("Update");
+  const [selectedItem, setSelectedItem] = useState("Classes");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -93,7 +94,7 @@ const index = (props) => {
       </Toolbar>
       <Divider />
       <List>
-        {["Update", "Teachers", "Students"].map((text, index) => (
+        {["Classes", "Teachers", "Students"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleItemClick(text)}>
               {" "}
@@ -194,6 +195,8 @@ const index = (props) => {
           <Teachers />
         ) : selectedItem == "Students" ? (
           <Students />
+        ) : selectedItem == "Classes" ? (
+          <Classes />
         ) : (
           <Typography paragraph>{selectedItem}</Typography>
         )}
