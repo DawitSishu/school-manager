@@ -1,12 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Button } from "@mui/material";
+import axios from "axios";
+
+// /api/classes/:id
+const URI = "http://localhost:5000/api/classes/";
 
 const ClassDetails = ({ classes, onClose }) => {
+  const [students, setStudents] = useState(null);
+
+  let token = localStorage.getItem("token");
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const getStudentList = async () => {
+    try {
+      const result = await axios.get(`${URI}/${classes.class_id}`, config);
+      //   console.log(result.data);
+      setStudents(result.data);
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  };
+  useEffect(() => {
+    getStudentList();
+  }, []);
+
   return (
     <Dialog open={true} onClose={onClose}>
       <DialogTitle>Class Details</DialogTitle>
@@ -15,7 +41,8 @@ const ClassDetails = ({ classes, onClose }) => {
           <strong>Class Name:</strong> {classes.class_name}
         </DialogContentText>
         <DialogContentText>
-          <strong>Home Room Teacher:</strong> {classes.homeroom_teacher ? classes.homeroom_teacher : "NOT ASSIGNED"}
+          <strong>Home Room Teacher:</strong>{" "}
+          {classes.homeroom_teacher ? classes.homeroom_teacher : "NOT ASSIGNED"}
         </DialogContentText>
         {classes.teachers ? (
           <>
@@ -26,11 +53,11 @@ const ClassDetails = ({ classes, onClose }) => {
             ))}
           </>
         ) : null}
-        {classes.students ? (
+        {students ? (
           <>
-            {Object.entries(classes.students).map(([key, value]) => (
+            {students.map((student, key) => (
               <DialogContentText key={key}>
-                <strong>{key}:</strong> {value}
+                <strong>{student.student_id}:</strong> {student.full_name}
               </DialogContentText>
             ))}
           </>
