@@ -6,6 +6,7 @@ const BASE_URI = "http://localhost:5000/api/teacher/class";
 
 const Classes = ({ teacher }) => {
   const [selectedClass, setSelectedClass] = useState(null);
+  const [students, setStudents] = useState(null);
   console.log(selectedClass);
 
   let token = localStorage.getItem("token");
@@ -13,6 +14,18 @@ const Classes = ({ teacher }) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  };
+
+  const getStudents = async () => {
+    try {
+      const result = await axios.get(
+        "http://localhost:5000/api/class/students/5",
+        config
+      );
+      console.log(result.data);
+    } catch (error) {
+      alert(error.response.dara.message);
+    }
   };
 
   const getClassData = async () => {
@@ -45,7 +58,9 @@ const Classes = ({ teacher }) => {
       </Grid>
       {selectedClass ? (
         <Grid container justifyContent="center">
-          <Button variant="contained">Display Students</Button>
+          <Button variant="contained" onClick={getStudents}>
+            Display Students
+          </Button>
         </Grid>
       ) : null}
     </Grid>
