@@ -38,7 +38,7 @@ const subj = [
   "Amharic",
   "Technical Drawing",
 ];
-function index() {
+function CreateUser() {
   const [showPassword, setShowPassword] = useState(false);
   const [selectedValue, setSelectedValue] = useState("student");
   const [wait, setWait] = useState(false);
@@ -47,33 +47,11 @@ function index() {
   const navigate = useNavigate();
 
   let token = localStorage.getItem("token");
-  let role = localStorage.getItem("role");
   let config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-
-  useEffect(() => {
-    const check = async () => {
-      if (!role || !token) {
-        navigate("/");
-      }
-
-      try {
-        const result = await axios.post(BASE_URI_MAIN, { role }, config);
-        if (result.data != "admin") {
-          navigate("/");
-        }
-        return;
-      } catch (error) {
-        alert("Eroor : Try agaain");
-        navigate("/");
-      }
-      setWait(false);
-    };
-    check();
-  }, []);
   const {
     register,
     handleSubmit,
@@ -127,9 +105,6 @@ function index() {
     </div>
   ) : (
     <Box
-      sx={{
-        padding: 10,
-      }}
       component="form"
       onSubmit={handleSubmit(onSubmit)}
     >
@@ -343,4 +318,4 @@ function index() {
   );
 }
 
-export default index;
+export default CreateUser;

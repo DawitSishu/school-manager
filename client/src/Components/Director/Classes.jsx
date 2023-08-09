@@ -12,8 +12,6 @@ import { Button } from "@mui/base";
 import ClassDetails from "./ClassDetails";
 
 const BASE_URI = "http://localhost:5000/api/classes";
-const STUDENT_DETAIL = "http://localhost:5000/api/students/";
-const RESET_URI = "http://localhost:5000/api/student/reset";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -73,7 +71,6 @@ const Classes = () => {
   const getClasses = async () => {
     try {
       const result = await axios.get(BASE_URI, config);
-      console.log(result)
       setClasses(result.data);
     } catch (error) {
       alert(error.message);

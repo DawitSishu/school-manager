@@ -1,7 +1,6 @@
 import './App.css'
 import { createTheme, ThemeProvider, CssBaseline } from "@mui/material";
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import SignUp from './Components/Signup';
 import LogIn from './Components/Login';
 import Student from './Components/Student';
 import Teacher from './Components/Teacher';
@@ -33,7 +32,6 @@ function App() {
     <BrowserRouter>
     <Routes>
         <Route path='/' element={<Spinner />} />
-        <Route path='/signup' element={<SignUp />} />
         <Route path='/login' element={<LogIn />} />
         <Route path='/profile' element={<Student />} />
         <Route path='/teacher' element={<Teacher />} />

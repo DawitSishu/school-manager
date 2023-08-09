@@ -15,6 +15,10 @@ import {
   Typography,
   Button,
 } from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SchoolIcon from "@mui/icons-material/School";
+import PeopleIcon from "@mui/icons-material/People";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -23,11 +27,19 @@ import axios from "axios";
 import Teachers from "./Teachers";
 import Students from "./Students";
 import Classes from "./Classes";
+import CreateUser from "./CreateUser";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/director/me";
 
 const drawerWidth = 240;
+
+const iconMap = {
+  Classes: <SchoolIcon />,
+  Teachers: <AccountCircleIcon />,
+  Students: <PeopleIcon />,
+  "Create User": <PersonAddIcon />,
+};
 
 const index = (props) => {
   const { window } = props;
@@ -94,19 +106,15 @@ const index = (props) => {
       </Toolbar>
       <Divider />
       <List>
-        {["Classes", "Teachers", "Students"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => handleItemClick(text)}>
-              {" "}
-              {/* Add onClick handler */}
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+      {["Classes", "Teachers", "Students", "Create User"].map((text) => (
+        <ListItem key={text} disablePadding>
+          <ListItemButton onClick={() => handleItemClick(text)}>
+            <ListItemIcon>{iconMap[text]}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItemButton>
+        </ListItem>
+      ))}
+    </List>
     </div>
   );
 
@@ -197,6 +205,8 @@ const index = (props) => {
           <Students />
         ) : selectedItem == "Classes" ? (
           <Classes />
+        ) : selectedItem == "Create User" ? (
+          <CreateUser />
         ) : (
           <Typography paragraph>{selectedItem}</Typography>
         )}
