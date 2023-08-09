@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Paper, TextField } from "@mui/material";
 import { Button } from "@mui/base";
+import ClassDetails from "./ClassDetails";
 
 const BASE_URI = "http://localhost:5000/api/classes";
 const STUDENT_DETAIL = "http://localhost:5000/api/students/";
@@ -46,17 +47,29 @@ const Classes = () => {
   };
 
   const getClassDetail = async (id) => {
-    try {
-      const result = await axios.get(`${STUDENT_DETAIL}${id}`, config);
-      setId(result.data);
-      setOpen(true);
-      // alert(result.data.msg);
-    } catch (error) {
-      // console.log(error);
-      alert(error.response.data.message);
+    if (id.teachers){
+        let temp
+        try {
+             temp = JSON.parse(id.teachers);
+          } catch (error) {
+           temp = id.teachers
+          }
+        
+        id.teachers = temp;
     }
+    if (id.students){
+        let temp
+        try {
+             temp = JSON.parse(id.students);
+          } catch (error) {
+           temp = id.students
+          }
+        
+        id.students = temp;
+    }
+      setId(id);
+    setOpen(true);
   };
-
   const getClasses = async () => {
     try {
       const result = await axios.get(BASE_URI, config);
@@ -66,9 +79,10 @@ const Classes = () => {
       alert(error.message);
     }
   };
+  
   useEffect(() => {
     getClasses();
-  });
+  },[]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (event) => {
@@ -85,9 +99,9 @@ const Classes = () => {
 
   return classes ? (
     <div>
-      {/* {open ? (
-        <StudentDetails onClose={() => setOpen(false)} student={id} />
-      ) : null} */}
+      {open ? (
+        <ClassDetails onClose={() => setOpen(false)} classes={id} />
+      ) : null}
       <TextField
         id="search"
         label="Search"
@@ -125,7 +139,7 @@ const Classes = () => {
                       borderRadius: "4px",
                       cursor: "pointer",
                     }}
-                    // onClick={() => getStudentDetail(row.class_id)}
+                    onClick={() => getClassDetail(row)}
                   >
                     details
                   </Button>
