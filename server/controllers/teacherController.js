@@ -99,7 +99,7 @@ export const getStudent = asyncHandler(async (req, res) => {
   //the id is his' so is got from the req.user don't forget
   const { id } = req.params;
   const result = await pool.query(`
-  SELECT s.full_name, s.report_card
+  SELECT s.student_id,s.full_name, s.report_card
   FROM students s
   JOIN class c ON s.class_id = c.class_id
   WHERE c.class_id = 6
