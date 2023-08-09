@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, Select, MenuItem } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -7,7 +7,8 @@ const BASE_URI = "http://localhost:5000/api/teacher/class";
 const Classes = ({ teacher }) => {
   const [selectedClass, setSelectedClass] = useState(null);
   const [students, setStudents] = useState(null);
-  console.log(selectedClass);
+  const [semister, setSemister] = useState("Select Semester");
+  const [keys, setKeys] = useState(null);
 
   let token = localStorage.getItem("token");
   let config = {
@@ -16,15 +17,25 @@ const Classes = ({ teacher }) => {
     },
   };
 
+  const handleChange = (event) => {
+    setSemister(event.target.value);
+  };
+
   const getStudents = async () => {
     try {
       const result = await axios.get(
         "http://localhost:5000/api/class/students/5",
         config
       );
-      console.log(result.data);
+      const tmp = result.data.map(
+        (data) => (data.report_card = JSON.parse(data.report_card))
+      );
+      const val = Object.keys(result.data[0].report_card.semester_1);
+      setStudents(tmp);
+      setKeys(val);
     } catch (error) {
-      alert(error.response.dara.message);
+      console.log(error);
+      alert(error.response.data.message);
     }
   };
 
@@ -63,6 +74,22 @@ const Classes = ({ teacher }) => {
           </Button>
         </Grid>
       ) : null}
+      {students ? (
+        <Select
+          labelId="Semister"
+          id="Semister"
+          value={semister}
+          onChange={handleChange}
+          fullWidth
+        >
+          <MenuItem value="Select Semester">Select Semester</MenuItem>
+          <MenuItem value="semester_1">semester_1</MenuItem>
+          <MenuItem value="semester_2">semester_2</MenuItem>
+          <MenuItem value="semester_3">semester_3</MenuItem>
+          <MenuItem value="semester_4">semester_4</MenuItem>
+        </Select>
+      ) : null}
+      {semister !== "Select Semester" ? <>table</> : null}
     </Grid>
   );
 };
