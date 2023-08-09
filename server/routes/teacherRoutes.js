@@ -13,8 +13,8 @@ const teacherRouter = express.Router();
 //return the teacher's detail
 teacherRouter.get("/teacher/me",userAuthChecker, getMydetails);
 
-// my calsses (the classes he teaches)
-teacherRouter.get("/teacher/class",userAuthChecker, getMyClasses);
+// my calsses (the classes he owns(home-room-teacher)
+teacherRouter.post("/teacher/class",userAuthChecker, getMyClasses);
 
 // students (the students he studeies in class (2a- students))
 teacherRouter.get("/classes/:id", userAuthChecker,getStudents);

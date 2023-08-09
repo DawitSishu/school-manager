@@ -17,13 +17,13 @@ export const getMydetails = asyncHandler(async (req,res) => {
 
 
 //@desc returns all the classes of the teacher
-//@route GET /api/teacher/class
+//@route POST /api/teacher/class
 //@access private
 export const getMyClasses = asyncHandler(async (req, res) => {
   //the id is his' so is got from the req.user don't forget
   const { id } = req.body;
   const result = await pool.query(
-    `SELECT teaching_class from teacher WHERE teacher_id = ?`,
+    `SELECT * from class WHERE homeroom_teacher = ?`,
     [id]
   );
   res.json(result[0][0]);
