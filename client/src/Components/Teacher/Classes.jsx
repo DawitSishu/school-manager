@@ -1,8 +1,36 @@
 import { Button, Grid, Typography, Select, MenuItem } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import { Paper, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const BASE_URI = "http://localhost:5000/api/teacher/class";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 const Classes = ({ teacher }) => {
   const [selectedClass, setSelectedClass] = useState(null);
@@ -19,6 +47,7 @@ const Classes = ({ teacher }) => {
 
   const handleChange = (event) => {
     setSemister(event.target.value);
+    console.log(selectedClass);
   };
 
   const getStudents = async () => {
@@ -67,6 +96,7 @@ const Classes = ({ teacher }) => {
             : "You are not a Home-Room Teacher"}
         </Typography>
       </Grid>
+      <br />
       {selectedClass ? (
         <Grid container justifyContent="center">
           <Button variant="contained" onClick={getStudents}>
@@ -74,6 +104,7 @@ const Classes = ({ teacher }) => {
           </Button>
         </Grid>
       ) : null}
+      <br />
       {students ? (
         <Select
           labelId="Semister"
@@ -89,7 +120,26 @@ const Classes = ({ teacher }) => {
           <MenuItem value="semester_4">semester_4</MenuItem>
         </Select>
       ) : null}
-      {semister !== "Select Semester" ? <>table</> : null}
+      <br />
+      <br />
+      {semister !== "Select Semester" ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">ID</StyledTableCell>
+                <StyledTableCell align="center">Name</StyledTableCell>
+                {keys.map((key, idx) => (
+                  <StyledTableCell align="center" key={idx}>
+                    {key}
+                  </StyledTableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody></TableBody>
+          </Table>
+        </TableContainer>
+      ) : null}
     </Grid>
   );
 };
