@@ -97,7 +97,6 @@ function ResponsiveDrawer(props) {
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleItemClick(text)}>
               {" "}
-              {/* Add onClick handler */}
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
