@@ -21,8 +21,8 @@ teacherRouter.get("/classes/:id", userAuthChecker,getStudents);
 // update the value of the students (test ena final masgebat)
 teacherRouter.put("/students/:id", userAuthChecker,updateStudentValue); // ? if all no id
 
-//get the specific student;
-teacherRouter.get("/students/:id",userAuthChecker, getStudent);
+//get the specific students list from class;
+teacherRouter.get("/class/students/:id",userAuthChecker, getStudent);
 // get report card (homeroom teacher khone ? kelelew not avilable)
 
 export default teacherRouter;

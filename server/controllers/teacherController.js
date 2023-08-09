@@ -5,16 +5,13 @@ import bcrypt from "bcrypt";
 //@desc returns detail of the teacer
 //@route GET /api/teacher/me
 //@access private
-export const getMydetails = asyncHandler(async (req,res) => {
+export const getMydetails = asyncHandler(async (req, res) => {
   const result = await pool.query(
     "SELECT * FROM teacher WHERE teacher_id = ?",
     [req.user.teacher_id]
   );
   res.json(result[0][0]);
 });
-
-
-
 
 //@desc returns all the classes of the teacher
 //@route POST /api/teacher/class
@@ -96,18 +93,19 @@ export const updateStudentValue = asyncHandler(async (req, res) => {
 });
 
 //@desc returns the specific student data
-//@route GET /api/student/:id
+//@route GET /class/students/:id
 //@access private
 export const getStudent = asyncHandler(async (req, res) => {
   //the id is his' so is got from the req.user don't forget
   const { id } = req.params;
-  const result = await pool.query(
-    `SELECT * from students WHERE student_id = ?`,
-    [id]
-  );
-  res.json(result[0][0]);
+  const result = await pool.query(`
+  SELECT s.full_name, s.report_card
+  FROM students s
+  JOIN class c ON s.class_id = c.class_id
+  WHERE c.class_id = 6
+`);
+  res.json(result[0]);
 });
-
 
 //@desc updates the password for teacher
 //@route PUT /api/teacher/update
