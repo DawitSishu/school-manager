@@ -6,7 +6,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Paper, TextField } from "@mui/material";
+import { Paper } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -56,14 +56,16 @@ const Classes = ({ teacher }) => {
         "http://localhost:5000/api/class/students/5",
         config
       );
-      const tmp = result.data.map(
-        (data) => (data.report_card = JSON.parse(data.report_card))
-      );
-      const val = Object.keys(result.data[0].report_card.semester_1);
+      const tmp = result.data.map((data) => ({
+        id: data.student_id,
+        name: data.full_name,
+        report_card: JSON.parse(data.report_card),
+      }));
+      console.log(tmp);
+      const val = Object.keys(tmp[0].report_card.semester_1);
       setStudents(tmp);
       setKeys(val);
     } catch (error) {
-      console.log(error);
       alert(error.response.data.message);
     }
   };
@@ -87,6 +89,7 @@ const Classes = ({ teacher }) => {
   useEffect(() => {
     getClassData();
   }, []);
+
   return (
     <Grid>
       <Grid container justifyContent="center">
@@ -122,7 +125,7 @@ const Classes = ({ teacher }) => {
       ) : null}
       <br />
       <br />
-      {semister !== "Select Semester" ? (
+      {semister !== "Select Semester" && selectedClass ? (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
@@ -136,7 +139,19 @@ const Classes = ({ teacher }) => {
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody></TableBody>
+            <TableBody>
+              {students.map((std, idx) => (
+                <StyledTableRow key={idx}>
+                  <StyledTableCell align="center">{std.id}</StyledTableCell>
+                  <StyledTableCell align="center">{std.name}</StyledTableCell>
+                  {keys.map((elt, idx) => (
+                    <StyledTableCell key={idx} align="center">
+                      {std.report_card[semister][elt]}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+              ))}
+            </TableBody>
           </Table>
         </TableContainer>
       ) : null}
