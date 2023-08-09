@@ -10,6 +10,7 @@ import {
   resetTeacher,
   getSudents,
   resetStudent,
+  getClasses,
 } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
@@ -19,6 +20,7 @@ directorRouter.get("/director/me", userAuthChecker, getMe);
 
 //create a class
 directorRouter.post("/classes", userAuthChecker, createClass);
+
 //assign teacher to class
 directorRouter.post("/classes/teacher", userAuthChecker, teacherToClass);
 
@@ -39,6 +41,9 @@ directorRouter.post("/teacher/reset", userAuthChecker, resetTeacher);
 
 //reset student password
 directorRouter.post("/student/reset", userAuthChecker, resetStudent);
+
+//return all classes
+directorRouter.get("/classes", userAuthChecker, getClasses);
 
 // teacher performance
 

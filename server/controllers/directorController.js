@@ -233,3 +233,12 @@ export const resetStudent = asyncHandler(async (req, res) => {
     .status(200)
     .json({ success: true, msg: "Student password reset successfully" });
 });
+
+
+//@desc returns all classes
+//@route GET /api/classes
+//@access private
+export const getClasses = asyncHandler(async (req, res) => {
+  const result = await pool.query("SELECT * FROM class");
+  res.json(result[0]);
+});
