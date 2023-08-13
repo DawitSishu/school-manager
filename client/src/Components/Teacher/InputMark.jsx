@@ -10,6 +10,8 @@ import { Paper } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+const BASE_URI = "http://localhost:5000/api/class/students";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
@@ -40,9 +42,25 @@ const InputMark = ({ teacher }) => {
       Authorization: `Bearer ${token}`,
     },
   };
+
+  const getStudents = async () => {
+    try {
+      const result = await axios.post(
+        BASE_URI,
+        { class_name: selectedClass },
+        config
+      );
+      console.log(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Grid>
-      <Typography align="center" variant="h5">Select A Class</Typography>
+      <Typography align="center" variant="h5">
+        Select A Class
+      </Typography>
       <Select
         labelId="Select Class"
         id="Select Class"
@@ -59,6 +77,13 @@ const InputMark = ({ teacher }) => {
           );
         })}
       </Select>
+      {selectedClass != "Select Class" ? (
+        <Grid container justifyContent="center" m={2}>
+          <Button variant="contained" onClick={getStudents}>
+            Get Students
+          </Button>
+        </Grid>
+      ) : null}
     </Grid>
   );
 };
