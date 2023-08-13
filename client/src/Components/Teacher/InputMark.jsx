@@ -63,7 +63,7 @@ const InputMark = ({ teacher }) => {
         const teachers = JSON.parse(result.data.teachers.teachers);
         for (const [key, value] of Object.entries(teachers)) {
           if (value == teacher.teacher_id) {
-            setSubject(key)
+            setSubject(key);
             break;
           }
         }
@@ -71,6 +71,10 @@ const InputMark = ({ teacher }) => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleUpdateValue = (a, b) => {
+    console.log(a, b);
   };
 
   return (
@@ -115,6 +119,38 @@ const InputMark = ({ teacher }) => {
           <MenuItem value="semester_3">semester_3</MenuItem>
           <MenuItem value="semester_4">semester_4</MenuItem>
         </Select>
+      ) : null}
+      <br />
+      <br />
+      {semister != "Select Semester" ? (
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 700 }} aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">ID</StyledTableCell>
+                <StyledTableCell align="center">Name</StyledTableCell>
+                <StyledTableCell align="center">
+                  Update {subject}
+                </StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {studentData.map((std, idx) => (
+                <StyledTableRow key={idx}>
+                  <StyledTableCell align="center">{std.id}</StyledTableCell>
+                  <StyledTableCell align="center">{std.name}</StyledTableCell>
+                  <StyledTableCell align="center">
+                    <input
+                      type="number"
+                      value={std.report_card[subject]}
+                      onChange={(e) => handleUpdateValue(idx, e.target.value)}
+                    />
+                  </StyledTableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       ) : null}
     </Grid>
   );
