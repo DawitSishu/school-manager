@@ -195,7 +195,7 @@ function ResponsiveDrawer(props) {
         ) : selectedItem == "Input Mark" ? (
           <InputMark teacher={user} />
         ) : (
-          <Profile />
+          <Profile teacher={user} />
         )}
       </Box>
     </Box>
