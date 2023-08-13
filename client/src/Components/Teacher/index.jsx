@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Classes from "./Classes";
 import InputMark from "./InputMark";
+import Profile from "./Profile";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/teacher/me";
@@ -31,7 +32,7 @@ const drawerWidth = 240;
 function ResponsiveDrawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState("Update");
+  const [selectedItem, setSelectedItem] = useState("Profile");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
@@ -93,7 +94,7 @@ function ResponsiveDrawer(props) {
       </Toolbar>
       <Divider />
       <List>
-        {["Update", "My Classes", "Input Mark"].map((text, index) => (
+        {["Profile", "My Classes", "Input Mark"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleItemClick(text)}>
               {" "}
@@ -192,9 +193,9 @@ function ResponsiveDrawer(props) {
         {selectedItem == "My Classes" ? (
           <Classes teacher={user} />
         ) : selectedItem == "Input Mark" ? (
-          <InputMark teacher={user}/>
+          <InputMark teacher={user} />
         ) : (
-          <Typography paragraph>{selectedItem}</Typography>
+          <Profile />
         )}
       </Box>
     </Box>
