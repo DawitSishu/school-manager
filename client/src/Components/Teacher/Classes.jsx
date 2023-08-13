@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const BASE_URI = "http://localhost:5000/api/teacher/class";
+const CLASS_URI = "http://localhost:5000/api/class/students";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -47,15 +48,11 @@ const Classes = ({ teacher }) => {
 
   const handleChange = (event) => {
     setSemister(event.target.value);
-    console.log(selectedClass);
   };
 
   const getStudents = async () => {
     try {
-      const result = await axios.get(
-        "http://localhost:5000/api/class/students/5",
-        config
-      );
+      const result = await axios.get(`${CLASS_URI}/${selectedClass.class_id}`, config);
       const tmp = result.data.map((data) => ({
         id: data.student_id,
         name: data.full_name,
