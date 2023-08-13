@@ -31,10 +31,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const InputMark = ({ teacher }) => {
-    console.log(teacher);
   const Classes = JSON.parse(teacher.teaching_class);
-  console.log(Classes);
-  const [selectedClass, setSelectedClass] = useState(Classes[0]);
+  const [selectedClass, setSelectedClass] = useState("Select Class");
 
   let token = localStorage.getItem("token");
   let config = {
@@ -42,7 +40,27 @@ const InputMark = ({ teacher }) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  return <div>InputMark jsx {selectedClass}</div>;
+  return (
+    <Grid>
+      <Typography align="center" variant="h5">Select A Class</Typography>
+      <Select
+        labelId="Select Class"
+        id="Select Class"
+        value={selectedClass}
+        onChange={(e) => setSelectedClass(e.target.value)}
+        fullWidth
+      >
+        <MenuItem value="Select Class">Select Class</MenuItem>
+        {Classes.map((classes, idx) => {
+          return (
+            <MenuItem value={classes} key={idx}>
+              {classes}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </Grid>
+  );
 };
 
 export default InputMark;
