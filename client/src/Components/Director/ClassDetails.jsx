@@ -8,7 +8,7 @@ import { Button } from "@mui/material";
 import axios from "axios";
 
 // /api/classes/:id
-const URI = "http://localhost:5000/api/classes/";
+const URI = "http://localhost:5000/api/classes";
 
 const ClassDetails = ({ classes, onClose }) => {
   const [students, setStudents] = useState(null);
