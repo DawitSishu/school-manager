@@ -85,8 +85,8 @@ const index = (props) => {
       const result = await axios.get(BASE_URI_LESS, config);
       setUser(result.data);
     } catch (error) {
-      // alert("Eroor : Try agaain");
-      console.log(error);
+      alert("Eroor : Try agaain");
+      // console.log(error);
     }
   };
 

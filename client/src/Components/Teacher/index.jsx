@@ -15,8 +15,9 @@ import {
   Typography,
   Button,
 } from "@mui/material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import PersonIcon from "@mui/icons-material/Person";
+import ClassIcon from "@mui/icons-material/Class";
+import CreateIcon from "@mui/icons-material/Create";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -28,6 +29,12 @@ const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/teacher/me";
 
 const drawerWidth = 240;
+
+const iconMap = {
+  Profile: <PersonIcon />,
+  "My Classes": <ClassIcon />,
+  "Input Mark": <CreateIcon />,
+};
 
 function ResponsiveDrawer(props) {
   const { window } = props;
@@ -97,10 +104,7 @@ function ResponsiveDrawer(props) {
         {["Profile", "My Classes", "Input Mark"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleItemClick(text)}>
-              {" "}
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+              <ListItemIcon>{iconMap[text]}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItemButton>
           </ListItem>

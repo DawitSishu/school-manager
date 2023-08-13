@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
@@ -43,7 +42,6 @@ const Profile = ({ teacher }) => {
   };
 
   const handleSavePassword = async () => {
-    // Perform the password update logic using the new password
     console.log("New password:", newPassword);
     try {
       const result = await axios.put(
@@ -55,8 +53,6 @@ const Profile = ({ teacher }) => {
     } catch (error) {
       alert("EROOR", error);
     }
-
-    // Close the dialog
     handleClose();
   };
 
