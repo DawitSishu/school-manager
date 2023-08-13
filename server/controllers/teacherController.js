@@ -83,7 +83,7 @@ export const updateStudentValue = asyncHandler(async (req, res) => {
   const { id } = req.params; // should be got from the req.user
   // Query the database to get the students JSON array from the class table
   const [rows] = await pool.query(
-    `UPDATE students SET report_card = ? WHERE  student_id = ?`,
+    `UPDATE students SET report_card = ? WHERE student_id = ?`,
     [data, id]
   );
   // res.json(JSON.parse(rows[0].students));
@@ -92,17 +92,36 @@ export const updateStudentValue = asyncHandler(async (req, res) => {
   console.log(rows);
 });
 
-//@desc returns the specific student data
+//@desc returns  student data
 //@route GET /class/students/:id
 //@access private
 export const getStudent = asyncHandler(async (req, res) => {
-  const { id } = req.params; 
-  const result = await pool.query(`
+  const { id } = req.params;
+  const result = await pool.query(
+    `
   SELECT s.student_id,s.full_name, s.report_card
   FROM students s
   JOIN class c ON s.class_id = c.class_id
   WHERE c.class_id = ?
-`,[id]);
+`,
+    [id]
+  );
+  res.json(result[0]);
+});
+
+//@desc returns  student data
+//@route POST /class/students/
+//@access private
+export const getStudentData = asyncHandler(async (req, res) => {
+  const { class_name } = req.body;
+  const result = await pool.query(
+    `
+  SELECT student_id, full_name, report_card
+FROM students
+WHERE class_id = (SELECT class_id FROM class WHERE class_name = ?);
+`,
+    [class_name]
+  );
   res.json(result[0]);
 });
 
