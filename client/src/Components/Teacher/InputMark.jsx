@@ -35,6 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const InputMark = ({ teacher }) => {
   const Classes = JSON.parse(teacher.teaching_class);
   const [selectedClass, setSelectedClass] = useState("Select Class");
+  const [semister, setSemister] = useState("Select Semester");
   const [studentData, setStudentData] = useState(null);
 
   let token = localStorage.getItem("token");
@@ -92,7 +93,21 @@ const InputMark = ({ teacher }) => {
           </Button>
         </Grid>
       ) : null}
-      {studentData ? <>hi</> : null}
+      {studentData ? (
+        <Select
+          labelId="Semister"
+          id="Semister"
+          value={semister}
+          onChange={(e) => setSemister(e.target.value)}
+          fullWidth
+        >
+          <MenuItem value="Select Semester">Select Semester</MenuItem>
+          <MenuItem value="semester_1">semester_1</MenuItem>
+          <MenuItem value="semester_2">semester_2</MenuItem>
+          <MenuItem value="semester_3">semester_3</MenuItem>
+          <MenuItem value="semester_4">semester_4</MenuItem>
+        </Select>
+      ) : null}
     </Grid>
   );
 };
