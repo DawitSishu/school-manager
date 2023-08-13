@@ -112,7 +112,7 @@ function ResponsiveDrawer(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  return (
+  return user ? (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar
@@ -199,7 +199,7 @@ function ResponsiveDrawer(props) {
         )}
       </Box>
     </Box>
-  );
+  ) : null;
 }
 
 export default ResponsiveDrawer;

@@ -3,7 +3,6 @@ import axios from "axios";
 import { Typography, Card, CardContent, Grid, Button } from "@mui/material";
 
 const Profile = ({ teacher }) => {
-  console.log(teacher);
   return (
     <Card sx={{ margin: "auto", marginTop: 4 }}>
       <CardContent>
