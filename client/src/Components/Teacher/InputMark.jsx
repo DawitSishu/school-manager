@@ -37,6 +37,7 @@ const InputMark = ({ teacher }) => {
   const [selectedClass, setSelectedClass] = useState("Select Class");
   const [semister, setSemister] = useState("Select Semester");
   const [studentData, setStudentData] = useState(null);
+  const [subject, setSubject] = useState(null);
 
   let token = localStorage.getItem("token");
   let config = {
@@ -52,13 +53,20 @@ const InputMark = ({ teacher }) => {
         { class_name: selectedClass },
         config
       );
-      if (result.data.length > 0) {
-        const tmp = result.data.map((data) => ({
+      if (result.data.students.length > 0) {
+        const tmp = result.data.students.map((data) => ({
           id: data.student_id,
           name: data.full_name,
           report_card: JSON.parse(data.report_card),
         }));
         setStudentData(tmp);
+        const teachers = JSON.parse(result.data.teachers.teachers);
+        for (const [key, value] of Object.entries(teachers)) {
+          if (value == teacher.teacher_id) {
+            setSubject(key)
+            break;
+          }
+        }
       }
     } catch (error) {
       console.log(error);
@@ -93,7 +101,7 @@ const InputMark = ({ teacher }) => {
           </Button>
         </Grid>
       ) : null}
-      {studentData ? (
+      {studentData && subject ? (
         <Select
           labelId="Semister"
           id="Semister"
