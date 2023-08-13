@@ -58,38 +58,19 @@ export const getStudents = asyncHandler(async (req, res) => {
   // res.json(result[0]);
 });
 
-//@desc  updates the subjects of a class
-//@route PUT /api/students/:id   ? if all no id
+//@desc  updates the marks of student
+//@route PUT /api/students/marks   
 //@access private
 export const updateStudentValue = asyncHandler(async (req, res) => {
-  //update all at once;
-  // async function updateStudentsTable(data) {
-  //   for (const item of data) {
-  //     const { subj, stud_id } = item;
-  //     try {
-  //       await pool.query('UPDATE students SET subj = ? WHERE student_id = ?', [subj, stud_id]);
-  //       console.log(`Updated student with ID ${stud_id}`);
-  //     } catch (error) {
-  //       console.error(`Error updating student with ID ${stud_id}: ${error.message}`);
-  //     }
-  //   }
-  // }
-
-  //update one at a time
-  // on the front end restrict it to input only one subject;
-  const data = JSON.stringify(req.body); // must be encrypted
-
-  //cheack with req.user and the class here....
-  const { id } = req.params; // should be got from the req.user
-  // Query the database to get the students JSON array from the class table
-  const [rows] = await pool.query(
-    `UPDATE students SET report_card = ? WHERE student_id = ?`,
-    [data, id]
-  );
-  // res.json(JSON.parse(rows[0].students));
-  // Respond with the updated student record as the response
-  // res.json(student);
-  console.log(rows);
+  const datas = req.body;
+  for (let data of datas) {
+    let report = JSON.stringify(data.report_card);
+    const [rows] = await pool.query(
+      `UPDATE students SET report_card = ? WHERE student_id = ?`,
+      [report, data.id]
+    );
+  }
+  res.json({msg : "All marks saved successfully!!"});
 });
 
 //@desc returns  student data

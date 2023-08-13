@@ -24,7 +24,7 @@ teacherRouter.get("/classes/:id", userAuthChecker, getStudents);
 teacherRouter.post("/class/students", userAuthChecker, getStudentData);
 
 // update the value of the students (test ena final masgebat)
-teacherRouter.put("/students/:id", userAuthChecker, updateStudentValue); // ? if all no id
+teacherRouter.post("/students/marks", userAuthChecker, updateStudentValue); // ? if all no id
 
 //get the specific students list from class;
 teacherRouter.get("/class/students/:id", userAuthChecker, getStudent);
