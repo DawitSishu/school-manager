@@ -6,11 +6,13 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Paper } from "@mui/material";
+import { Paper, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import NumberInput from './NumberInput';
 
 const BASE_URI = "http://localhost:5000/api/class/students";
+const MARK_URI = "http://localhost:5000/api/students/marks";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -38,7 +40,7 @@ const InputMark = ({ teacher }) => {
   const [semister, setSemister] = useState("Select Semester");
   const [studentData, setStudentData] = useState(null);
   const [subject, setSubject] = useState(null);
-  
+
   let token = localStorage.getItem("token");
   let config = {
     headers: {
@@ -74,12 +76,18 @@ const InputMark = ({ teacher }) => {
   };
 
   const handleUpdateValue = (a, b) => {
-    studentData[a].report_card[semister][subject] = b;
+    studentData[a].report_card[semister][subject] = parseInt(b);
   };
 
-  const saveValues = () => {
-    console.log(studentData);
-  }
+  const saveValues = async () => {
+    try {
+      const result = await axios.post(MARK_URI, studentData, config);
+      alert(result.data.msg);
+      setStudentData(null);
+    } catch (error) {
+      alert("ERROR:", error);
+    }
+  };
 
   return (
     <Grid>
@@ -126,37 +134,38 @@ const InputMark = ({ teacher }) => {
       ) : null}
       <br />
       <br />
-      {semister != "Select Semester" ? (
-        <Box component="form" >
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell align="center">ID</StyledTableCell>
-                <StyledTableCell align="center">Name</StyledTableCell>
-                <StyledTableCell align="center">
-                  Update {subject}
-                </StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {studentData.map((std, idx) => (
-                <StyledTableRow key={idx}>
-                  <StyledTableCell align="center">{std.id}</StyledTableCell>
-                  <StyledTableCell align="center">{std.name}</StyledTableCell>
+      {semister != "Select Semester" && studentData ? (
+        <Box component="form">
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell align="center">ID</StyledTableCell>
+                  <StyledTableCell align="center">Name</StyledTableCell>
                   <StyledTableCell align="center">
-                    <input
-                      type="number"
-                      value={std.report_card[subject]}
-                      onChange={(e) => handleUpdateValue(idx, e.target.value)}
-                    />
+                    Update {subject}
                   </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Button onClick={saveValues} variant="contained">save</Button>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {studentData.map((std, idx) => (
+                  <StyledTableRow key={idx}>
+                    <StyledTableCell align="center">{std.id}</StyledTableCell>
+                    <StyledTableCell align="center">{std.name}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <NumberInput
+                        value={std.report_card[subject]}
+                        onChange={(e) => handleUpdateValue(idx, e.target.value)}
+                      />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Button onClick={saveValues} variant="contained">
+            save
+          </Button>
         </Box>
       ) : null}
     </Grid>
