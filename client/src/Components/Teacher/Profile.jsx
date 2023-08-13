@@ -1,8 +1,69 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import {
+  Typography,
+  Card,
+  CardContent,
+  Grid,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+} from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import InputAdornment from "@mui/material/InputAdornment";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import axios from "axios";
-import { Typography, Card, CardContent, Grid, Button } from "@mui/material";
+
+const BASE_URI = "http://localhost:5000/api/teacher/update";
 
 const Profile = ({ teacher }) => {
+  const [open, setOpen] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+
+  let token = localStorage.getItem("token");
+  let role = localStorage.getItem("role");
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setNewPassword("");
+  };
+
+  const handleSavePassword = async () => {
+    // Perform the password update logic using the new password
+    console.log("New password:", newPassword);
+    try {
+      const result = await axios.put(
+        BASE_URI,
+        { password: newPassword },
+        config
+      );
+      alert(result.data.msg);
+    } catch (error) {
+      alert("EROOR", error);
+    }
+
+    // Close the dialog
+    handleClose();
+  };
+
+  const handleNewPasswordChange = (event) => {
+    setNewPassword(event.target.value);
+  };
+
   return (
     <Card sx={{ margin: "auto", marginTop: 4 }}>
       <CardContent>
@@ -38,8 +99,46 @@ const Profile = ({ teacher }) => {
         </Grid>
       </CardContent>
       <Grid container justifyContent="center" m={3}>
-        <Button variant="contained">Update Password</Button>
+        <Button variant="contained" onClick={handleOpen}>
+          Update Password
+        </Button>
       </Grid>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Update Password</DialogTitle>
+        <DialogContent>
+          <OutlinedInput
+            fullWidth
+            id="New Password"
+            placeholder="New Password"
+            type={showPassword ? "text" : "password"}
+            startAdornment={
+              <InputAdornment position="start">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword((show) => !show)}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            value={newPassword}
+            onChange={handleNewPasswordChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} variant="contained" color="error">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSavePassword}
+            variant="contained"
+            color="primary"
+          >
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 };
