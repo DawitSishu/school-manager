@@ -35,6 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const InputMark = ({ teacher }) => {
   const Classes = JSON.parse(teacher.teaching_class);
   const [selectedClass, setSelectedClass] = useState("Select Class");
+  const [studentData, setStudentData] = useState(null);
 
   let token = localStorage.getItem("token");
   let config = {
@@ -50,7 +51,14 @@ const InputMark = ({ teacher }) => {
         { class_name: selectedClass },
         config
       );
-      console.log(result.data);
+      if (result.data.length > 0) {
+        const tmp = result.data.map((data) => ({
+          id: data.student_id,
+          name: data.full_name,
+          report_card: JSON.parse(data.report_card),
+        }));
+        setStudentData(tmp);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +92,7 @@ const InputMark = ({ teacher }) => {
           </Button>
         </Grid>
       ) : null}
+      {studentData ? <>hi</> : null}
     </Grid>
   );
 };
