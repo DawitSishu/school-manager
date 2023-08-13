@@ -1,4 +1,4 @@
-import { Button, Grid, Typography, Select, MenuItem } from "@mui/material";
+import { Button, Grid, Typography, Select, MenuItem, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -38,7 +38,7 @@ const InputMark = ({ teacher }) => {
   const [semister, setSemister] = useState("Select Semester");
   const [studentData, setStudentData] = useState(null);
   const [subject, setSubject] = useState(null);
-
+  
   let token = localStorage.getItem("token");
   let config = {
     headers: {
@@ -74,8 +74,12 @@ const InputMark = ({ teacher }) => {
   };
 
   const handleUpdateValue = (a, b) => {
-    console.log(a, b);
+    studentData[a].report_card[semister][subject] = b;
   };
+
+  const saveValues = () => {
+    console.log(studentData);
+  }
 
   return (
     <Grid>
@@ -123,6 +127,7 @@ const InputMark = ({ teacher }) => {
       <br />
       <br />
       {semister != "Select Semester" ? (
+        <Box component="form" >
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
@@ -151,6 +156,8 @@ const InputMark = ({ teacher }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <Button onClick={saveValues} variant="contained">save</Button>
+        </Box>
       ) : null}
     </Grid>
   );
