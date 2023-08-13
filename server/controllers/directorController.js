@@ -13,6 +13,17 @@ export const getMe = asyncHandler(async (req, res) => {
   res.json(result[0][0]);
 });
 
+//@desc returns details of student
+//@route POST /api/students/:id
+//@access private
+export const getSudentDetail = asyncHandler(async (req, res) => {
+  const result = await pool.query(
+    "SELECT * FROM students WHERE student_id = ?",
+    [req.params.id]
+  );
+  res.json(result[0][0]);
+});
+
 //@desc creates a class
 //@route POST /api/classes
 //@access private

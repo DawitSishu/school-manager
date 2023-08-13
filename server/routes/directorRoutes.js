@@ -11,6 +11,7 @@ import {
   getSudents,
   resetStudent,
   getClasses,
+  getSudentDetail,
 } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
@@ -32,6 +33,9 @@ directorRouter.get("/teacher", userAuthChecker, getTeachers);
 
 //return all students
 directorRouter.get("/students", userAuthChecker, getSudents);
+
+//return all students
+directorRouter.get("/students/:id", userAuthChecker, getSudentDetail);
 
 // return detail of specific teacher
 directorRouter.get("/teacher/:id", userAuthChecker, getOneTeacher);
