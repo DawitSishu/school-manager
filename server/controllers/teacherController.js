@@ -122,7 +122,11 @@ WHERE class_id = (SELECT class_id FROM class WHERE class_name = ?);
 `,
     [class_name]
   );
-  res.json(result[0]);
+  const teach = await pool.query(
+    `SELECT teachers FROM class WHERE class_name = ?`,
+    [class_name]
+  );
+  res.json({ students: result[0], teachers: teach[0][0] });
 });
 
 //@desc updates the password for teacher
