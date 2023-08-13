@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
 
-const InputMark = () => {
-  return (
-    <div>InputMark jsx</div>
-  )
-}
+const InputMark = ({ teacher }) => {
+  console.log(teacher);
+  return <div>InputMark jsx</div>;
+};
 
-export default InputMark
+export default InputMark;

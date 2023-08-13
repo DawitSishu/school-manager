@@ -192,7 +192,7 @@ function ResponsiveDrawer(props) {
         {selectedItem == "My Classes" ? (
           <Classes teacher={user} />
         ) : selectedItem == "Input Mark" ? (
-          <InputMark />
+          <InputMark teacher={user}/>
         ) : (
           <Typography paragraph>{selectedItem}</Typography>
         )}
