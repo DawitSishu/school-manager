@@ -21,6 +21,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Classes from "./Classes";
+import InputMark from "./InputMark";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/teacher/me";
@@ -79,8 +80,7 @@ function ResponsiveDrawer(props) {
   const handleLogOut = () => {
     localStorage.clear();
     navigate("/");
-  }
-
+  };
 
   useEffect(() => {
     check();
@@ -121,7 +121,7 @@ function ResponsiveDrawer(props) {
           ml: { sm: `${drawerWidth}px` },
         }}
       >
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -134,9 +134,13 @@ function ResponsiveDrawer(props) {
           <Typography variant="h6" noWrap component="div">
             Teacher Panel
           </Typography>
-        <Button variant="outlined" sx={{color :"black"}} onClick={handleLogOut}>
-          Log out
-        </Button>
+          <Button
+            variant="outlined"
+            sx={{ color: "black" }}
+            onClick={handleLogOut}
+          >
+            Log out
+          </Button>
         </Toolbar>
       </AppBar>
       <Box
@@ -186,7 +190,9 @@ function ResponsiveDrawer(props) {
       >
         <Toolbar />
         {selectedItem == "My Classes" ? (
-          <Classes teacher = {user} />
+          <Classes teacher={user} />
+        ) : selectedItem == "Input Mark" ? (
+          <InputMark />
         ) : (
           <Typography paragraph>{selectedItem}</Typography>
         )}
