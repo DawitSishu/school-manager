@@ -7,12 +7,17 @@ import {
   getStudent,
   getMydetails,
   getStudentData,
+  updatePass
 } from "../controllers/teacherController.js";
 
 const teacherRouter = express.Router();
 
 //return the teacher's detail
 teacherRouter.get("/teacher/me", userAuthChecker, getMydetails);
+
+//update teacher password
+teacherRouter.put("/teacher/update", userAuthChecker, updatePass);
+
 
 // my calsses (the classes he owns(home-room-teacher)
 teacherRouter.post("/teacher/class", userAuthChecker, getMyClasses);

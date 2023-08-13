@@ -59,7 +59,7 @@ export const getStudents = asyncHandler(async (req, res) => {
 });
 
 //@desc  updates the marks of student
-//@route PUT /api/students/marks   
+//@route PUT /api/students/marks
 //@access private
 export const updateStudentValue = asyncHandler(async (req, res) => {
   const datas = req.body;
@@ -70,7 +70,7 @@ export const updateStudentValue = asyncHandler(async (req, res) => {
       [report, data.id]
     );
   }
-  res.json({msg : "All marks saved successfully!!"});
+  res.json({ msg: "All marks saved successfully!!" });
 });
 
 //@desc returns  student data
@@ -114,11 +114,13 @@ WHERE class_id = (SELECT class_id FROM class WHERE class_name = ?);
 //@route PUT /api/teacher/update
 //@access private
 export const updatePass = asyncHandler(async (req, res) => {
-  //the id is his' so is got from the req.user don't forget
-  const { id } = req.params;
+  const { teacher_id } = req.user;
+  const { password } = req.body;
+  const newpassword = await bcrypt.hash(password, 10);
+
   const result = await pool.query(
-    `SELECT * from students WHERE student_id = ?`,
-    [id]
+    `UPDATE teacher SET password = ? WHERE teacher_id = ?`,
+    [newpassword, teacher_id]
   );
-  res.json(result[0][0]);
+res.json({msg:"Password updated successfully!!"});
 });
