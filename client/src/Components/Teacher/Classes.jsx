@@ -12,6 +12,7 @@ import axios from "axios";
 
 const BASE_URI = "http://localhost:5000/api/teacher/class";
 const CLASS_URI = "http://localhost:5000/api/class/students";
+const MARK_URI = "http://localhost:5000/api/students/marks";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,7 +53,10 @@ const Classes = ({ teacher }) => {
 
   const getStudents = async () => {
     try {
-      const result = await axios.get(`${CLASS_URI}/${selectedClass.class_id}`, config);
+      const result = await axios.get(
+        `${CLASS_URI}/${selectedClass.class_id}`,
+        config
+      );
       const tmp = result.data.map((data) => ({
         id: data.student_id,
         name: data.full_name,
@@ -80,6 +84,66 @@ const Classes = ({ teacher }) => {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+  const calculateRank = async () => {
+    const subjects = [];
+    for (let s of keys) {
+      if (
+        s.toLowerCase() != "total" &&
+        s.toLowerCase() != "average" &&
+        s.toLowerCase() != "rank"
+      ) {
+        subjects.push(s);
+      }
+    }
+    for (let std of students) {
+      let total = 0;
+      subjects.forEach((subject) => {
+        total += std.report_card[semister][subject];
+      });
+      std.report_card[semister].Total = total;
+      std.report_card[semister].Average = total / subjects.length;
+    }
+    students.sort(
+      (a, b) => b.report_card[semister].Total - a.report_card[semister].Total
+    );
+
+    let rank = 1;
+    // in case wher 1,1,2 rank like this is allowed
+    // for (let i = 0; i < students.length; i++) {
+    //   const currentStudent = students[i];
+    //   const previousStudent = students[i - 1];
+
+    //   if (
+    //     previousStudent &&
+    //     previousStudent.report_card[semister].Total >
+    //       currentStudent.report_card[semister].Total
+    //   ) {
+    //     rank++;
+    //   }
+
+    //   currentStudent.report_card[semister].Rank = rank;
+    // }
+    let prevTotal = Infinity;
+    for (let i = 0; i < students.length; i++) {
+      const currentStudent = students[i];
+      const currentTotal = currentStudent.report_card[semister].Total;
+
+      if (currentTotal < prevTotal) {
+        rank = i + 1;
+        prevTotal = currentTotal;
+      }
+
+      currentStudent.report_card[semister].Rank = rank;
+    }
+    let data = [...students];
+    try {
+      const result = await axios.post(MARK_URI, data, config);
+      alert(result.data.msg);
+      setStudents(data);
+    } catch (error) {
+      alert("ERROR", error);
     }
   };
 
@@ -122,6 +186,13 @@ const Classes = ({ teacher }) => {
       ) : null}
       <br />
       <br />
+      {semister !== "Select Semester" && selectedClass ? (
+        <Grid container justifyContent="center" mb={2}>
+          <Button variant="contained" onClick={calculateRank}>
+            Calculate Rank
+          </Button>
+        </Grid>
+      ) : null}
       {semister !== "Select Semester" && selectedClass ? (
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">

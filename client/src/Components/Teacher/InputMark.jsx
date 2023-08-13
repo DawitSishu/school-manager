@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import { Paper, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import NumberInput from './NumberInput';
+import NumberInput from "./NumberInput";
 
 const BASE_URI = "http://localhost:5000/api/class/students";
 const MARK_URI = "http://localhost:5000/api/students/marks";
@@ -163,9 +163,11 @@ const InputMark = ({ teacher }) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Button onClick={saveValues} variant="contained">
-            save
-          </Button>
+          <Grid container justifyContent="center" m={2}>
+            <Button onClick={saveValues} variant="contained" fullWidth sx={{ maxWidth: "300px" }}>
+              save
+            </Button>
+          </Grid>
         </Box>
       ) : null}
     </Grid>
