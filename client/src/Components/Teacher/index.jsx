@@ -37,7 +37,7 @@ const iconMap = {
   "Input Mark": <CreateIcon />,
 };
 
-function ResponsiveDrawer(props) {
+function Teacher(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Profile");
@@ -220,4 +220,4 @@ function ResponsiveDrawer(props) {
   ) : null;
 }
 
-export default ResponsiveDrawer;
+export default Teacher;
