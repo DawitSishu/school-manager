@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import { Paper, TextField } from "@mui/material";
 import { Button } from "@mui/base";
 import StudentDetails from "./StudentDetails";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/students";
 const STUDENT_DETAIL = "http://localhost:5000/api/students/";
@@ -38,6 +39,7 @@ const Students = () => {
   const [students, setStudents] = useState(null);
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(null);
+  const [waiting, setWaiting] = useState(true);
   let token = localStorage.getItem("token");
   let config = {
     headers: {
@@ -54,6 +56,7 @@ const Students = () => {
     }
   };
   const getStudentDetail = async (id) => {
+    setWaiting(true);
     try {
       const result = await axios.get(`${STUDENT_DETAIL}${id}`, config);
       setId(result.data);
@@ -63,19 +66,22 @@ const Students = () => {
       // console.log(error);
       alert(error.response.data.message);
     }
+    setWaiting(false);
   };
 
   const getStudents = async () => {
+    setWaiting(true);
     try {
       const result = await axios.get(BASE_URI, config);
       setStudents(result.data);
     } catch (error) {
       alert(error.message);
     }
+    setWaiting(false);
   };
   useEffect(() => {
     getStudents();
-  });
+  },[]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (event) => {
@@ -90,9 +96,13 @@ const Students = () => {
       )
     : null;
 
-  return students ? (
+  return waiting ? (
+    <Spinner />
+  ) : students ? (
     <div>
-      {open ? <StudentDetails onClose={()=> setOpen(false)} student={id} /> : null}
+      {open ? (
+        <StudentDetails onClose={() => setOpen(false)} student={id} />
+      ) : null}
       <TextField
         id="search"
         label="Search"
@@ -131,7 +141,7 @@ const Students = () => {
                       borderWidth: "1px",
                       borderColor: "green",
                       borderRadius: "4px",
-                      cursor:"pointer"
+                      cursor: "pointer",
                     }}
                     onClick={() => getStudentDetail(row.student_id)}
                   >
@@ -145,7 +155,7 @@ const Students = () => {
                       backgroundColor: "yellow",
                       borderWidth: "1px",
                       borderColor: "yellow",
-                      cursor:"pointer",
+                      cursor: "pointer",
                       borderRadius: "4px",
                     }}
                     onClick={() => resetPassword(row.student_id)}

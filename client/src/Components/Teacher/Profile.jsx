@@ -16,6 +16,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import axios from "axios";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/teacher/update";
 
@@ -23,6 +24,7 @@ const Profile = ({ teacher }) => {
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
+  const [waiting, setWaiting] = useState(false);
 
   let token = localStorage.getItem("token");
   let role = localStorage.getItem("role");
@@ -42,7 +44,7 @@ const Profile = ({ teacher }) => {
   };
 
   const handleSavePassword = async () => {
-    console.log("New password:", newPassword);
+    setWaiting(true);
     try {
       const result = await axios.put(
         BASE_URI,
@@ -50,8 +52,10 @@ const Profile = ({ teacher }) => {
         config
       );
       alert(result.data.msg);
+      setWaiting(false);
     } catch (error) {
       alert("EROOR", error);
+      setWaiting(false);
     }
     handleClose();
   };
@@ -60,7 +64,9 @@ const Profile = ({ teacher }) => {
     setNewPassword(event.target.value);
   };
 
-  return (
+  return waiting ? (
+    <Spinner />
+  ) : (
     <Card sx={{ margin: "auto", marginTop: 4 }}>
       <CardContent>
         <Typography

@@ -6,12 +6,14 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { Button } from "@mui/material";
 import axios from "axios";
+import Spinner from "../Spinner/Spinner";
 
 // /api/classes/:id
 const URI = "http://localhost:5000/api/classes";
 
 const ClassDetails = ({ classes, onClose }) => {
   const [students, setStudents] = useState(null);
+  const [waiting, setWaiting] = useState(true);
 
   let token = localStorage.getItem("token");
   let config = {
@@ -21,19 +23,22 @@ const ClassDetails = ({ classes, onClose }) => {
   };
 
   const getStudentList = async () => {
+    setWaiting(true);
     try {
       const result = await axios.get(`${URI}/${classes.class_id}`, config);
-      //   console.log(result.data);
       setStudents(result.data);
     } catch (error) {
       alert(error.response.data.message);
     }
+    setWaiting(false);
   };
   useEffect(() => {
     getStudentList();
   }, []);
 
-  return (
+  return waiting ? (
+    <Spinner />
+  ) : (
     <Dialog open={true} onClose={onClose}>
       <DialogTitle>Class Details</DialogTitle>
       <DialogContent>

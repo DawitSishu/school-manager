@@ -19,8 +19,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SchoolIcon from "@mui/icons-material/School";
 import PeopleIcon from "@mui/icons-material/People";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -28,6 +26,7 @@ import Teachers from "./Teachers";
 import Students from "./Students";
 import Classes from "./Classes";
 import CreateUser from "./CreateUser";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/director/me";
@@ -46,6 +45,7 @@ const index = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Classes");
   const [user, setUser] = useState(null);
+  const [waiting, setWaiting] = useState(true);
   const navigate = useNavigate();
 
   let token = localStorage.getItem("token");
@@ -96,8 +96,10 @@ const index = (props) => {
   };
 
   useEffect(() => {
+    setWaiting(true);
     check();
     getUser();
+    setWaiting(false);
   }, []);
   const drawer = (
     <div>
@@ -106,22 +108,32 @@ const index = (props) => {
       </Toolbar>
       <Divider />
       <List>
-      {["Classes", "Teachers", "Students", "Create User"].map((text) => (
-        <ListItem key={text} disablePadding>
-          <ListItemButton onClick={() => handleItemClick(text)}>
-            <ListItemIcon>{iconMap[text]}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
+        {["Classes", "Teachers", "Students", "Create User"].map((text) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton onClick={() => handleItemClick(text)}>
+              <ListItemIcon>{iconMap[text]}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  return (
+  return waiting ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spinner />
+    </div>
+  ) : (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar

@@ -6,10 +6,11 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Paper, TextField } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { Paper } from "@mui/material";
+import React, { useState } from "react";
 import axios from "axios";
 import NumberInput from "./NumberInput";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/class/students";
 const MARK_URI = "http://localhost:5000/api/students/marks";
@@ -40,6 +41,7 @@ const InputMark = ({ teacher }) => {
   const [semister, setSemister] = useState("Select Semester");
   const [studentData, setStudentData] = useState(null);
   const [subject, setSubject] = useState(null);
+  const [waiting, setWaiting] = useState(false);
 
   let token = localStorage.getItem("token");
   let config = {
@@ -49,6 +51,7 @@ const InputMark = ({ teacher }) => {
   };
 
   const getStudents = async () => {
+    setWaiting(true);
     try {
       const result = await axios.post(
         BASE_URI,
@@ -70,8 +73,10 @@ const InputMark = ({ teacher }) => {
           }
         }
       }
+      setWaiting(false);
     } catch (error) {
-      console.log(error);
+      alert("ERROR", error);
+      setWaiting(false);
     }
   };
 
@@ -80,16 +85,21 @@ const InputMark = ({ teacher }) => {
   };
 
   const saveValues = async () => {
+    setWaiting(true);
     try {
       const result = await axios.post(MARK_URI, studentData, config);
       alert(result.data.msg);
       setStudentData(null);
+      setWaiting(false);
     } catch (error) {
       alert("ERROR:", error);
+      setWaiting(false);
     }
   };
 
-  return (
+  return waiting ? (
+    <Spinner />
+  ) : (
     <Grid>
       <Typography align="center" variant="h5">
         Select A Class
@@ -164,7 +174,12 @@ const InputMark = ({ teacher }) => {
             </Table>
           </TableContainer>
           <Grid container justifyContent="center" m={2}>
-            <Button onClick={saveValues} variant="contained" fullWidth sx={{ maxWidth: "300px" }}>
+            <Button
+              onClick={saveValues}
+              variant="contained"
+              fullWidth
+              sx={{ maxWidth: "300px" }}
+            >
               save
             </Button>
           </Grid>

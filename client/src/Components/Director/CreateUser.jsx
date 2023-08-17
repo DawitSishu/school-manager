@@ -8,7 +8,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -22,7 +22,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { TextField, Autocomplete } from "@mui/material";
-import Spinner from "../Spinner/Spinner"; //to be used
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/users/signup";
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
@@ -104,10 +104,7 @@ function CreateUser() {
       <Spinner />
     </div>
   ) : (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <Box component="form" onSubmit={handleSubmit(onSubmit)}>
       <Typography variant="h5" align="center">
         Create a New Account
       </Typography>

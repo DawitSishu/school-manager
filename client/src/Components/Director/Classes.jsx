@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import { Paper, TextField } from "@mui/material";
 import { Button } from "@mui/base";
 import ClassDetails from "./ClassDetails";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/classes";
 
@@ -37,6 +38,7 @@ const Classes = () => {
   const [classes, setClasses] = useState(null);
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(null);
+  const [waiting, setWaiting] = useState(true);
   let token = localStorage.getItem("token");
   let config = {
     headers: {
@@ -45,41 +47,43 @@ const Classes = () => {
   };
 
   const getClassDetail = async (id) => {
-    if (id.teachers){
-        let temp
-        try {
-             temp = JSON.parse(id.teachers);
-          } catch (error) {
-           temp = id.teachers
-          }
-        
-        id.teachers = temp;
+    if (id.teachers) {
+      let temp;
+      try {
+        temp = JSON.parse(id.teachers);
+      } catch (error) {
+        temp = id.teachers;
+      }
+
+      id.teachers = temp;
     }
-    if (id.students){
-        let temp
-        try {
-             temp = JSON.parse(id.students);
-          } catch (error) {
-           temp = id.students
-          }
-        
-        id.students = temp;
+    if (id.students) {
+      let temp;
+      try {
+        temp = JSON.parse(id.students);
+      } catch (error) {
+        temp = id.students;
+      }
+
+      id.students = temp;
     }
-      setId(id);
+    setId(id);
     setOpen(true);
   };
   const getClasses = async () => {
+    setWaiting(true);
     try {
       const result = await axios.get(BASE_URI, config);
       setClasses(result.data);
     } catch (error) {
       alert(error.message);
     }
+    setWaiting(false);
   };
-  
+
   useEffect(() => {
     getClasses();
-  },[]);
+  }, []);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (event) => {
@@ -94,7 +98,9 @@ const Classes = () => {
       )
     : null;
 
-  return classes ? (
+  return waiting ? (
+    <Spinner />
+  ) : classes ? (
     <div>
       {open ? (
         <ClassDetails onClose={() => setOpen(false)} classes={id} />
@@ -122,9 +128,7 @@ const Classes = () => {
                 <StyledTableCell component="th" scope="row">
                   {row.class_id}
                 </StyledTableCell>
-                <StyledTableCell align="left">
-                  {row.class_name}
-                </StyledTableCell >
+                <StyledTableCell align="left">{row.class_name}</StyledTableCell>
                 <StyledTableCell align="left">
                   <Button
                     className="assignButton"

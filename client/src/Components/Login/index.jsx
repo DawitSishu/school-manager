@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, Typography, Box } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
@@ -9,13 +9,14 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import { AccountCircle } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import Spinner from "../Spinner/Spinner";
 const BASE_URI = "http://localhost:5000/api/users/login";
 
 const index = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [err, setErr] = useState("");
+  const [waiting, setWaiting] = useState(false);
 
   const {
     register,
@@ -24,6 +25,7 @@ const index = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setWaiting(true);
     try {
       const response = await axios.post(BASE_URI, { ...data });
       if (response) {
@@ -37,13 +39,24 @@ const index = () => {
           ? navigate("/director")
           : navigate("/profile");
       }
-      console.log(response);
+      setWaiting(false);
     } catch (error) {
       setErr(error.response.data.message);
+      setWaiting(false);
     }
   };
 
-  return (
+  return waiting ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spinner />
+    </div>
+  ) : (
     <Box
       sx={{
         padding: 10,

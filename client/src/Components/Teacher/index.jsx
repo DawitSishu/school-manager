@@ -24,6 +24,7 @@ import axios from "axios";
 import Classes from "./Classes";
 import InputMark from "./InputMark";
 import Profile from "./Profile";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/teacher/me";
@@ -41,6 +42,7 @@ function ResponsiveDrawer(props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Profile");
   const [user, setUser] = useState(null);
+  const [waiting, setWaiting] = useState(true);
   const navigate = useNavigate();
 
   let token = localStorage.getItem("token");
@@ -91,8 +93,10 @@ function ResponsiveDrawer(props) {
   };
 
   useEffect(() => {
+    setWaiting(true);
     check();
     getUser();
+    setWaiting(false);
   }, []);
   const drawer = (
     <div>
@@ -116,7 +120,17 @@ function ResponsiveDrawer(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  return user ? (
+  return waiting ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spinner />
+    </div>
+  ) : user ? (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar

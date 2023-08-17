@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import { Paper, TextField } from "@mui/material";
 import { Button } from "@mui/base";
 import AssignTeacher from "./AssignTeacher";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/teacher";
 const ASSIGN_TEACHER_URI = "http://localhost:5000/api/classes/teacher";
@@ -38,6 +39,7 @@ const Teachers = () => {
   const [teachers, setTeachers] = useState(null);
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(null);
+  const [waiting, setWaiting] = useState(true);
   let token = localStorage.getItem("token");
   let config = {
     headers: {
@@ -46,12 +48,14 @@ const Teachers = () => {
   };
 
   const resetPassword = async (id) => {
+    setWaiting(true);
     try {
       const result = await axios.post(RESET_URI, { id }, config);
       alert(result.data.msg);
     } catch (error) {
       alert(error.response.data.message);
     }
+    setWaiting(false);
   };
 
   const handleClickOpen = (teacher) => {
@@ -59,7 +63,7 @@ const Teachers = () => {
     setOpen(true);
   };
   const handleClickClose = async (data) => {
-    console.log(data);
+    setWaiting(true);
     try {
       const result = await axios.post(ASSIGN_TEACHER_URI, { ...data }, config);
       alert(result.data.msg);
@@ -68,19 +72,22 @@ const Teachers = () => {
     }
     setOpen(false);
     setId(null);
+    setWaiting(false);
   };
 
   const getTeachers = async () => {
+    setWaiting(true);
     try {
       const result = await axios.get(BASE_URI, config);
       setTeachers(result.data);
     } catch (error) {
       alert(error.message);
     }
+    setWaiting(false);
   };
   useEffect(() => {
     getTeachers();
-  });
+  },[]);
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearchChange = (event) => {
@@ -95,7 +102,9 @@ const Teachers = () => {
       )
     : null;
 
-  return teachers ? (
+  return waiting ? (
+    <Spinner />
+  ) : teachers ? (
     <div>
       {open ? <AssignTeacher onClose={handleClickClose} data={id} /> : null}
       <TextField

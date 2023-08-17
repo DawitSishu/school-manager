@@ -9,6 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import { Paper } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/teacher/class";
 const CLASS_URI = "http://localhost:5000/api/class/students";
@@ -39,6 +40,7 @@ const Classes = ({ teacher }) => {
   const [students, setStudents] = useState(null);
   const [semister, setSemister] = useState("Select Semester");
   const [keys, setKeys] = useState(null);
+  const [waiting, setWaiting] = useState(true);
 
   let token = localStorage.getItem("token");
   let config = {
@@ -72,6 +74,7 @@ const Classes = ({ teacher }) => {
   };
 
   const getClassData = async () => {
+    setWaiting(true);
     try {
       const result = await axios.post(
         BASE_URI,
@@ -82,11 +85,14 @@ const Classes = ({ teacher }) => {
         let tmp = JSON.parse(result.data.students);
         setSelectedClass({ ...result.data, students: tmp });
       }
+      setWaiting(false);
     } catch (error) {
-      console.log(error);
+      alert("ERROR: ", error);
+      setWaiting(false);
     }
   };
   const calculateRank = async () => {
+    setWaiting(true);
     const subjects = [];
     for (let s of keys) {
       if (
@@ -142,8 +148,10 @@ const Classes = ({ teacher }) => {
       const result = await axios.post(MARK_URI, data, config);
       alert(result.data.msg);
       setStudents(data);
+      setWaiting(false);
     } catch (error) {
       alert("ERROR", error);
+      setWaiting(false);
     }
   };
 
@@ -151,7 +159,9 @@ const Classes = ({ teacher }) => {
     getClassData();
   }, []);
 
-  return (
+  return waiting ? (
+    <Spinner />
+  ) : (
     <Grid>
       <Grid container justifyContent="center">
         <Typography variant="h5" align="center">
