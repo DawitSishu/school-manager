@@ -9,10 +9,10 @@ import {
 const studentRouter = express.Router();
 
 //view stud info
-studentRouter.get("/profile", studentProfile);
+studentRouter.get("/profile", userAuthChecker, studentProfile);
 //view report card
-studentRouter.get("/result", studentResult);
+studentRouter.get("/result", userAuthChecker, studentResult);
 //view history
-studentRouter.get("/history", studentHistory);
+studentRouter.get("/history", userAuthChecker, studentHistory);
 
 export default studentRouter;
