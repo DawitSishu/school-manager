@@ -213,7 +213,7 @@ const index = (props) => {
         {selectedItem == "My Class" ? (
           <Typography>{selectedItem}</Typography>
         ) : selectedItem == "View Mark" ? (
-          <Marks />
+          <Marks student={user}/>
         ) : (
           <Profile student={user} />
         )}
