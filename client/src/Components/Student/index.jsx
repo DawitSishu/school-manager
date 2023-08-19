@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Spinner from "../Spinner/Spinner";
 import Profile from "./Profile";
+import Marks from "./Marks";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/student/profile";
@@ -209,10 +210,10 @@ const index = (props) => {
         }}
       >
         <Toolbar />
-        {selectedItem == "My Classes" ? (
+        {selectedItem == "My Class" ? (
           <Typography>{selectedItem}</Typography>
-        ) : selectedItem == "Input Mark" ? (
-          <Typography>{selectedItem}</Typography>
+        ) : selectedItem == "View Mark" ? (
+          <Marks />
         ) : (
           <Profile student={user} />
         )}
