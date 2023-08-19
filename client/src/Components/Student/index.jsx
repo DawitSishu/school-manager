@@ -33,7 +33,6 @@ const drawerWidth = 240;
 
 const iconMap = {
   Profile: <PersonIcon />,
-  "My Class": <ClassIcon />,
   "View Mark": <CreateIcon />,
 };
 
@@ -108,7 +107,7 @@ const index = (props) => {
       </Toolbar>
       <Divider />
       <List>
-        {["Profile", "My Class", "View Mark"].map((text, index) => (
+        {["Profile", "View Mark"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleItemClick(text)}>
               <ListItemIcon>{iconMap[text]}</ListItemIcon>
@@ -210,10 +209,8 @@ const index = (props) => {
         }}
       >
         <Toolbar />
-        {selectedItem == "My Class" ? (
-          <Typography>{selectedItem}</Typography>
-        ) : selectedItem == "View Mark" ? (
-          <Marks student={user}/>
+        {selectedItem == "View Mark" ? (
+          <Marks student={user} />
         ) : (
           <Profile student={user} />
         )}
