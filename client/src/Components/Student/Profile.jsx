@@ -21,7 +21,6 @@ import Spinner from "../Spinner/Spinner";
 const BASE_URI = "http://localhost:5000/api/student/profile/update";
 
 const Profile = ({ student }) => {
-  console.log(student);
   const [open, setOpen] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [newPassword, setNewPassword] = useState("");
