@@ -48,12 +48,14 @@ const Students = () => {
   };
 
   const resetPassword = async (id) => {
+    setWaiting(true)
     try {
       const result = await axios.post(RESET_URI, { id }, config);
       alert(result.data.msg);
     } catch (error) {
       alert(error.response.data.message);
     }
+    setWaiting(false);
   };
   const getStudentDetail = async (id) => {
     setWaiting(true);
