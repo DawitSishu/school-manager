@@ -61,7 +61,6 @@ export const loginUser = asyncHandler(async (req, res) => {
   const { password: omitPassword, ...userData } = user;
 
   const token = jwt.sign(userData, process.env.SECRET_KEY, { expiresIn: "1d" });
-  console.log(token);
   res.json({
     token,
     role: user.role,
