@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'cursive';
+    src: url('../../assets/AnandaBlackPersonalUseRegular-rg9Rx.ttf');
+  }
+  
+.hero-text{
+    font-family: cursive !important;
+}
