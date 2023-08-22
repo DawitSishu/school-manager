@@ -24,7 +24,7 @@ const Hero = () => {
       <Typography
         align="center"
         variant="h2"
-        color="#FFFF00"
+        color="white"
         className="hero-text"
       >
         Notre Dame School
@@ -32,7 +32,7 @@ const Hero = () => {
       <Typography
         align="center"
         variant="h3"
-        color="#FFFF00"
+        color="white"
         className="hero-text"
       >
         Knowledge is Power
