@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import Hero from "./Hero";
+// import Navbar from "./NavBar";
 
 const index = () => {
   return (
-    <div>index</div>
-  )
-}
+    <div>
+      <Hero />
+    </div>
+  );
+};
 
-export default index
+export default index;
