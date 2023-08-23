@@ -13,7 +13,7 @@ const Hero = () => {
       alignItems="center"
       justifyContent="center"
       sx={{
-        minHeight: "80vh",
+        minHeight: "100vh",
         backgroundImage: `url(${img})`,
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
