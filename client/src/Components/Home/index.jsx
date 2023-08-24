@@ -1,4 +1,5 @@
 import React from "react";
+import ContactFrame from "./ContactFrame";
 import Hero from "./Hero";
 import SchoolStats from "./SchoolStats";
 import Welcome from "./Welcome";
@@ -10,6 +11,7 @@ const index = () => {
       <Hero />
       <Welcome />
       <SchoolStats />
+      <ContactFrame />
     </div>
   );
 };
