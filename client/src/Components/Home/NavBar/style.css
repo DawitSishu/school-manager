@@ -1,0 +1,22 @@
+.sticky {
+    transition: all 0.3s ease-out 0s !important;
+    background-color: silver !important;
+    backdrop-filter: blur(150px) !important;
+  }
+  
+  .navbar {
+    position: fixed !important;
+    transition: all 0.3s ease-out 0s !important;
+    font-size: 1.2rem !important;
+  }
+
+  @media (max-width: 767px) {
+    /* .navbar {
+      background-color: #15161d !important;
+    } */
+  }
+ .nav-items {
+  display: flex;
+  justify-content: space-around;
+ }
+ 
