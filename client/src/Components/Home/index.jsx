@@ -4,6 +4,7 @@ import Hero from "./Hero";
 import SchoolStats from "./SchoolStats";
 import Welcome from "./Welcome";
 import Navbar from "./NavBar";
+import Footer from "./Footer";
 
 const index = () => {
   return (
@@ -13,6 +14,7 @@ const index = () => {
       <Welcome />
       <SchoolStats />
       <ContactFrame />
+      <Footer />
     </div>
   );
 };
