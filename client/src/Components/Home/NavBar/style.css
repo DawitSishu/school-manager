@@ -1,6 +1,6 @@
 .sticky {
     transition: all 0.3s ease-out 0s !important;
-    background-color: silver !important;
+    background-color: rgb(97, 88, 88) !important;
     backdrop-filter: blur(150px) !important;
   }
   

@@ -46,10 +46,6 @@ function NavBar() {
       sx={{
         boxShadow: "none",
         backgroundColor: "transparent",
-        // backgroundColor: "rgba(128, 128, 128, 0.4)",
-        color: `white !important`,
-        // boxShadow: "0px 3px 3px 0px rgba(9, 5, 29, 0.171)",
-        // elevation: 5,
         width: "100vw",
         zIndex: 22,
       }}
