@@ -1,0 +1,23 @@
+.contact-overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(0.5px);
+}
+
+@media (max-width: 400px) {
+    .contact-box{
+        width:100% !important;
+    }
+}
+.contact-box {
+    position: relative;
+    border: 3px solid gold;
+    box-shadow: 4px 4px 16px rgba(255, 255, 255, 0.8);
+    border-radius:10px;
+    overflow: hidden;
+  }
+  

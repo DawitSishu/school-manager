@@ -7,12 +7,12 @@ import {
   IconButton,
   Menu,
 } from "@mui/material";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { Close as CloseIcon } from "@mui/icons-material";
 
-import logo from "../../../assets/1.jpeg";
+import logo from "../../assets/1.jpeg";
 import "./style.css";
 import NavLinks from "./NavLinks";
 
@@ -82,17 +82,17 @@ function NavBar() {
                 Home
               </Button>
             </Link>
-            <Link to="about">
+            <Link to="/about">
               <Button sx={hoverStyle} color="primary">
                 About
               </Button>
             </Link>
-            <Link to="contact">
+            <Link to="/contact">
               <Button sx={hoverStyle} color="primary">
               Contact
               </Button>
             </Link>
-            <Link to="login">
+            <Link to="/login">
               <Button sx={hoverStyle} color="primary">
                 Log In
               </Button>

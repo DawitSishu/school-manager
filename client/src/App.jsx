@@ -6,6 +6,7 @@ import Student from "./Components/Student";
 import Teacher from "./Components/Teacher";
 import Home from "./Components/Home";
 import Director from "./Components/Director";
+import Contact from "./Components/Contact";
 
 const darkTheme = createTheme({
   palette: {
@@ -38,6 +39,7 @@ function App() {
           <Route path="/profile" element={<Student />} />
           <Route path="/teacher" element={<Teacher />} />
           <Route path="/director" element={<Director />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

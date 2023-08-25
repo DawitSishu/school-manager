@@ -21,21 +21,21 @@ const NavLinks = () => {
         </Link>
       </MenuItem>
       <MenuItem>
-        <Link to="about">
+        <Link to="/about">
           <Button sx={hoverStyle} color="secondary">
             About
           </Button>
         </Link>
       </MenuItem>
       <MenuItem>
-        <Link to="contact">
+        <Link to="/contact">
           <Button sx={hoverStyle} color="secondary">
             Contact
           </Button>
         </Link>
       </MenuItem>
       <MenuItem>
-        <Link to="login">
+        <Link to="/login">
           <Button sx={hoverStyle} color="secondary">
             Log In
           </Button>

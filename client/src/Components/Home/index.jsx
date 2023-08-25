@@ -3,8 +3,8 @@ import ContactFrame from "./ContactFrame";
 import Hero from "./Hero";
 import SchoolStats from "./SchoolStats";
 import Welcome from "./Welcome";
-import Navbar from "./NavBar";
-import Footer from "./Footer";
+import Navbar from "../NavBar";
+import Footer from "../Footer/Footer";
 
 const index = () => {
   return (
