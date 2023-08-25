@@ -77,7 +77,7 @@ function NavBar() {
           }}
         >
           <nav className="nav-items">
-            <Link to="hero">
+            <Link to="/">
               <Button sx={hoverStyle} color="primary">
                 Home
               </Button>
@@ -87,12 +87,12 @@ function NavBar() {
                 About
               </Button>
             </Link>
-            <Link to="projects">
+            <Link to="contact">
               <Button sx={hoverStyle} color="primary">
               Contact
               </Button>
             </Link>
-            <Link to="contact">
+            <Link to="login">
               <Button sx={hoverStyle} color="primary">
                 Log In
               </Button>

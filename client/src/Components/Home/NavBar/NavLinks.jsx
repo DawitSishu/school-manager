@@ -14,7 +14,7 @@ const NavLinks = () => {
   return (
     <>
       <MenuItem>
-        <Link to="hero">
+        <Link to="/">
           <Button sx={hoverStyle} color="secondary">
             Home
           </Button>
@@ -28,14 +28,14 @@ const NavLinks = () => {
         </Link>
       </MenuItem>
       <MenuItem>
-        <Link to="projects">
+        <Link to="contact">
           <Button sx={hoverStyle} color="secondary">
             Contact
           </Button>
         </Link>
       </MenuItem>
       <MenuItem>
-        <Link to="contact">
+        <Link to="login">
           <Button sx={hoverStyle} color="secondary">
             Log In
           </Button>
