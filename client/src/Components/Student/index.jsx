@@ -25,6 +25,7 @@ import axios from "axios";
 import Spinner from "../Spinner/Spinner";
 import Profile from "./Profile";
 import Marks from "./Marks";
+import UpdateProfile from "./UpdateProfile";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/student/profile";
@@ -209,7 +210,9 @@ const index = (props) => {
         }}
       >
         <Toolbar />
-        {selectedItem == "View Mark" ? (
+        {user.updated == 0 ? (
+          <UpdateProfile student={user} />
+        ) : selectedItem == "View Mark" ? (
           <Marks student={user} />
         ) : (
           <Profile student={user} />

@@ -60,27 +60,20 @@ function CreateUser() {
   } = useForm();
   const onSubmit = async (data) => {
     console.log(data);
-    const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-      data.email
-    );
-    if (validEmail) {
-      setWait(true);
-      let fialdate =
-        data.birth_date != null
-          ? data.birth_date.toISOString().split("T")[0]
-          : null;
-      let finalData = { ...data, role: selectedValue, birth_date: fialdate };
-      try {
-        let result = await axios.post(BASE_URI, { ...finalData }, config);
-        setSuccess(true);
-        setErr("");
-        setWait(false);
-      } catch (error) {
-        setErr(error.response.data.message);
-        setWait(false);
-      }
-    } else {
-      alert(`${data.email} is not a valid email`);
+    setWait(true);
+    let fialdate =
+      data.birth_date != null
+        ? data.birth_date.toISOString().split("T")[0]
+        : null;
+    let finalData = { ...data, role: selectedValue, birth_date: fialdate };
+    try {
+      let result = await axios.post(BASE_URI, { ...finalData }, config);
+      setSuccess(true);
+      setErr("");
+      setWait(false);
+    } catch (error) {
+      setErr(error.response.data.message);
+      setWait(false);
     }
   };
   const handleChange = (event) => {
