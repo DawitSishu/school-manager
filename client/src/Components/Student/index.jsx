@@ -210,8 +210,8 @@ const index = (props) => {
         }}
       >
         <Toolbar />
-        {user.updated == 0 ? (
-          <UpdateProfile student={user} />
+        {user.updated == 0  ? (
+          <UpdateProfile />
         ) : selectedItem == "View Mark" ? (
           <Marks student={user} />
         ) : (

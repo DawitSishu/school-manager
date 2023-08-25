@@ -1,12 +1,4 @@
-import {
-  Button,
-  Typography,
-  Box,
-  Select,
-  MenuItem,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import { Button, Typography, Box, Select, MenuItem } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
@@ -14,21 +6,20 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { AccountCircle, LineAxisOutlined } from "@mui/icons-material";
 import EventIcon from "@mui/icons-material/Event";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { TextField, Autocomplete } from "@mui/material";
 import Spinner from "../Spinner/Spinner";
 
-const UpdateProfile = ({ student }) => {
+const BASE_URI = "http://localhost:5000/api/student/profile/input";
+
+const UpdateProfile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [wait, setWait] = useState(false);
   const [err, setErr] = useState("");
-  const navigate = useNavigate();
 
   let token = localStorage.getItem("token");
   let config = {
@@ -48,15 +39,13 @@ const UpdateProfile = ({ student }) => {
       .toISOString()
       .split("T")[0]);
     let finalData = { ...data, birth_date: fialdate };
-    console.log(finalData);
-    // try {
-    //   // let result = await axios.post(BASE_URI, { ...finalData }, config);
-    //   setErr("");
-    //   setWait(false);
-    // } catch (error) {
-    //   setErr(error.response.data.message);
-    //   setWait(false);
-    // }
+    try {
+      let result = await axios.post(BASE_URI, { ...finalData }, config);
+      window.location.reload();
+    } catch (error) {
+      setErr(error.response.data.message);
+      setWait(false);
+    }
   };
 
   return wait ? (
