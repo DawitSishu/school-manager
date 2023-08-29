@@ -139,6 +139,7 @@ const Classes = () => {
                       borderColor: "green",
                       borderRadius: "4px",
                       cursor: "pointer",
+                      padding: "4px",
                     }}
                     onClick={() => getClassDetail(row)}
                   >

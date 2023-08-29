@@ -144,6 +144,7 @@ const Students = () => {
                       borderColor: "green",
                       borderRadius: "4px",
                       cursor: "pointer",
+                      padding: "4px",
                     }}
                     onClick={() => getStudentDetail(row.student_id)}
                   >
@@ -159,6 +160,7 @@ const Students = () => {
                       borderColor: "yellow",
                       cursor: "pointer",
                       borderRadius: "4px",
+                      padding: "4px",
                     }}
                     onClick={() => resetPassword(row.student_id)}
                   >

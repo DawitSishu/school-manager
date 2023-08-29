@@ -151,6 +151,7 @@ const Teachers = () => {
                       borderWidth: "1px",
                       borderColor: "green",
                       borderRadius: "4px",
+                      padding: "4px",
                     }}
                     onClick={() => handleClickOpen(row)}
                   >
@@ -165,6 +166,7 @@ const Teachers = () => {
                       borderWidth: "1px",
                       borderColor: "yellow",
                       borderRadius: "4px",
+                      padding: "4px",
                     }}
                     onClick={() => resetPassword(row.teacher_id)}
                   >

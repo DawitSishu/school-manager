@@ -46,7 +46,8 @@ const ClassDetails = ({ classes, onClose }) => {
           <strong>Class Name:</strong> {classes.class_name}
         </DialogContentText>
         <DialogContentText>
-          <strong>Home Room Teacher:</strong>{" "}
+          <strong>Home Room Teacher:</strong>{" "} 
+          {/* dave eziga  */}
           {classes.homeroom_teacher ? classes.homeroom_teacher : "NOT ASSIGNED"}
         </DialogContentText>
         {classes.teachers ? (
