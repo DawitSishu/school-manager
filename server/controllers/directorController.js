@@ -99,7 +99,7 @@ export const teacherToClass = asyncHandler(async (req, res) => {
   res.json({ msg: "class and teacher have been updated successfully!" });
 });
 
-//@desc assigns student to a class 
+//@desc assigns student to a class
 //@route POST /api/classes/student
 //@access private
 export const studentToClass = asyncHandler(async (req, res) => {
@@ -245,11 +245,33 @@ export const resetStudent = asyncHandler(async (req, res) => {
     .json({ success: true, msg: "Student password reset successfully" });
 });
 
-
 //@desc returns all classes
 //@route GET /api/classes
 //@access private
 export const getClasses = asyncHandler(async (req, res) => {
   const result = await pool.query("SELECT * FROM class");
   res.json(result[0]);
+});
+
+//@desc returns all classes
+//@route GET /api/teacher/:teacher_id/reviews
+//@access private
+export const getTeacherReviews = asyncHandler(async (req, res) => {
+  const teacherId = req.params.teacher_id;
+  const getReviewsQuery = "SELECT * FROM reviews WHERE teacher_id = ?";
+  const { rows: teacherReviews } = await pool.query(getReviewsQuery, [
+    teacherId,
+  ]);
+
+  let totalRating = 0;
+  for (const review of teacherReviews) {
+    totalRating += review.rating;
+  }
+  const averageRating =
+    teacherReviews.length > 0 ? totalRating / teacherReviews.length : 0;
+  const responseJSON = {
+    reviews: teacherReviews,
+    average: averageRating.toFixed(1),
+  };
+  res.status(200).json(responseJSON);
 });

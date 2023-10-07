@@ -54,7 +54,9 @@ export const inputProfile = asyncHandler(async (req, res) => {
   res.json({ msg: "Profile updated successfully!" });
 });
 
-//add a rating to a teacher
+//@desc input the profile for student
+//@route post /api/student/review/teacher
+//@access private
 export const addReview = asyncHandler(async (req, res) => {
   const { teacher_id, rating, comment } = req.body;
   const student_id = req.user.student_id;
