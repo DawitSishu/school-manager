@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import { pool } from "../database/index.js";
 import bcrypt from "bcrypt";
 
-//@desc returns detail of the teacer
+//@desc returns detail of the teacher
 //@route GET /api/teacher/me
 //@access private
 export const getMydetails = asyncHandler(async (req, res) => {
@@ -10,7 +10,20 @@ export const getMydetails = asyncHandler(async (req, res) => {
     "SELECT * FROM teacher WHERE teacher_id = ?",
     [req.user.teacher_id]
   );
-  res.json(result[0][0]);
+  const teacherDetails = result[0][0];
+  const getReviewsQuery = "SELECT * FROM reviews WHERE teacher_id = ?";
+  const teacherReviews = await pool.query(getReviewsQuery, [
+    req.user.teacher_id,
+  ]);
+
+  let totalRating = 0;
+  for (const review of teacherReviews[0]) {
+    totalRating += review.rating;
+  }
+  const averageRating =
+    teacherReviews.length > 0 ? totalRating / teacherReviews.length : 0;
+  teacherDetails.averageRating = averageRating.toFixed(1);
+  res.status(200).json(teacherDetails);
 });
 
 //@desc returns all the classes of the teacher
@@ -122,5 +135,5 @@ export const updatePass = asyncHandler(async (req, res) => {
     `UPDATE teacher SET password = ? WHERE teacher_id = ?`,
     [newpassword, teacher_id]
   );
-res.json({msg:"Password updated successfully!!"});
+  res.json({ msg: "Password updated successfully!!" });
 });

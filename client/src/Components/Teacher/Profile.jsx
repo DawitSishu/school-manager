@@ -97,6 +97,9 @@ const Profile = ({ teacher }) => {
             <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
               Teaching Class: {JSON.parse(teacher.teaching_class).join(", ")}
             </Typography>
+            <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
+              Total Rating: {teacher.averageRating}
+            </Typography>
           </Grid>
         </Grid>
       </CardContent>

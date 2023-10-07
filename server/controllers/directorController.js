@@ -181,11 +181,11 @@ export const getOneTeacher = asyncHandler(async (req, res) => {
   const teacherDetails = result[0][0];
 
   const getReviewsQuery = "SELECT * FROM reviews WHERE teacher_id = ?";
-  const { rows: teacherReviews } = await pool.query(getReviewsQuery, [
+  const teacherReviews = await pool.query(getReviewsQuery, [
     req.params.id,
   ]);
   let totalRating = 0;
-  for (const review of teacherReviews) {
+  for (const review of teacherReviews[0]) {
     totalRating += review.rating;
   }
   const averageRating =
@@ -272,12 +272,12 @@ export const getClasses = asyncHandler(async (req, res) => {
 export const getTeacherReviews = asyncHandler(async (req, res) => {
   const teacherId = req.params.teacher_id;
   const getReviewsQuery = "SELECT * FROM reviews WHERE teacher_id = ?";
-  const { rows: teacherReviews } = await pool.query(getReviewsQuery, [
+  const teacherReviews = await pool.query(getReviewsQuery, [
     teacherId,
   ]);
 
   let totalRating = 0;
-  for (const review of teacherReviews) {
+  for (const review of teacherReviews[0]) {
     totalRating += review.rating;
   }
   const averageRating =
