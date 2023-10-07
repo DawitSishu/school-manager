@@ -178,7 +178,20 @@ export const getOneTeacher = asyncHandler(async (req, res) => {
     "SELECT * FROM teacher WHERE teacher_id = ?",
     [req.params.id]
   );
-  res.json(result[0][0]);
+  const teacherDetails = result[0][0];
+
+  const getReviewsQuery = "SELECT * FROM reviews WHERE teacher_id = ?";
+  const { rows: teacherReviews } = await pool.query(getReviewsQuery, [
+    req.params.id,
+  ]);
+  let totalRating = 0;
+  for (const review of teacherReviews) {
+    totalRating += review.rating;
+  }
+  const averageRating =
+    teacherReviews.length > 0 ? totalRating / teacherReviews.length : 0;
+  teacherDetails.averageRating = averageRating.toFixed(1);
+  res.status(200).json(teacherDetails);
 });
 
 //@desc resets teacher password to 1234
