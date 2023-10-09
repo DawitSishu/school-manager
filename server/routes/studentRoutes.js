@@ -5,6 +5,7 @@ import {
   updatePass,
   inputProfile,
   addReview,
+  myTeachers,
 } from "../controllers/studentController.js";
 
 const studentRouter = express.Router();
@@ -20,5 +21,8 @@ studentRouter.post("/profile/input", userAuthChecker, inputProfile);
 
 // add review to teacher
 studentRouter.post("/review/teacher", userAuthChecker, addReview);
+
+//get all teachers
+studentRouter.get("/myteachers", userAuthChecker, myTeachers);
 
 export default studentRouter;

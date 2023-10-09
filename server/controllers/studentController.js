@@ -54,7 +54,7 @@ export const inputProfile = asyncHandler(async (req, res) => {
   res.json({ msg: "Profile updated successfully!" });
 });
 
-//@desc input the profile for student
+//@desc input review for a specific teacher
 //@route post /api/student/review/teacher
 //@access private
 export const addReview = asyncHandler(async (req, res) => {
@@ -89,4 +89,17 @@ export const addReview = asyncHandler(async (req, res) => {
     comment,
   ]);
   res.status(201).json({ message: "Review added successfully" });
+});
+
+//@desc get a list of teachers to be reviewd
+//@route get /api/student/myteachers
+//@access private
+export const myTeachers = asyncHandler(async (req, res) => {
+  const { student_id, class_id } = req.user;
+  //class id in students
+  const Teacher_IDS = await pool.query(
+    "SELECT teachers FROM class WHERE class_id = ?",
+    [class_id]
+  );
+  res.json(Teacher_IDS[0][0]);
 });

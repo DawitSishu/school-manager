@@ -1,9 +1,29 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import axios from "axios";
+
+const URI = "http://localhost:5000/api/student/myteachers";
 
 const Review = () => {
-  return (
-    <div>Review</div>
-  )
-}
+  let token = localStorage.getItem("token");
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const getData = async () => {
+    try {
+      const response = await axios.get(URI, config);
+      let teach = JSON.parse(response.data.teachers);
+      console.log(teach);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-export default Review
+  useEffect(() => {
+    getData();
+  }, []);
+  return <div>Review</div>;
+};
+
+export default Review;
