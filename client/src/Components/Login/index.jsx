@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, Typography, Box } from "@mui/material";
+import { Button, Typography, Box, Grid } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -10,9 +10,10 @@ import { AccountCircle } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../Spinner/Spinner";
+
 const BASE_URI = "http://localhost:5000/api/users/login";
 
-const index = () => {
+const Index = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [err, setErr] = useState("");
@@ -39,9 +40,9 @@ const index = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
         console.log(response.data.role);
-        response.data.role == "teacher"
+        response.data.role === "teacher"
           ? navigate("/teacher")
-          : response.data.role == "admin"
+          : response.data.role === "admin"
           ? navigate("/director")
           : navigate("/profile");
       }
@@ -52,89 +53,84 @@ const index = () => {
     }
   };
 
-  return waiting ? (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+  return (
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      style={{ height: "100vh" }}
     >
-      <Spinner />
-    </div>
-  ) : (
-    <Box
-      sx={{
-        padding: 10,
-      }}
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <Typography variant="h5" align="center">
-        Log In To Your Account
-      </Typography>
-      <br />
-      {err && (
-        <Typography color="red" variant="h7" align="center">
-          {err}
-        </Typography>
-      )}
-      <br />
-      <br />
-      <OutlinedInput
-        fullWidth
-        sx={{
-          border: "0.5px solid white",
-        }}
-        placeholder="Email"
-        id="email"
-        {...register("email", { required: "email can't be empty" })}
-        startAdornment={
-          <InputAdornment position="start">
-            <AccountCircle />
-          </InputAdornment>
-        }
-      />
-      <br />
-      {errors.email && (
-        <Typography variant="h7" color="red">
-          {errors.email.message}
-        </Typography>
-      )}
-      <br />
-      <OutlinedInput
-        fullWidth
-        sx={{
-          border: "0.5px solid white",
-        }}
-        id="password"
-        placeholder="Password"
-        type={showPassword ? "text" : "password"}
-        startAdornment={
-          <InputAdornment position="start">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={() => setShowPassword((show) => !show)}
-              edge="end"
-            >
-              {showPassword ? <Visibility /> : <VisibilityOff />}
-            </IconButton>
-          </InputAdornment>
-        }
-        {...register("password", { required: "Password can't be empty" })}
-      />
-      <br />
-      {errors.password && (
-        <Typography variant="h7" color="red">
-          {errors.password.message}
-        </Typography>
-      )}
-      <br />
-      <Button type="submit" variant="contained">
-        Log In
-      </Button>
-    </Box>
+      <Grid item xs={12} sm={8} md={6} lg={4}>
+        <Box
+          sx={{
+            padding: 3,
+            border: "1px solid #ccc",
+            borderRadius: 8,
+            backgroundColor: "#fff",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+          }}
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <Typography variant="h5" align="center">
+            Log In To Your Account
+          </Typography>
+          {err && (
+            <Typography variant="body1" color="error" align="center">
+              {err}
+            </Typography>
+          )}
+          <br />
+          <OutlinedInput
+            fullWidth
+            placeholder="Email"
+            id="email"
+            {...register("email", { required: "Email can't be empty" })}
+            startAdornment={
+              <InputAdornment position="start">
+                <AccountCircle />
+              </InputAdornment>
+            }
+          />
+          {errors.email && (
+            <Typography variant="body2" color="error">
+              {errors.email.message}
+            </Typography>
+          )}
+          <br />
+          <br />
+          <OutlinedInput
+            fullWidth
+            id="password"
+            placeholder="Password"
+            type={showPassword ? "text" : "password"}
+            startAdornment={
+              <InputAdornment position="start">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword((show) => !show)}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            {...register("password", { required: "Password can't be empty" })}
+          />
+          {errors.password && (
+            <Typography variant="body2" color="error">
+              {errors.password.message}
+            </Typography>
+          )}
+          <br />
+          <br />
+          <Button type="submit" variant="contained" fullWidth>
+            Log In
+          </Button>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };
 
-export default index;
+export default Index;
