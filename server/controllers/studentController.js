@@ -95,11 +95,33 @@ export const addReview = asyncHandler(async (req, res) => {
 //@route get /api/student/myteachers
 //@access private
 export const myTeachers = asyncHandler(async (req, res) => {
-  const { student_id, class_id } = req.user;
-  //class id in students
-  const Teacher_IDS = await pool.query(
+  const { class_id } = req.user;
+  const teacherIDsString = await pool.query(
     "SELECT teachers FROM class WHERE class_id = ?",
     [class_id]
   );
-  res.json(Teacher_IDS[0][0]);
+
+  const teacherIDsObject = JSON.parse(teacherIDsString[0][0].teachers);
+
+  // Extract teacher IDs into an array
+  const teacherIDs = Object.values(teacherIDsObject);
+
+  // Query the teacher table to get full names
+  const teacherFullNames = await Promise.all(
+    teacherIDs.map(async (teacherID) => {
+      const teacherData = await pool.query(
+        "SELECT full_name FROM teacher WHERE teacher_id = ?",
+        [teacherID]
+      );
+      return teacherData[0][0].full_name;
+    })
+  );
+
+  // Combine the IDs and full names into a final result object
+  const result = {};
+  Object.keys(teacherIDsObject).forEach((subject, index) => {
+    result[subject] = [teacherIDs[index], teacherFullNames[index]];
+  });
+
+  res.json(result);
 });

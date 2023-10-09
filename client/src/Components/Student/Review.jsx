@@ -13,8 +13,8 @@ const Review = () => {
   const getData = async () => {
     try {
       const response = await axios.get(URI, config);
-      let teach = JSON.parse(response.data.teachers);
-      console.log(teach);
+      // let teach = JSON.parse(response.data.teachers);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
