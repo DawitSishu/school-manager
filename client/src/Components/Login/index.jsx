@@ -26,6 +26,12 @@ const index = () => {
 
   const onSubmit = async (data) => {
     setWaiting(true);
+    for (const key in data) {
+      if (typeof data[key] === "string") {
+        data[key] = data[key].trim();
+      }
+    }
+
     try {
       const response = await axios.post(BASE_URI, { ...data });
       if (response) {

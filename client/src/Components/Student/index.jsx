@@ -17,7 +17,7 @@ import {
   Button,
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
-import ClassIcon from "@mui/icons-material/Class";
+import StarIcon from "@mui/icons-material/Star";
 import CreateIcon from "@mui/icons-material/Create";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
@@ -26,6 +26,7 @@ import Spinner from "../Spinner/Spinner";
 import Profile from "./Profile";
 import Marks from "./Marks";
 import UpdateProfile from "./UpdateProfile";
+import Review from "./Review";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/student/profile";
@@ -35,6 +36,7 @@ const drawerWidth = 240;
 const iconMap = {
   Profile: <PersonIcon />,
   "View Mark": <CreateIcon />,
+  "Add Review": <StarIcon />,
 };
 
 const index = (props) => {
@@ -108,7 +110,7 @@ const index = (props) => {
       </Toolbar>
       <Divider />
       <List>
-        {["Profile", "View Mark"].map((text, index) => (
+        {["Profile", "View Mark", "Add Review"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton onClick={() => handleItemClick(text)}>
               <ListItemIcon>{iconMap[text]}</ListItemIcon>
@@ -210,10 +212,12 @@ const index = (props) => {
         }}
       >
         <Toolbar />
-        {user.updated == 0  ? (
+        {user.updated == 0 ? (
           <UpdateProfile />
         ) : selectedItem == "View Mark" ? (
           <Marks student={user} />
+        ) : selectedItem == "Add Review" ? (
+          <Review />
         ) : (
           <Profile student={user} />
         )}
