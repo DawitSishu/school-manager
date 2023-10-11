@@ -7,7 +7,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
-import RatingComp from "./RatingComp";
+import ReviewComp from "./RatingComp"; // Import your ReviewComp component
 
 const URI = "http://localhost:5000/api/student/myteachers";
 
@@ -33,6 +33,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Review = () => {
   const [teachers, setTeachers] = useState(null);
+  const [showReview, setShowReview] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
 
   let token = localStorage.getItem("token");
   let config = {
@@ -43,7 +45,6 @@ const Review = () => {
   const getData = async () => {
     try {
       const response = await axios.get(URI, config);
-      // let teach = JSON.parse(response.data.teachers);
       console.log(response.data);
       setTeachers(response.data);
     } catch (error) {
@@ -54,35 +55,58 @@ const Review = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  // Function to handle the "Review" button click
+  const handleReviewClick = (teacherData) => {
+    setSelectedTeacher(teacherData);
+    setShowReview(true);
+  };
+
+  const removeReview = () => {
+    setShowReview(false);
+  };
+
+  if (showReview) {
+    return (
+      <ReviewComp
+        config={config}
+        teacher={selectedTeacher}
+        back={removeReview}
+      />
+    );
+  }
+
   return !teachers ? null : (
-    <RatingComp />
+    <div>
+      <Table sx={{ maxWidth: 800 }} aria-label="customized table">
+        <TableHead>
+          <TableRow>
+            <StyledTableCell align="center">Subject</StyledTableCell>
+            <StyledTableCell align="center">Full Name</StyledTableCell>
+            <StyledTableCell align="center"></StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {Object.keys(teachers).map((row, idx) => (
+            <StyledTableRow key={idx}>
+              <StyledTableCell align="center">{row}</StyledTableCell>
+              <StyledTableCell align="center">
+                {teachers[row][1]}
+              </StyledTableCell>
+              <StyledTableCell align="center">
+                <Button
+                  variant="contained"
+                  onClick={() => handleReviewClick(teachers[row])}
+                >
+                  Review
+                </Button>
+              </StyledTableCell>
+            </StyledTableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
-  // (
-  //   <div>
-  //     <Table sx={{ maxWidth: 800 }} aria-label="customized table">
-  //       <TableHead>
-  //         <TableRow>
-  //           <StyledTableCell align="center">Subject</StyledTableCell>
-  //           <StyledTableCell align="center">Full Name</StyledTableCell>
-  //           <StyledTableCell align="center"></StyledTableCell>
-  //         </TableRow>
-  //       </TableHead>
-  //       <TableBody>
-  //         {Object.keys(teachers).map((row, idx) => (
-  //           <StyledTableRow key={idx}>
-  //             <StyledTableCell align="center">{row}</StyledTableCell>
-  //             <StyledTableCell align="center">
-  //               {teachers[row][1]}
-  //             </StyledTableCell>
-  //             <StyledTableCell align="center">
-  //               <Button variant="contained">Review</Button>
-  //             </StyledTableCell>
-  //           </StyledTableRow>
-  //         ))}
-  //       </TableBody>
-  //     </Table>
-  //   </div>
-  // );
 };
 
 export default Review;

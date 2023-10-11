@@ -1,43 +1,52 @@
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { Rating, Box, Typography, TextField, Button } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
+import React, { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { Rating, Box, Typography, TextField, Button } from "@mui/material";
+import StarIcon from "@mui/icons-material/Star";
 
-const RatingComp = () => {
+const RatingComp = ({ config, teacher, back }) => {
   const {
     handleSubmit,
     control,
+    setValue, // Add setValue function
     formState: { errors },
   } = useForm();
 
+  const [ratingValue, setRatingValue] = useState(0);
+
+  useEffect(() => {
+    console.log(config);
+    console.log(teacher);
+  }, []);
+
   const handleFormSubmit = (data) => {
-    // Call the onSubmit callback with the form data.
+    if (!data.rating) {
+        data.rating = 0;
+      }
+      console.log(data);
     console.log(data);
+    // back();
   };
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <Typography variant="h6">Rate the Teacher</Typography>
-      <Controller
+      <Rating
         name="rating"
-        control={control}
-        defaultValue={0}
-        render={({ field }) => (
-          <Rating
-            name={field.name}
-            value={field.value}
-            precision={0.5}
-            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-            onChange={(_, value) => field.onChange(value)}
-          />
-        )}
+        value={ratingValue}
+        precision={0.5}
+        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+        onChange={(_, value) => {
+          setRatingValue(value);
+          setValue("rating", value); // Use setValue function
+        }}
       />
+      <Typography variant="subtitle1">{ratingValue}</Typography>
       <Box my={2}>
         <Controller
           name="comment"
           control={control}
           defaultValue=""
-          rules={{ required: 'Comment is required' }}
+          rules={{ required: "Comment is required" }}
           render={({ field }) => (
             <TextField
               {...field}
@@ -47,7 +56,7 @@ const RatingComp = () => {
               rows={4}
               fullWidth
               error={!!errors.comment}
-              helperText={errors.comment ? errors.comment.message : ''}
+              helperText={errors.comment ? errors.comment.message : ""}
             />
           )}
         />
