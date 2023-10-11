@@ -10,9 +10,30 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StarIcon from "@mui/icons-material/Star";
+import toastr from "toastr";
+import "toastr/build/toastr.css";
 import axios from "axios";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/student/review/teacher";
+
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: true,
+  positionClass: "toast-top-right",
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: "300",
+  hideDuration: "1000",
+  timeOut: "5000",
+  extendedTimeOut: "1000",
+  showEasing: "swing",
+  hideEasing: "linear",
+  showMethod: "fadeIn",
+  hideMethod: "fadeOut",
+};
 
 const RatingComp = ({ config, teacher, back }) => {
   const {
@@ -23,22 +44,45 @@ const RatingComp = ({ config, teacher, back }) => {
   } = useForm();
 
   const [ratingValue, setRatingValue] = useState(0);
+  const [waiting, setWaiting] = useState(false);
 
   useEffect(() => {
     console.log(config);
     console.log(teacher);
   }, []);
 
-  const handleFormSubmit = (data) => {
+  const handleFormSubmit = async (data) => {
+    setWaiting(true);
     if (!data.rating) {
       data.rating = 0;
     }
-    console.log(data);
-    console.log(data);
-    // back();
+    try {
+      const respose = await axios.post(
+        BASE_URI,
+        { ...data, teacher_id: teacher[0] },
+        config
+      );
+      toastr.success(respose.data.msg);
+    } catch (error) {
+      toastr.warning(error.response.data.message);
+    }
+    setWaiting(false);
+    back();
   };
 
-  return (
+  return waiting ? (
+    <div
+      style={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Spinner />
+    </div>
+  ) : (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <IconButton onClick={back}>
         {" "}

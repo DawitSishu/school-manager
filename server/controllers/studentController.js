@@ -70,12 +70,12 @@ export const addReview = asyncHandler(async (req, res) => {
   // Check if the user has already reviewed the same teacher
   const existingReviewQuery =
     "SELECT * FROM reviews WHERE teacher_id = ? AND student_id = ?";
-  const { rows: existingReview } = await pool.query(existingReviewQuery, [
+  const existingReview = await pool.query(existingReviewQuery, [
     teacher_id,
     student_id,
   ]);
 
-  if (existingReview.length > 0) {
+  if ( existingReview[0].length > 0) {
     const err = new Error("You have already reviewed this teacher");
     err.statusCode = 400;
     throw err;
@@ -88,7 +88,7 @@ export const addReview = asyncHandler(async (req, res) => {
     rating,
     comment,
   ]);
-  res.status(201).json({ message: "Review added successfully" });
+  res.status(201).json({ msg: "Review added successfully" });
 });
 
 //@desc get a list of teachers to be reviewd
