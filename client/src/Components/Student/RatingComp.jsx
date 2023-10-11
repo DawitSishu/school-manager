@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StarIcon from "@mui/icons-material/Star";
+import axios from "axios";
 
 const BASE_URI = "http://localhost:5000/api/student/review/teacher";
 
@@ -51,7 +52,7 @@ const RatingComp = ({ config, teacher, back }) => {
         emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
         onChange={(_, value) => {
           setRatingValue(value);
-          setValue("rating", value); // Use setValue function
+          setValue("rating", value);
         }}
       />
       <Typography variant="subtitle1">{ratingValue}</Typography>
