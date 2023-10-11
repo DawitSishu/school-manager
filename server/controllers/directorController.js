@@ -181,9 +181,7 @@ export const getOneTeacher = asyncHandler(async (req, res) => {
   const teacherDetails = result[0][0];
 
   const getReviewsQuery = "SELECT * FROM reviews WHERE teacher_id = ?";
-  const teacherReviews = await pool.query(getReviewsQuery, [
-    req.params.id,
-  ]);
+  const teacherReviews = await pool.query(getReviewsQuery, [req.params.id]);
   let totalRating = 0;
   for (const review of teacherReviews[0]) {
     totalRating += review.rating;
@@ -272,9 +270,7 @@ export const getClasses = asyncHandler(async (req, res) => {
 export const getTeacherReviews = asyncHandler(async (req, res) => {
   const teacherId = req.params.teacher_id;
   const getReviewsQuery = "SELECT * FROM reviews WHERE teacher_id = ?";
-  const teacherReviews = await pool.query(getReviewsQuery, [
-    teacherId,
-  ]);
+  const teacherReviews = await pool.query(getReviewsQuery, [teacherId]);
 
   let totalRating = 0;
   for (const review of teacherReviews[0]) {
@@ -287,4 +283,21 @@ export const getTeacherReviews = asyncHandler(async (req, res) => {
     average: averageRating.toFixed(1),
   };
   res.status(200).json(responseJSON);
+});
+
+//@desc modifies review period
+//@route PUT /api/reviews/dates
+//@access private
+export const updateReviewPeriod = asyncHandler(async (req, res) => {
+  const { start_date, end_date } = req.body;
+
+  if (!start_date || !end_date) {
+    const err = new Error("Both start_date and end_date are required.");
+    err.statusCode = 400;
+    throw err;
+  }
+  const updateQuery =
+    "UPDATE review_dates SET start_date = ?, end_date = ? WHERE review_date_id = 1";
+  const result = await pool.query(updateQuery, [start_date, end_date]);
+  res.status(200).json({ msg: "Review period updated successfully" });
 });

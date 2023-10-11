@@ -13,6 +13,7 @@ import {
   getClasses,
   getSudentDetail,
   getTeacherReviews,
+  updateReviewPeriod,
 } from "../controllers/directorController.js";
 
 const directorRouter = express.Router();
@@ -56,5 +57,8 @@ directorRouter.get(
   userAuthChecker,
   getTeacherReviews
 );
+
+//update the review dates
+directorRouter.put("/reviews/dates", userAuthChecker, updateReviewPeriod);
 
 export default directorRouter;
