@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Rating, Box, Typography, TextField, Button } from "@mui/material";
+import {
+  Rating,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  IconButton,
+} from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import StarIcon from "@mui/icons-material/Star";
+
+const BASE_URI = "http://localhost:5000/api/student/review/teacher";
 
 const RatingComp = ({ config, teacher, back }) => {
   const {
     handleSubmit,
     control,
-    setValue, // Add setValue function
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -20,15 +30,19 @@ const RatingComp = ({ config, teacher, back }) => {
 
   const handleFormSubmit = (data) => {
     if (!data.rating) {
-        data.rating = 0;
-      }
-      console.log(data);
+      data.rating = 0;
+    }
+    console.log(data);
     console.log(data);
     // back();
   };
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <IconButton onClick={back}>
+        {" "}
+        <ArrowBackIcon color="#000000" />
+      </IconButton>
       <Typography variant="h6">Rate the Teacher</Typography>
       <Rating
         name="rating"
