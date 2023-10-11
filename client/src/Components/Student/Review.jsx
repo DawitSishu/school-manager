@@ -3,11 +3,11 @@ import axios from "axios";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
+import RatingComp from "./RatingComp";
 
 const URI = "http://localhost:5000/api/student/myteachers";
 
@@ -55,31 +55,34 @@ const Review = () => {
     getData();
   }, []);
   return !teachers ? null : (
-    <div>
-      <Table sx={{ maxWidth: 800 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell align="center">Subject</StyledTableCell>
-            <StyledTableCell align="center">Full Name</StyledTableCell>
-            <StyledTableCell align="center"></StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Object.keys(teachers).map((row, idx) => (
-            <StyledTableRow key={idx}>
-              <StyledTableCell align="center">{row}</StyledTableCell>
-              <StyledTableCell align="center">
-                {teachers[row][1]}
-              </StyledTableCell>
-              <StyledTableCell align="center">
-                <Button variant="contained">Review</Button>
-              </StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <RatingComp />
   );
+  // (
+  //   <div>
+  //     <Table sx={{ maxWidth: 800 }} aria-label="customized table">
+  //       <TableHead>
+  //         <TableRow>
+  //           <StyledTableCell align="center">Subject</StyledTableCell>
+  //           <StyledTableCell align="center">Full Name</StyledTableCell>
+  //           <StyledTableCell align="center"></StyledTableCell>
+  //         </TableRow>
+  //       </TableHead>
+  //       <TableBody>
+  //         {Object.keys(teachers).map((row, idx) => (
+  //           <StyledTableRow key={idx}>
+  //             <StyledTableCell align="center">{row}</StyledTableCell>
+  //             <StyledTableCell align="center">
+  //               {teachers[row][1]}
+  //             </StyledTableCell>
+  //             <StyledTableCell align="center">
+  //               <Button variant="contained">Review</Button>
+  //             </StyledTableCell>
+  //           </StyledTableRow>
+  //         ))}
+  //       </TableBody>
+  //     </Table>
+  //   </div>
+  // );
 };
 
 export default Review;
