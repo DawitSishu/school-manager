@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Rating,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
@@ -100,6 +101,11 @@ const Profile = ({ teacher }) => {
             <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
               Total Rating: {teacher.averageRating}
             </Typography>
+            <Rating
+              value={parseFloat(teacher.averageRating)}
+              readOnly
+              precision={0.5}
+            />
           </Grid>
         </Grid>
       </CardContent>
