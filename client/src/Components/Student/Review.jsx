@@ -71,19 +71,11 @@ const Review = () => {
               <StyledTableCell align="center">
                 {teachers[row][1]}
               </StyledTableCell>
-              <Button variant="contained">Review</Button>
-            </StyledTableRow>
-          ))}
-          {/* {teachers.map((row, idx) => (
-            <StyledTableRow key={idx}>
-              <StyledTableCell align="center">{row[0]}</StyledTableCell>
-              <StyledTableCell
-                align="center"
-              >
-                {}
+              <StyledTableCell align="center">
+                <Button variant="contained">Review</Button>
               </StyledTableCell>
             </StyledTableRow>
-          ))} */}
+          ))}
         </TableBody>
       </Table>
     </div>
