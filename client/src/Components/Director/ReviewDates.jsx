@@ -6,8 +6,40 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import EventIcon from "@mui/icons-material/Event";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import axios from "axios";
+import Spinner from "../Spinner/Spinner";
+import toastr from "toastr";
+import { useState } from "react";
+
+const BASE_URI = "http://localhost:5000/api/reviews/dates";
+
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: true,
+  positionClass: "toast-top-right",
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: "300",
+  hideDuration: "1000",
+  timeOut: "5000",
+  extendedTimeOut: "1000",
+  showEasing: "swing",
+  hideEasing: "linear",
+  showMethod: "fadeIn",
+  hideMethod: "fadeOut",
+};
 
 function ReviewDates() {
+  const [waiting, setWaiting] = useState(false);
+
+  let token = localStorage.getItem("token");
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const {
     register,
     handleSubmit,
@@ -17,8 +49,17 @@ function ReviewDates() {
     setValue,
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    setWaiting(true);
+    data.end_date = data.end_date.toISOString().split("T")[0];
+    data.start_date = data.start_date.toISOString().split("T")[0];
+    try {
+      const response = await axios.put(BASE_URI, { ...data }, config);
+      toastr.success(response.data.msg);
+    } catch (error) {
+      toastr.warning("ERROR: Please Try again!");
+    }
+    setWaiting(false);
   };
 
   const isStartSelected = !!watch("start_date");
@@ -27,7 +68,17 @@ function ReviewDates() {
     return selectedDate <= new Date();
   };
 
-  return (
+  return waiting ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spinner />
+    </div>
+  ) : (
     <Paper
       elevation={3}
       style={{ padding: "16px", background: "#f5f5f5", borderRadius: "8px" }}

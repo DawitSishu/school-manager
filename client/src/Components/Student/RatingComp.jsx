@@ -64,7 +64,7 @@ const RatingComp = ({ config, teacher, back }) => {
       );
       toastr.success(respose.data.msg);
     } catch (error) {
-      toastr.warning(error.response.data.message);
+      toastr.warning("ERROR: Please Try again!");
     }
     setWaiting(false);
     back();
