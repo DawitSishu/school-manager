@@ -7,9 +7,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
-import ReviewComp from "./RatingComp"; // Import your ReviewComp component
+import ReviewComp from "./RatingComp";
 
 const URI = "http://localhost:5000/api/student/myteachers";
+const CHECK = "http://localhost:5000/api/student/check/review";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -52,7 +53,17 @@ const Review = () => {
     }
   };
 
+  const checkDates = async () => {
+    try {
+      const response = await axios.get(CHECK, config);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    checkDates();
     getData();
   }, []);
 

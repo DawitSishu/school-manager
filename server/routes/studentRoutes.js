@@ -6,6 +6,7 @@ import {
   inputProfile,
   addReview,
   myTeachers,
+  checkReviewDate,
 } from "../controllers/studentController.js";
 
 const studentRouter = express.Router();
@@ -24,5 +25,8 @@ studentRouter.post("/review/teacher", userAuthChecker, addReview);
 
 //get all teachers
 studentRouter.get("/myteachers", userAuthChecker, myTeachers);
+
+//check if review is open
+studentRouter.get("/check/review", userAuthChecker, checkReviewDate);
 
 export default studentRouter;

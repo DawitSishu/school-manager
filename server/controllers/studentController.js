@@ -75,7 +75,7 @@ export const addReview = asyncHandler(async (req, res) => {
     student_id,
   ]);
 
-  if ( existingReview[0].length > 0) {
+  if (existingReview[0].length > 0) {
     const err = new Error("You have already reviewed this teacher");
     err.statusCode = 400;
     throw err;
@@ -124,4 +124,26 @@ export const myTeachers = asyncHandler(async (req, res) => {
   });
 
   res.json(result);
+});
+
+//@desc check if the current date is in the range of reviews
+//@route GET /api/check/review
+//@access private
+export const checkReviewDate = asyncHandler(async (req, res) => {
+  const currentDate = new Date();
+  const result = await pool.query(
+    "SELECT * FROM review_dates WHERE review_date_id = 1"
+  );
+  const { start_date, end_date } = result[0][0];
+  if (currentDate >= start_date && currentDate <= end_date) {
+    res.status(200).json([true, "Please Select teacher and add your Review."]);
+  } else {
+    res
+      .status(200)
+      .json([
+        false,
+        "Review Period is not open yet please Wait until it opens.",
+      ]);
+  }
+  res.json([]);
 });
