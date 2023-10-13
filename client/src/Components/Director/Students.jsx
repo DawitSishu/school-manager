@@ -117,7 +117,6 @@ const Students = () => {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>ID</StyledTableCell>
               <StyledTableCell align="center">Full Name</StyledTableCell>
               <StyledTableCell align="center">Email</StyledTableCell>
               <StyledTableCell align="center">Password</StyledTableCell>
@@ -128,9 +127,6 @@ const Students = () => {
           <TableBody>
             {filteredStudents.map((row) => (
               <StyledTableRow key={row.student_id}>
-                <StyledTableCell component="th" scope="row">
-                  {row.student_id}
-                </StyledTableCell>
                 <StyledTableCell align="right">{row.full_name}</StyledTableCell>
                 <StyledTableCell align="right">{row.email}</StyledTableCell>
                 <StyledTableCell align="right">{row.password}</StyledTableCell>

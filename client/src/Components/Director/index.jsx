@@ -27,6 +27,8 @@ import Students from "./Students";
 import Classes from "./Classes";
 import CreateUser from "./CreateUser";
 import Spinner from "../Spinner/Spinner";
+import ReviewDates from "./ReviewDates";
+import EventIcon from "@mui/icons-material/Event";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/director/me";
@@ -38,6 +40,7 @@ const iconMap = {
   Teachers: <AccountCircleIcon />,
   Students: <PeopleIcon />,
   "Create User": <PersonAddIcon />,
+  "Review Date": <EventIcon />,
 };
 
 const index = (props) => {
@@ -108,14 +111,16 @@ const index = (props) => {
       </Toolbar>
       <Divider />
       <List>
-        {["Classes", "Teachers", "Students", "Create User"].map((text) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => handleItemClick(text)}>
-              <ListItemIcon>{iconMap[text]}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {["Classes", "Teachers", "Students", "Create User", "Review Date"].map(
+          (text) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton onClick={() => handleItemClick(text)}>
+                <ListItemIcon>{iconMap[text]}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          )
+        )}
       </List>
     </div>
   );
@@ -219,6 +224,8 @@ const index = (props) => {
           <Classes />
         ) : selectedItem == "Create User" ? (
           <CreateUser />
+        ) : selectedItem == "Review Date" ? (
+          <ReviewDates />
         ) : (
           <Typography paragraph>{selectedItem}</Typography>
         )}
