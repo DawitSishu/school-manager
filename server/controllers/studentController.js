@@ -74,12 +74,26 @@ export const addReview = asyncHandler(async (req, res) => {
     teacher_id,
     student_id,
   ]);
-
   if (existingReview[0].length > 0) {
-    const err = new Error("You have already reviewed this teacher");
-    err.statusCode = 400;
-    throw err;
+    // Check if the previous review's timestamp falls within the current review period
+    const reviewTimestamp = existingReview[0][0].timestamp;
+
+    const reviewDatesQuery =
+      "SELECT start_date, end_date FROM review_dates WHERE id = 1";
+    const reviewDates = await pool.query(reviewDatesQuery);
+
+    const startDate = new Date(reviewDates[0].start_date);
+    const endDate = new Date(reviewDates[0].end_date);
+
+    if (reviewTimestamp >= startDate && reviewTimestamp <= endDate) {
+      const err = new Error(
+        "You have already reviewed this teacher during the current review period"
+      );
+      err.statusCode = 400;
+      throw err;
+    }
   }
+
   const insertReviewQuery =
     "INSERT INTO reviews (student_id, teacher_id, rating, comment) VALUES (?, ?, ?, ?)";
   await pool.query(insertReviewQuery, [
