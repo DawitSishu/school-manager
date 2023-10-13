@@ -109,7 +109,9 @@ const Classes = ({ teacher }) => {
         total += std.report_card[semister][subject];
       });
       std.report_card[semister].Total = total;
-      std.report_card[semister].Average = total / subjects.length;
+      std.report_card[semister].Average = parseFloat(
+        (total / subjects.length).toFixed(2)
+      );
     }
     students.sort(
       (a, b) => b.report_card[semister].Total - a.report_card[semister].Total
