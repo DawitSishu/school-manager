@@ -6,8 +6,9 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import ReviewComp from "./RatingComp";
+import Spinner from "../Spinner/Spinner";
 
 const URI = "http://localhost:5000/api/student/myteachers";
 const CHECK = "http://localhost:5000/api/student/check/review";
@@ -35,7 +36,9 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const Review = () => {
   const [teachers, setTeachers] = useState(null);
   const [showReview, setShowReview] = useState(false);
+  const [status, setStatus] = useState(null);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [waiting, setWaiting] = useState(false);
 
   let token = localStorage.getItem("token");
   let config = {
@@ -56,18 +59,19 @@ const Review = () => {
   const checkDates = async () => {
     try {
       const response = await axios.get(CHECK, config);
-      console.log(response.data);
+      setStatus(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
+    setWaiting(true);
     checkDates();
     getData();
+    setWaiting(false);
   }, []);
 
-  // Function to handle the "Review" button click
   const handleReviewClick = (teacherData) => {
     setSelectedTeacher(teacherData);
     setShowReview(true);
@@ -87,7 +91,31 @@ const Review = () => {
     );
   }
 
-  return !teachers ? null : (
+  return waiting ? (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <Spinner />
+    </div>
+  ) : status && !status[0] ? (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <Typography variant="h5">{status[1]}</Typography>
+    </div>
+  ) : !teachers ? null : (
     <div>
       <Table sx={{ maxWidth: 800 }} aria-label="customized table">
         <TableHead>

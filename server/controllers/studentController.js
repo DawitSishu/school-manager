@@ -145,5 +145,4 @@ export const checkReviewDate = asyncHandler(async (req, res) => {
         "Review Period is not open yet please Wait until it opens.",
       ]);
   }
-  res.json([]);
 });
