@@ -21,7 +21,7 @@ export const getMydetails = asyncHandler(async (req, res) => {
     totalRating += review.rating;
   }
   const averageRating =
-    teacherReviews.length > 0 ? totalRating / teacherReviews.length : 0;
+    teacherReviews.length > 0 ? totalRating / teacherReviews[0].length : 0;
   teacherDetails.averageRating = averageRating.toFixed(1);
   res.status(200).json(teacherDetails);
 });
@@ -144,7 +144,7 @@ export const updatePass = asyncHandler(async (req, res) => {
 export const myReviews = asyncHandler(async (req, res) => {
   const { teacher_id } = req.user;
   const result = await pool.query(
-    `SELECT * FROM reviews WHERE teacher_id = ? ORDER BY timestamp DESC`, 
+    `SELECT * FROM reviews WHERE teacher_id = ? ORDER BY timestamp DESC`,
     [teacher_id]
   );
   res.status(200).json(result[0]);

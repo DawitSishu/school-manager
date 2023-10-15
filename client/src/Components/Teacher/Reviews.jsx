@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Typography,
   Card,
@@ -10,15 +10,13 @@ import {
   Rating,
 } from "@mui/material";
 import axios from "axios";
+import Spinner from "../Spinner/Spinner";
 
 const BASE_URI = "http://localhost:5000/api/teacher/myreviews";
 
 const Reviews = ({ config }) => {
-  const reviews = [
-    { message: "Great service, I'll definitely come back!", rating: "3" },
-    { message: "Awesome experience. Loved the food!", rating: "2" },
-    { message: "Fantastic place for a family dinner.", rating: "1.5" },
-  ];
+  const [reviews, setReviews] = useState(null);
+  const [waiting, setWaiting] = useState(false);
 
   const primaryAvatarStyle = {
     backgroundColor: "#FFFF00",
@@ -32,19 +30,31 @@ const Reviews = ({ config }) => {
   };
 
   const getReviews = async () => {
+    setWaiting(true);
     try {
       const response = await axios.get(BASE_URI, config);
-      console.log(response);
+      //   setReviews(response.data);
     } catch (error) {
       console.log(error);
     }
+    setWaiting(false);
   };
 
   useEffect(() => {
     getReviews();
   }, []);
 
-  return (
+  return waiting ? (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Spinner />
+    </div>
+  ) : reviews ? (
     <div>
       <Typography variant="h4" align="center">
         Student Reviews
@@ -57,7 +67,7 @@ const Reviews = ({ config }) => {
                 avatar={<Avatar style={primaryAvatarStyle}></Avatar>}
               />
               <CardContent>
-                <Typography variant="body1">{review.message}</Typography>
+                <Typography variant="body1">{review.comment}</Typography>
                 <Box>
                   <Rating
                     value={parseFloat(review.rating)}
@@ -70,6 +80,18 @@ const Reviews = ({ config }) => {
           </Grid>
         ))}
       </Grid>
+    </div>
+  ) : (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Typography align="center" variant="h4">
+        You don't have any review as of now.
+      </Typography>
     </div>
   );
 };
