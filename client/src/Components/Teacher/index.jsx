@@ -19,12 +19,14 @@ import PersonIcon from "@mui/icons-material/Person";
 import ClassIcon from "@mui/icons-material/Class";
 import CreateIcon from "@mui/icons-material/Create";
 import MenuIcon from "@mui/icons-material/Menu";
+import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Classes from "./Classes";
 import InputMark from "./InputMark";
 import Profile from "./Profile";
 import Spinner from "../Spinner/Spinner";
+import Reviews from "./Reviews";
 
 const BASE_URI_MAIN = "http://localhost:5000/api/users/";
 const BASE_URI_LESS = "http://localhost:5000/api/teacher/me";
@@ -35,6 +37,7 @@ const iconMap = {
   Profile: <PersonIcon />,
   "My Classes": <ClassIcon />,
   "Input Mark": <CreateIcon />,
+  Reviews: <StarIcon />,
 };
 
 function Teacher(props) {
@@ -105,14 +108,16 @@ function Teacher(props) {
       </Toolbar>
       <Divider />
       <List>
-        {["Profile", "My Classes", "Input Mark"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => handleItemClick(text)}>
-              <ListItemIcon>{iconMap[text]}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {["Profile", "My Classes", "Input Mark", "Reviews"].map(
+          (text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton onClick={() => handleItemClick(text)}>
+                <ListItemIcon>{iconMap[text]}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          )
+        )}
       </List>
     </div>
   );
@@ -212,6 +217,8 @@ function Teacher(props) {
           <Classes teacher={user} />
         ) : selectedItem == "Input Mark" ? (
           <InputMark teacher={user} />
+        ) : selectedItem == "Reviews" ? (
+          <Reviews />
         ) : (
           <Profile teacher={user} />
         )}
