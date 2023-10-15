@@ -33,7 +33,7 @@ const Reviews = ({ config }) => {
     setWaiting(true);
     try {
       const response = await axios.get(BASE_URI, config);
-      //   setReviews(response.data);
+        setReviews(response.data);
     } catch (error) {
       console.log(error);
     }
