@@ -21,7 +21,7 @@ export const getMydetails = asyncHandler(async (req, res) => {
     totalRating += review.rating;
   }
   const averageRating =
-    teacherReviews.length > 0 ? totalRating / teacherReviews[0].length : 0;
+    teacherReviews[0].length > 0 ? totalRating / teacherReviews[0].length : 0;
   teacherDetails.averageRating = averageRating.toFixed(1);
   res.status(200).json(teacherDetails);
 });

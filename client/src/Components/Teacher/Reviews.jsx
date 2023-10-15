@@ -15,7 +15,7 @@ import Spinner from "../Spinner/Spinner";
 const BASE_URI = "http://localhost:5000/api/teacher/myreviews";
 
 const Reviews = ({ config }) => {
-  const [reviews, setReviews] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const [waiting, setWaiting] = useState(false);
 
   const primaryAvatarStyle = {
@@ -33,7 +33,7 @@ const Reviews = ({ config }) => {
     setWaiting(true);
     try {
       const response = await axios.get(BASE_URI, config);
-        setReviews(response.data);
+      setReviews(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -54,7 +54,7 @@ const Reviews = ({ config }) => {
     >
       <Spinner />
     </div>
-  ) : reviews ? (
+  ) : reviews.length > 0 ? (
     <div>
       <Typography variant="h4" align="center">
         Student Reviews
