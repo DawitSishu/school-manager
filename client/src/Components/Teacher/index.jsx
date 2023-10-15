@@ -218,7 +218,7 @@ function Teacher(props) {
         ) : selectedItem == "Input Mark" ? (
           <InputMark teacher={user} />
         ) : selectedItem == "Reviews" ? (
-          <Reviews />
+          <Reviews  config={config} />
         ) : (
           <Profile teacher={user} />
         )}

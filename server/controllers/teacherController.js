@@ -144,8 +144,8 @@ export const updatePass = asyncHandler(async (req, res) => {
 export const myReviews = asyncHandler(async (req, res) => {
   const { teacher_id } = req.user;
   const result = await pool.query(
-    `SELECT * FROM reviews WHERE teacher_id = ?`,
+    `SELECT * FROM reviews WHERE teacher_id = ? ORDER BY timestamp DESC`, 
     [teacher_id]
   );
-  res.status(200).json(result[0][0]);
+  res.status(200).json(result[0]);
 });

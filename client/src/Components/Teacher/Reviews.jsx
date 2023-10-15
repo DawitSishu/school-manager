@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Typography,
   Card,
@@ -9,8 +9,11 @@ import {
   Box,
   Rating,
 } from "@mui/material";
+import axios from "axios";
 
-const Reviews = () => {
+const BASE_URI = "http://localhost:5000/api/teacher/myreviews";
+
+const Reviews = ({ config }) => {
   const reviews = [
     { message: "Great service, I'll definitely come back!", rating: "3" },
     { message: "Awesome experience. Loved the food!", rating: "2" },
@@ -27,6 +30,19 @@ const Reviews = () => {
     borderRadius: "10px",
     margin: "10px",
   };
+
+  const getReviews = async () => {
+    try {
+      const response = await axios.get(BASE_URI, config);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getReviews();
+  }, []);
 
   return (
     <div>
