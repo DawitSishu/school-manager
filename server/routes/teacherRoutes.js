@@ -7,7 +7,8 @@ import {
   getStudent,
   getMydetails,
   getStudentData,
-  updatePass
+  updatePass,
+  myReviews,
 } from "../controllers/teacherController.js";
 
 const teacherRouter = express.Router();
@@ -17,7 +18,6 @@ teacherRouter.get("/teacher/me", userAuthChecker, getMydetails);
 
 //update teacher password
 teacherRouter.put("/teacher/update", userAuthChecker, updatePass);
-
 
 // my calsses (the classes he owns(home-room-teacher)
 teacherRouter.post("/teacher/class", userAuthChecker, getMyClasses);
@@ -34,5 +34,8 @@ teacherRouter.post("/students/marks", userAuthChecker, updateStudentValue); // ?
 //get the specific students list from class;
 teacherRouter.get("/class/students/:id", userAuthChecker, getStudent);
 // get report card (homeroom teacher khone ? kelelew not avilable)
+
+//get all student reviews
+teacherRouter.get("/teacher/myreviews", userAuthChecker, myReviews);
 
 export default teacherRouter;
