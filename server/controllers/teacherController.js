@@ -137,3 +137,15 @@ export const updatePass = asyncHandler(async (req, res) => {
   );
   res.json({ msg: "Password updated successfully!!" });
 });
+
+//@desc gets all the review messages annonymously from students
+//@route GET /api/teacher/myreviews
+//@access private
+export const myReviews = asyncHandler(async (req, res) => {
+  const { teacher_id } = req.user;
+  const result = await pool.query(
+    `SELECT * FROM reviews WHERE teacher_id = ?`,
+    [teacher_id]
+  );
+  res.status(200).json(result[0][0]);
+});
